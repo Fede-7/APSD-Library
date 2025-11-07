@@ -2,11 +2,10 @@
 
 **Streamlining Excellence in Exam Management Systems**
 
-[![Last Commit](https://img.shields.io/github/last-commit/rede-J/APSD-Library?style=flat-square)](https://github.com/Fede-7/APSD-Library)
+[![Last Commit](https://img.shields.io/github/last-commit/Fede-7/APSD-Library?style=flat-square)](https://github.com/Fede-7/APSD-Library)
 [![Java](https://img.shields.io/badge/Java-17%2B-orange?style=flat-square&logo=java)](https://www.oracle.com/java/)
 [![Maven](https://img.shields.io/badge/Maven-3.8%2B-blue?style=flat-square&logo=apache-maven)](https://maven.apache.org/)
-[![Languages](https://img.shields.io/github/languages/count/rede-J/APSD-Library?style=flat-square)](https://github.com/Fede-7/APSD-Library)
-
+[![Languages](https://img.shields.io/github/languages/count/Fede-7/APSD-Library?style=flat-square)](https://github.com/Fede-7/APSD-Library)
 ---
 
 ## Table of Contents
