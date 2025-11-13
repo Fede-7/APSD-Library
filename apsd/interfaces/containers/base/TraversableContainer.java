@@ -1,35 +1,49 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Box;
-// import apsd.classes.utilities.MutableNatural;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.traits.Accumulator;
-// import apsd.interfaces.traits.Predicate;
+import apsd.classes.utilities.Box;
+import apsd.classes.utilities.MutableNatural;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.traits.Accumulator;
+import apsd.interfaces.traits.Predicate;
 
 /** Interface: MembershipContainer con supporto all'attraversamento. */
-public interface TraversableContainer<Data> { // Must extend MembershipContainer
+public interface TraversableContainer<Data> extends MembershipContainer<Data> {
 
-  // TraverseForward
-  // TraverseBackward
+  boolean TraverseForward(Predicate<Data> pred);
+  boolean TraverseBackward(Predicate<Data> pred);
 
-  // default <Acc> Acc FoldForward(Accumulator<Data, Acc> fun, Acc ini) {
-  //   final Box<Acc> acc = new Box<>(ini);
-  //   if (fun != null) TraverseForward(dat -> { acc.Set(fun.Apply(dat, acc.Get())); return false; });
-  //   return acc.Get();
-  // }
+  default <Acc> Acc FoldForward(Accumulator<Data, Acc> fun, Acc ini) {
+    final Box<Acc> acc = new Box<>(ini);
+    if (fun != null) TraverseForward(dat -> { acc.Set(fun.Apply(dat, acc.Get())); return false; });
+    return acc.Get();
+  }
 
-  // FoldBackward
+  default <Acc> Acc FoldBackward(Accumulator<Data, Acc> fun, Acc ini) {
+  final Box<Acc> acc = new Box<>(ini);
+    if (fun != null) TraverseBackward(dat -> { acc.Set(fun.Apply(dat, acc.Get())); return false; });
+    return acc.Get();
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  default MutableNatural size() {
+    final Box<Natural> count = new Box<>(Natural.ZERO);
+    TraverseForward(dat -> { count.Set(count.Get().Add(Natural.ONE)); return false; });
+    return MutableNatural.FromNatural(count.Get());
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from MembershipContainer              */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  default boolean Exists(Data dat) {
+    final Box<Boolean> exists = new Box<>(false);
+    this.TraverseForward(data -> { exists.Set(exists.Get() || data.equals(dat)); return exists.Get(); });
+    return exists.Get();
+  }
 
 }
