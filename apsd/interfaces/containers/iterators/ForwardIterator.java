@@ -14,7 +14,7 @@ public interface ForwardIterator<Data> extends Iterator<Data> {
     for (; steps > 0 && IsValid(); --steps ; Next()) {}
   }
 
-  Data DataNNext(){}
+  Data DataNNext();
 
   default boolean ForEachForward(Predicate<Data> fun) {
     if (fun != null) {
