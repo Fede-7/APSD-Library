@@ -7,21 +7,18 @@ import apsd.interfaces.traits.Predicate;
 /** Interface: TraversableContainer con supporto all'iterazione. */
 public interface IterableContainer<Data> extends TraversableContainer<Data> {
 
-  // FIterator
   ForwardIterator<Data> FIterator();
-  // BIterator
   BackwardIterator<Data> BIterator();
 
-  // IsEqual
-  @FIXME: finire iterator ed aggiustare la logica di questo metodo
   @Override
   default boolean IsEqual(IterableContainer<Data> con){
-    if(con != null && this.Size().IsEqual(con.Size())){
-      final ForwardIterator<Data> it1 = this.FIterator();
-      final ForwardIterator<Data> it2 = con.FIterator();
-      while(!it1.DataNNext().equals(it2.DataNNext()) || it1.DataNNext() == null){}
-      return !it1.HasNext() && !it2.HasNext();
+    if(con == null || !this.Size().IsEqual(con.Size())) {return false;}
+    final ForwardIterator<Data> it1 = this.FIterator();
+    final ForwardIterator<Data> it2 = con.FIterator();
+    while(it1.IsValid()) {
+      if(!it1.DataNNext().equals(it2.DataNNext())) {return false;}
     }
+    return true;
   }
 
   /* ************************************************************************ */
@@ -30,19 +27,19 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
 
   @Override
   default boolean TraverseForward(Predicate<Data> pred) {
+    if(pred == null) {return false;}
     final ForwardIterator<Data> it = this.FIterator();
-    while (it.HasNext()) {
-      if (pred.Apply(it.Next())) return true;
+    while (it.IsValid()) {
+      if (pred.Apply(it.DataNNext())) return true;
     }
     return false;
   } 
 
   @Override
   default boolean TraverseBackward(Predicate<Data> pred) {
+    if(pred == null) {return false;}
     final BackwardIterator<Data> it = this.BIterator();
-    while (it.HasNext()) {
-      if (pred.Apply(it.Next())) return true;
-    }
+    while (it.IsValid()) { if (pred.Apply(it.DataNPrev())) return true; }
     return false;
   }
 
