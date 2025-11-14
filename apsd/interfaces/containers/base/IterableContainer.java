@@ -13,12 +13,13 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   BackwardIterator<Data> BIterator();
 
   // IsEqual
+  @FIXME: finire iterator ed aggiustare la logica di questo metodo
   @Override
   default boolean IsEqual(IterableContainer<Data> con){
     if(con != null && this.Size().IsEqual(con.Size())){
       final ForwardIterator<Data> it1 = this.FIterator();
       final ForwardIterator<Data> it2 = con.FIterator();
-      while(!it1.DataNNext().equals(it2.DataNNext()) && it1.Next() != null && it2.Next() != null){}
+      while(!it1.DataNNext().equals(it2.DataNNext()) || it1.DataNNext() == null){}
       return !it1.HasNext() && !it2.HasNext();
     }
   }
