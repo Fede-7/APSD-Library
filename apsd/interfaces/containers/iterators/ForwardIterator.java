@@ -1,22 +1,32 @@
 package apsd.interfaces.containers.iterators;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.traits.Predicate;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.traits.Predicate;
 
 /** Interface: Iteratore in avanti. */
-public interface ForwardIterator<Data> { // Must extend Iterator
+public interface ForwardIterator<Data> extends Iterator<Data> {
 
-  // Next
+  void Next(){DataNNext();}
 
-  // DataNNext
+  void Next(Natural steps){ Next(steps.ToLong()); }
 
-  // default boolean ForEachForward(Predicate<Data> fun) {
-  //   if (fun != null) {
-  //     while (IsValid()) {
-  //       if (fun.Apply(DataNNext())) { return true; }
-  //     }
-  //   }
-  //   return false;
-  // }
+  void Next(long steps){
+    for (; steps > 0 && IsValid(); --steps ; Next()) {}
+  }
+
+  Data DataNNext(){
+    Data current = GetCurrent();
+    Next();
+    return current;
+  }
+
+  default boolean ForEachForward(Predicate<Data> fun) {
+    if (fun != null) {
+      while (IsValid()) {
+        if (fun.Apply(DataNNext())) { return true; }
+      }
+    }
+    return false;
+  }
 
 }
