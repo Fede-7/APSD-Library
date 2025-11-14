@@ -14,11 +14,7 @@ public interface BackwardIterator<Data> extends Iterator<Data> {
     for (; steps > 0 && IsValid(); --steps ; Prev()) {}
   }
 
-  Data DataNPrev(){
-    Data current = GetCurrent();
-    Prev();
-    return current;
-  }
+  Data DataNPrev(){}
 
   default boolean ForEachBackward(Predicate<Data> fun) {
     if (fun != null) {
