@@ -6,12 +6,12 @@ import apsd.interfaces.traits.Predicate;
 /** Interface: Iteratore all'indietro. */
 public interface BackwardIterator<Data> extends Iterator<Data> {
   
-  void Prev(){DataNPrev();}
+  default void Prev(){DataNPrev();}
 
-  void Prev(Natural steps){ Prev(steps.ToLong()); }
+  default void Prev(Natural steps){ Prev(steps.ToLong()); }
 
-  void Prev(long steps){
-    for (; steps > 0 && IsValid(); --steps ; Prev()) {}
+  default void Prev(long steps){
+    for (; steps > 0 && IsValid(); --steps , Prev()) {}
   }
 
   Data DataNPrev();

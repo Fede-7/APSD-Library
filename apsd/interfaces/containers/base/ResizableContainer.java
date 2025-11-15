@@ -1,7 +1,5 @@
 package apsd.interfaces.containers.base;
 
-import javax.print.attribute.standard.MediaSize.NA;
-
 import apsd.classes.utilities.Natural;
 
 /** Interface: ReallocableContainer che è espandibile e riducibile. */

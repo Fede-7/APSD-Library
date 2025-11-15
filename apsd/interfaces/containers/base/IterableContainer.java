@@ -10,9 +10,8 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   ForwardIterator<Data> FIterator();
   BackwardIterator<Data> BIterator();
 
-  @Override
   default boolean IsEqual(IterableContainer<Data> con){
-    if(con == null || !this.Size().IsEqual(con.Size())) {return false;}
+    if(con == null || !this.Size().equals(con.Size())) {return false;}
     final ForwardIterator<Data> it1 = this.FIterator();
     final ForwardIterator<Data> it2 = con.FIterator();
     while(it1.IsValid()) {

@@ -1,19 +1,21 @@
 package apsd.interfaces.containers.base;
 
+import apsd.classes.utilities.Box;
+
 /** Interface: Container con supporto all'inserimento di un dato. */
 public interface InsertableContainer<Data> extends Container{
 
-  Boolean Insert(Data data);
+  boolean Insert(Data data);
 
-  Boolean InsertAll(TraversableContainer<Data> con){
+  default boolean InsertAll(TraversableContainer<Data> con){
     final Box<Boolean> allInserted = new Box<>(true);
-    if(con != null) con.TraversFoward -> {dat -> allInserted.Set(allInserted.Get() && Insert(dat)); };
+    if(con != null) con.TraverseForward(dat -> { allInserted.Set(allInserted.Get() && Insert(dat)); return false; });
     return allInserted.Get();
   }
 
-  Boolean InsertSome(TraversableContainer<Data> con){
+  default boolean InsertSome(TraversableContainer<Data> con){
     final Box<Boolean> someInserted = new Box<>(false);
-    if(con != null) con.TraversFoward -> {dat -> someInserted.Set(someInserted.Get() || Insert(dat)); };
+    if(con != null) con.TraverseForward(dat -> { someInserted.Set(someInserted.Get() || Insert(dat)); return false; });
     return someInserted.Get();
   }
 
