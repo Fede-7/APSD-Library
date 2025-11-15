@@ -27,14 +27,9 @@ public interface ResizableContainer extends ReallocableContainer {
   /* ************************************************************************ */
 
   @Override
-  default void Grow() { if((long) (THRESHOLD_FACTOR * GROW_FACTOR * Size().ToLong()) >= Capacity().ToLong()) ReallocableContainer.super.Grow();}
-
-  @Override
   default void Grow(Natural factor) { if((long) (THRESHOLD_FACTOR * GROW_FACTOR * Size().ToLong()) >= Capacity().ToLong()) ReallocableContainer.super.Grow(factor); }
 
   @Override
   default void Shrink() { if ((long) (THRESHOLD_FACTOR * SHRINK_FACTOR * Size().ToLong()) <= Capacity().ToLong()) ReallocableContainer.super.Shrink(); }
 
-  @Override
-  default void Shrink(Natural factor) { if ((long) (THRESHOLD_FACTOR * SHRINK_FACTOR * Size().ToLong()) <= Capacity().ToLong()) ReallocableContainer.super.Shrink(factor); }
 }
