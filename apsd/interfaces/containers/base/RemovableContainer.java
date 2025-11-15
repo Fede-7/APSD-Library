@@ -1,6 +1,5 @@
 package apsd.interfaces.containers.base;
 
-import javax.xml.crypto.Data;
 import apsd.classes.utilities.Box;
 
 /** Interface: Container con supporto alla rimozione di un dato. */
