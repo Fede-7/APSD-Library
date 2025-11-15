@@ -3,7 +3,7 @@ package apsd.interfaces.containers.base;
 import javax.xml.crypto.Data;
 
 /** Interface: Container con supporto alla rimozione di un dato. */
-public interface RemovableContainer<Data> extends Container { // Must extend Container
+public interface RemovableContainer<Data> extends Container {
 
   boolean Remove(Data data){
 
