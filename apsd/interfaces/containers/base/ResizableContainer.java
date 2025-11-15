@@ -20,7 +20,7 @@ public interface ResizableContainer extends ReallocableContainer {
   /* ************************************************************************ */
 
   @Override
-  default Natural size() { return Size(); }
+  default Natural Size() { return Capacity(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from ReallocableContainer             */
