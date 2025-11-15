@@ -40,8 +40,8 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
     if (pred != null) {
       final BackwardIterator<Data> it = this.BIterator();
       while (it.IsValid()) { if (pred.Apply(it.DataNPrev()))return true; }
-      return false;
     }
+    return false;
   }
 
 }
