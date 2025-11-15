@@ -9,7 +9,7 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable {
   double GROW_FACTOR = 2.0; // Must be strictly greater than 1.
   double SHRINK_FACTOR = 2.0; // Must be strictly greater than 1.
 
-  Natural capacity();
+  Natural Capacity();
 
   default void Grow() {
     Realloc(Natural.valueOf((long) (capacity().toLong() * GROW_FACTOR)));
@@ -35,6 +35,6 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable {
   /* ************************************************************************ */
 
   @Override
-  default void clear() { Realloc(Natural.ZERO);  }
+  default void Clear() { Realloc(Natural.ZERO);  }
 
 }
