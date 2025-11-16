@@ -20,10 +20,9 @@ public interface Sequence<Data> extends IterableContainer<Data> {
   default Data GetLast(){return GetAt((IsEmpty()) ? Natural.ZERO : Size().Decrement()) ;}
 
   default Natural Search(Data elem){
-    final Box<Natural> idx = new Box<>();
-    idx.Set(Natural.ZERO);
+    final Box<Natural> idx = new Box<>(Natural.ZERO);
     this.TraverseForward(dat -> {
-      boolean found = dat.equals(elem);
+      boolean found = (dat == null ? elem == null : dat.equals(elem));
       if (!found) idx.Set(idx.Get().Increment());
       return found;
     });
