@@ -17,6 +17,8 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  default Natural Search(Data dat) {}
+    
 
 }

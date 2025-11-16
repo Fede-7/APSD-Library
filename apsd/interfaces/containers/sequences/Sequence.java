@@ -1,29 +1,46 @@
 package apsd.interfaces.containers.sequences;
 
-// import apsd.classes.utilities.Box;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.IterableContainer;
-// import apsd.interfaces.containers.iterators.ForwardIterator;
+import apsd.classes.utilities.Box;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.IterableContainer;
+import apsd.interfaces.containers.iterators.ForwardIterator;
 
 /** Interface: IterableContainer con supporto alla lettura e ricerca tramite posizione. */
-public interface Sequence<Data> { // Must extend IterableContainer
+public interface Sequence<Data> extends IterableContainer<Data> {
 
-  // GetAt
+  default Data GetAt(Natural pos) {
+    long idx = ExcIfOutOfBound(pos);
+    ForwardIterator<Data> ForIt = FIterator();
+    ForIt.Next(idx);
+    return ForIt.GetCurrent();
+  }
 
-  // GetFirst
-  // GetLast
+  default Data GetFirst(){ return GetAt(Natural.ZERO); }
 
-  // Search
+  default Data GetLast(){return GetAt((IsEmpty()) ? Natural.ZERO : Size().Decrement()) ;}
 
-  // IsInBound
+  default Natural Search(Data elem){
+    final Box<Natural> idx = new Box<>();
+    idx.Set(Natural.ZERO);
+    this.TraverseForward(dat -> {
+      boolean found = dat.equals(elem);
+      if (!found) idx.Set(idx.Get().Increment());
+      return found;
+    });
+    return idx.Get();
+  }
 
-  // default long ExcIfOutOfBound(Natural num) {
-  //   if (num == null) throw new NullPointerException("Natural number cannot be null!");
-  //   long idx = num.ToLong();
-  //   if (idx >= Size().ToLong()) throw new IndexOutOfBoundsException("Index out of bounds: " + idx + "; Size: " + Size() + "!");
-  //   return idx;
-  // }
+  default boolean IsInBound(Natural idx){
+    return (idx.ToLong() < Size().ToLong());
+  }
 
-  // SubSequence
+  default long ExcIfOutOfBound(Natural num) {
+    if (num == null) throw new NullPointerException("Natural number cannot be null!");
+    long idx = num.ToLong();
+    if (idx >= Size().ToLong()) throw new IndexOutOfBoundsException("Index out of bounds: " + idx + "; Size: " + Size() + "!");
+    return idx;
+  }
+
+  Sequence<Data> SubSequence(Natural FirIdx, Natural SecIdx );
 
 }
