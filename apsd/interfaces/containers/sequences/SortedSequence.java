@@ -18,7 +18,30 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
   /* ************************************************************************ */
 
   @Override
-  default Natural Search(Data dat) {}
-    
+  default Natural Search(Data elem) {
+    if (elem == null)
+      return null;
+
+    long start = 0;
+    long finish = Size().ToLong() - 1;
+
+    while (start <= finish) {
+
+      long medIdx = start + (finish - start) / 2;
+
+      Natural NatMedIdx = Natural.Of(medIdx);
+      Data medElem = GetAt(NatMedIdx);
+      int cmp = elem.compareTo(medElem);
+
+      if (cmp == 0) {
+        return NatMedIdx;
+      } else if (cmp < 0) {
+        finish = medIdx - 1;
+      } else {
+        start = medIdx + 1;
+      }
+    }
+    return null;
+  }
 
 }
