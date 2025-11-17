@@ -5,6 +5,8 @@ import apsd.classes.utilities.Natural;
 /** Interface: Sequence con supporto alla rimozione di un dato tramite posizione. */
 public interface RemovableAtSequence<Data> extends Sequence<Data> {
 
+  //FIXME: controllare se il prof ha sbagliato 
+
   // default void RemoveAt(Natural pos){
   //   long[] idx = new long[1];
   //   idx[0] = ExcIfOutOfBound(pos);
@@ -19,7 +21,8 @@ public interface RemovableAtSequence<Data> extends Sequence<Data> {
   // }
 
   // Data AtNRemove(Natural pos);
-  
+
+  //secondo me meglio così
   void RemoveAt(Natural pos);
 
   default Data AtNRemove(Natural pos) {
