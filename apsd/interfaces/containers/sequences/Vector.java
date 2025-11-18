@@ -64,7 +64,10 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());;}
 
-  default Vector<Data> SubVector(Natural start, Natural finish){/*TODO: non lo so*/}
+  default Vector<Data> SubVector(Natural start, Natural finish){
+    /*TODO: non lo so*/
+    return null;
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */

@@ -2,26 +2,18 @@ package apsd.interfaces.containers.sequences;
 
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.ResizableContainer;
-import zapsdtest.testframework.containers.base.ResizableContainerTest;
 
 public interface DynVector<Data> extends ResizableContainer, InsertableAtSequence<Data>, RemovableAtSequence<Data>, Vector<Data>{
 
   /* ************************************************************************ */
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
-  //TODO capire se devo solo inserire i valori o creare spazio e poi inserire
   @Override
   default void InsertAt(Data elem, Natural pos){
-    if(!IsEmpty()){
-      if(Size().compareTo(pos) > 0){
-        if(GetAt(pos) == null){
-          SetAt(elem, pos);
-        }else{
-          if()
-         Grow(); 
-        }
-
-      }
+    if(pos.compareTo(Size()) <= 0){
+      Expand();
+      ShiftRight(pos);
+      SetAt(elem, pos);
     }
   }
   
@@ -30,7 +22,16 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* ************************************************************************ */
 
   @Override
-  Data AtNRemove(Natural pos);
+  default Data AtNRemove(Natural pos){
+    Data elem = GetAt(pos);
+    ShiftLeft(pos);
+    return elem;
+  }
+
+  @Override
+  default void RemoveAt(Natural pos){
+    ShiftLeft(pos);
+  }
 
   /* ************************************************************************ */
   /* Specific member functions of Vector                                       */
@@ -38,12 +39,14 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void ShiftLeft(Natural pos, Natural num) {
-    // TODO Auto-generated method stub
+    Vector.super.ShiftLeft(pos, num);
+    Reduce(num);
   }
 
   @Override
   default void ShiftRight(Natural pos, Natural num) {
-      // TODO Auto-generated method stub
+    Expand(num);
+    Vector.super.ShiftRight(pos, num);
   }
 
   @Override
