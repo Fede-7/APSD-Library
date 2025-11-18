@@ -15,10 +15,10 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
     if (!IsEmpty() && IsInBound(pos)) {
       if(GetAt(pos)!= null){
         Grow();
-        ShiftLeft(pos);
+        ShiftRight(pos);
       }
+      SetAt(elem, pos);
     }
-    SetAt(elem, pos);
   }
   
   /* ************************************************************************ */
@@ -52,6 +52,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   Vector<Data> SubVector(Natural start, Natural finish);
+
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
