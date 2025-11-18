@@ -9,9 +9,21 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* ************************************************************************ */
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
-
+  //TODO capire se devo solo inserire i valori o creare spazio e poi inserire
   @Override
-  void InsertAt(Data elem, Natural pos);
+  default void InsertAt(Data elem, Natural pos){
+    if(!IsEmpty()){
+      if(Size().compareTo(pos) > 0){
+        if(GetAt(pos) == null){
+          SetAt(elem, pos);
+        }else{
+          if()
+         Grow(); 
+        }
+
+      }
+    }
+  }
   
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
