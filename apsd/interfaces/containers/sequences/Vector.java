@@ -6,12 +6,7 @@ import apsd.interfaces.containers.base.ReallocableContainer;
 public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data>{
 
   default void ShiftLeft(Natural pos) {
-    long idx = ExcIfOutOfBound(pos);
-
-    for (; idx < Size().ToLong() - 1; idx++) {
-      SetAt(GetAt(Natural.Of(idx + 1)), Natural.Of(idx));
-    }
-    SetLast(null);
+   ShiftLeft(pos, Natural.ONE);
   }
 
   default void ShiftLeft(Natural pos, Natural num) {
@@ -19,14 +14,17 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
     long size = Size().ToLong();
     long len = num.ToLong();
     len = (len <= size - idx) ? len : size - idx;
+
     if (len > 0) {
       long iniwrt = idx;
       long wrt = iniwrt;
+
       for (long rdr = wrt + len; rdr < size; rdr++, wrt++) {
         Natural natrdr = Natural.Of(rdr);
         SetAt(GetAt(natrdr), Natural.Of(wrt));
         SetAt(null, natrdr);
       }
+
       for (; wrt - iniwrt < len; wrt++) {
         SetAt(null, Natural.Of(wrt));
       }
@@ -38,11 +36,29 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
   default void ShiftLastLeft(){if(!IsEmpty()) SetAt(null, Size().Decrement()); }
 
   default void ShiftRight(Natural pos){
+    ShiftRight(pos, Natural.ONE);
+  }
+
+  default void ShiftRight(Natural pos, Natural num) {
     long idx = ExcIfOutOfBound(pos);
-    for (; idx > 1; idx--) {
-      SetAt(GetAt(Natural.Of(idx - 1)), Natural.Of(idx));
+    long len = num.ToLong();
+    len = (len <= idx + 1) ? len : idx + 1;
+
+    if (len > 0) {
+      long iniwrt = idx;
+      long wrt = iniwrt;
+
+      for (long rdr = idx - len; rdr >= 0; rdr--, wrt--) {
+        Natural natrdr = Natural.Of(rdr);
+        SetAt(GetAt(natrdr), Natural.Of(wrt));
+        SetAt(null, natrdr);
+      }
+
+      for (; wrt >= 0; wrt--) {
+        SetAt(null, Natural.Of(wrt));
+      }
+
     }
-    SetFirst(null);
   }
 
   default void ShiftFirstRight(){if(!IsEmpty()) SetFirst(null);;}
