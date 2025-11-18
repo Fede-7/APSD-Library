@@ -13,7 +13,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   @Override
   default void InsertAt(Data elem, Natural pos) {
       // TODO Auto-generated method stub  }
-
+  }
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
   /* ************************************************************************ */
@@ -28,18 +28,19 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* ************************************************************************ */
 
   @Override
-  default Vector<Data> SubVector(Natural start, Natural finish) {
+  default void ShiftLeft(Natural pos, Natural num) {
     // TODO Auto-generated method stub
   }
 
   @Override
-  default void @Override
-  default void ShiftLeft(Natural pos, Natural num) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'ShiftLeft'");
+  default void ShiftRight(Natural pos, Natural num) {
+      // TODO Auto-generated method stub
   }
 
-  Shift
+  @Override
+  default Vector<Data> SubVector(Natural start, Natural finish) {
+    // TODO Auto-generated method stub
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
