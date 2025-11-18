@@ -11,17 +11,14 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* ************************************************************************ */
 
   @Override
-  default void InsertAt(Data elem, Natural pos) {
-      // TODO Auto-generated method stub  }
-  }
+  void InsertAt(Data elem, Natural pos);
+  
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
   /* ************************************************************************ */
 
   @Override
-  default Data AtNRemove(Natural pos) {
-    // TODO Auto-generated method stub
-  }
+  Data AtNRemove(Natural pos);
 
   /* ************************************************************************ */
   /* Specific member functions of Vector                                       */
@@ -38,10 +35,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   }
 
   @Override
-  default Vector<Data> SubVector(Natural start, Natural finish) {
-    // TODO Auto-generated method stub
-  }
-
+  Vector<Data> SubVector(Natural start, Natural finish);
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */

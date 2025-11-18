@@ -41,23 +41,22 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftRight(Natural pos, Natural num) {
     long idx = ExcIfOutOfBound(pos);
+    long size = Size().ToLong();
     long len = num.ToLong();
-    len = (len <= idx + 1) ? len : idx + 1;
+    len = (len <= size - idx) ? len : size - idx;
 
     if (len > 0) {
-      long iniwrt = idx;
+      long iniwrt = size - 1;
       long wrt = iniwrt;
-
-      for (long rdr = idx - len; rdr >= 0; rdr--, wrt--) {
+      for (long rdr = wrt - len; rdr >= idx; rdr--, wrt--) {
         Natural natrdr = Natural.Of(rdr);
         SetAt(GetAt(natrdr), Natural.Of(wrt));
         SetAt(null, natrdr);
       }
 
-      for (; wrt >= 0; wrt--) {
-        SetAt(null, Natural.Of(wrt));
+      for (long i = idx; i < idx + len; i++) {
+        SetAt(null, Natural.Of(i));
       }
-
     }
   }
 
