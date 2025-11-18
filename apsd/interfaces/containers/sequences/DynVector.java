@@ -11,7 +11,6 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   @Override
   default void InsertAt(Data elem, Natural pos){
     if(pos.compareTo(Size()) <= 0){
-      Expand();
       ShiftRight(pos);
       SetAt(elem, pos);
     }
