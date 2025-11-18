@@ -11,14 +11,30 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* ************************************************************************ */
 
   @Override
-  void InsertAt(Data elem, Natural pos);
+  default void InsertAt(Data elem, Natural pos) {
+    if (!IsEmpty() && IsInBound(pos)) {
+      if(GetAt(pos)!= null){
+        Grow();
+        ShiftLeft(pos);
+      }
+    }
+    SetAt(elem, pos);
+  }
   
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
   /* ************************************************************************ */
 
   @Override
-  Data AtNRemove(Natural pos);
+  default Data AtNRemove(Natural pos){
+    if (!IsEmpty() && IsInBound(pos)) {
+      Data dat = GetAt(pos);
+      ShiftLeft(pos);
+      Shrink();
+      return dat;
+    }
+    return null;
+  }
 
   /* ************************************************************************ */
   /* Specific member functions of Vector                                       */

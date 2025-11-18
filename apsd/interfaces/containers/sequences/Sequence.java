@@ -29,7 +29,12 @@ public interface Sequence<Data> extends IterableContainer<Data> {
     return idx.Get();
   }
 
-  default boolean IsInBound(Natural idx){
+  default boolean IsInBound(Natural idx) {
+    if (idx == null)
+      throw new NullPointerException("Natural number cannot be null!");
+
+    if (idx.compareTo(Size()) > 0)
+      throw new IndexOutOfBoundsException("Index out of bounds: " + idx + "; Size: " + Size() + "!");
     return (idx.ToLong() < Size().ToLong());
   }
 
