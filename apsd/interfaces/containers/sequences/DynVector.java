@@ -42,12 +42,12 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void ShiftLeft(Natural pos, Natural num) {
-    // TODO Auto-generated method stub
+    // TODO che logica devo usare?
   }
 
   @Override
   default void ShiftRight(Natural pos, Natural num) {
-      // TODO Auto-generated method stub
+    // TODO che logica devo usare? 
   }
 
   @Override
