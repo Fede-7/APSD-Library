@@ -1,19 +1,32 @@
 package apsd.interfaces.containers.collections;
 
-// import apsd.interfaces.containers.base.IterableContainer;
+import apsd.interfaces.containers.base.IterableContainer;
 
-public interface Set<Data> { // Must extend Collection
+public interface Set<Data> extends Collection<Data> {
 
-  // Union
+  default void Union(Set<Data> set){if(set != null) this.InsertAll(set);}
 
-  // Difference
+  default void Difference(Set<Data> set) {
+    if (set == null || set.IsEmpty()) {return;}
 
-  // Intersection
+    this.Filter(dat ->!set.Exists(dat));
+  }
+
+  default void Intersection(Set<Data> set) {
+    if (set == null || set.IsEmpty()) {this.Clear(); return;}
+
+    this.Filter(set::Exists);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from IterableContainer                */
   /* ************************************************************************ */
 
-  // ...
+  //TODO: controllare se è corretto
+  @Override
+  default boolean IsEqual(IterableContainer<Data> con) {
+    if (con == null || !this.Size().equals(con.Size())) return false;
+    return !con.TraverseForward(elm -> !this.Exists(elm));
+  };
 
 }
