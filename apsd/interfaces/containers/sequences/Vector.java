@@ -64,7 +64,25 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());;}
 
-  default Vector<Data> SubVector(Natural start, Natural finish){/*TODO: non lo so*/}
+  @SuppressWarnings("unchecked")
+  default Vector<Data> SubVector(Natural start, Natural finish){
+    /* @Copilot TODO: Non so come restituire un vettore */
+    Vector<Data> subVector;
+    try {
+      subVector = (Vector<Data>) this.getClass().getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+
+    long idx = 0;
+    long str = ExcIfOutOfBound(start);
+    long fns = ExcIfOutOfBound(finish);
+
+    for (; str <= fns; str++, idx++) {
+      subVector.SetAt(GetAt(Natural.Of(str)), Natural.Of(idx));
+    }
+    return subVector;
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -72,5 +90,4 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   @Override
   default Natural Size(){return Capacity();}
-
 }
