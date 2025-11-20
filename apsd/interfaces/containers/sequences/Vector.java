@@ -63,10 +63,11 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
   default void ShiftFirstRight(){if(!IsEmpty()) SetFirst(null);;}
 
   default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());;}
-
+    
+  /* @Copilot TODO: Controllare subvector */
+  //usare subSequence? non lo so
   @SuppressWarnings("unchecked")
   default Vector<Data> SubVector(Natural start, Natural finish){
-    /* @Copilot TODO: Non so come restituire un vettore */
     Vector<Data> subVector;
     try {
       subVector = (Vector<Data>) this.getClass().getDeclaredConstructor().newInstance();

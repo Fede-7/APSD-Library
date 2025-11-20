@@ -12,7 +12,7 @@ public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data>{
     this.Filter(elm -> !elm.equals(dat));
   }
   
-//TODO: controllore se questo metodo è corretto
+//TODO: controllore SubChain
   @SuppressWarnings("unchecked")
   default Chain<Data> SubChain(Natural start, Natural finish) {
     
