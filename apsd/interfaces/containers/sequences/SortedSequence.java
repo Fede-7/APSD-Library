@@ -11,8 +11,10 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
   /* ************************************************************************ */
 
   @Override
-  default boolean Exists(Data dat) { return this.TraverseForward( elem -> elem.equals(dat)); }
-
+  default boolean Exists(Data dat) {
+    if(dat == null) return false;
+    return (this.Search(dat).equals(dat)) ? true : false ;
+  }
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
