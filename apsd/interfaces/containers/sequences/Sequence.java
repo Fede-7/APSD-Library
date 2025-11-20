@@ -15,9 +15,9 @@ public interface Sequence<Data> extends IterableContainer<Data> {
     return ForIt.GetCurrent();
   }
 
-  default Data GetFirst(){ return GetAt(Natural.ZERO); }
+  default Data GetFirst(){ return IsEmpty() ? null : GetAt(Natural.ZERO); }
 
-  default Data GetLast(){return GetAt((IsEmpty()) ? Natural.ZERO : Size().Decrement()) ;}
+  default Data GetLast(){ return IsEmpty() ? null : GetAt(Size().Decrement()); }
 
   default Natural Search(Data elem){
     final Box<Natural> idx = new Box<>(Natural.ZERO);
