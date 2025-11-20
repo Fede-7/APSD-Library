@@ -37,8 +37,8 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
 
         if(medElem.compareTo(dat) > 0){
           succ = Natural.Of(medIdx);
-          str = medIdx - 1;
-        }else fns = medIdx + 1;
+          fns = medIdx - 1;
+        }else str = medIdx + 1;
     }  
     return succ; 
   }
@@ -94,9 +94,63 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
   /* ************************************************************************ */
 
   @Override
-  default Data Min() {return (!IsEmpty()) ? GetFirst() : null;}
+  default Data Min() {return GetFirst();}
 
   @Override
-  default Data Max() {return (!IsEmpty()) ? GetLast() : null;}
+  default Data Max() {return GetLast();}
+
+  @Override
+  default void RemoveMin() { RemoveFirst();}
+
+  @Override
+  default void RemoveMax() { RemoveLast(); }
+
+  @Override
+  default Data MinNRemove() {
+    Data min = Min();
+    RemoveMin();
+    return min;
+  }
+
+  @Override
+  default Data MaxNRemove() {
+    Data max = Max();
+    RemoveMax();
+    return max;
+  }
+
+  @Override
+  default Data Predecessor(Data dat) {
+    return GetAt(SearchPredecessor(dat));
+  }
+
+  @Override
+  default Data Successor(Data dat) {
+    return GetAt(SearchSuccessor(dat));
+  }
+
+  @Override
+  default void RemovePredecessor(Data dat) {
+    RemoveAt(SearchPredecessor(dat));
+  }
+
+  @Override
+  default void RemoveSuccessor(Data dat) {
+    RemoveAt(SearchSuccessor(dat));
+  }
+
+  @Override
+  default Data PredecessorNRemove(Data dat) {
+    Data pred = Predecessor(dat);
+    RemovePredecessor(dat);
+    return pred;
+  }
+
+  @Override
+  default Data SuccessorNRemove(Data dat) {
+    Data succ = Successor(dat);
+    RemoveSuccessor(dat);
+    return succ;
+  }
 
 }
