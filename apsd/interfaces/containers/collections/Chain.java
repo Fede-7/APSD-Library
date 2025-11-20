@@ -4,6 +4,7 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.sequences.RemovableAtSequence;
 
 public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data>{
+  
   default boolean InsertIfAbsent(Data dat){
     return (!this.IsEmpty() && !this.Exists(dat)) ? this.Insert(dat) : false;
   }
@@ -12,10 +13,11 @@ public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data>{
     if(this.IsEmpty()) return;
     this.Filter(elm -> elm.equals(dat));
   }
-
+  
+//TODO: controllore se questo metodo è corretto
   @SuppressWarnings("unchecked")
   default Chain<Data> SubChain(Natural start, Natural finish) {
-    //TODO: controllore se questo metodo è corretto
+    
     Chain<Data> subChain;
     try {
       subChain = (Chain<Data>) this.getClass().getDeclaredConstructor().newInstance();
@@ -40,7 +42,7 @@ public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data>{
 
   @Override
   default Natural Search(Data dat){
-
+    
   }
 
 }
