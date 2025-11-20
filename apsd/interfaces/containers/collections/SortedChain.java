@@ -121,35 +121,43 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
 
   @Override
   default Data Predecessor(Data dat) {
-    return GetAt(SearchPredecessor(dat));
+    Natural pos = SearchPredecessor(dat);
+    return (pos!= null) ? GetAt(pos) : null;
   }
 
   @Override
   default Data Successor(Data dat) {
-    return GetAt(SearchSuccessor(dat));
+    Natural pos = SearchSuccessor(dat);
+    return (pos != null) ? GetAt(pos) : null;
   }
 
   @Override
   default void RemovePredecessor(Data dat) {
-    RemoveAt(SearchPredecessor(dat));
-  }
+    Natural pos = SearchPredecessor(dat);
+    if (pos != null) RemoveAt(pos);
+}
 
   @Override
   default void RemoveSuccessor(Data dat) {
-    RemoveAt(SearchSuccessor(dat));
+    Natural pos = SearchSuccessor(dat);
+    if (pos != null) RemoveAt(pos);
   }
 
   @Override
   default Data PredecessorNRemove(Data dat) {
-    Data pred = Predecessor(dat);
-    RemovePredecessor(dat);
+    Natural pos = SearchPredecessor(dat);  
+    if (pos == null) return null;
+    Data pred = GetAt(pos);                
+    RemoveAt(pos);                         
     return pred;
   }
 
   @Override
   default Data SuccessorNRemove(Data dat) {
-    Data succ = Successor(dat);
-    RemoveSuccessor(dat);
+    Natural pos = SearchSuccessor(dat);
+    if (pos == null) return null;
+    Data succ = GetAt(pos);
+    RemoveAt(pos);
     return succ;
   }
 
