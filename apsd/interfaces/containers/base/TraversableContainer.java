@@ -41,6 +41,7 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> {
 
   @Override
   default boolean Exists(Data dat) {
+    if(dat == null)return false;
     final Box<Boolean> exists = new Box<>(false);
     this.TraverseForward(data -> { exists.Set(exists.Get() || data.equals(dat)); return exists.Get(); });
     return exists.Get();
