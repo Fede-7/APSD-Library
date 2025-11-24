@@ -11,6 +11,7 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable {
 
   Natural Capacity();
 
+  //FIXME: totalmente sbagliate, devo controllare se fare o no la grow o shrink in base alla dim
   default void Grow() {
     Realloc(Natural.Of((long) (Capacity().ToLong() * GROW_FACTOR)));
   }

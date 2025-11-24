@@ -5,38 +5,17 @@ import apsd.classes.utilities.Natural;
 /** Interface: Sequence con supporto alla rimozione di un dato tramite posizione. */
 public interface RemovableAtSequence<Data> extends Sequence<Data> {
 
-  //FIXME: controllare se il prof ha sbagliato 
-
-  // default void RemoveAt(Natural pos){
-  //   long[] idx = new long[1];
-  //   idx[0] = ExcIfOutOfBound(pos);
-  //   this.TraverseForward(dat -> {
-  //     if(idx[0] == 0){
-  //       dat = null;
-  //       return true;
-  //     }
-  //     idx[0]--;
-  //     return false;
-  //   });
-  // }
-
-  // Data AtNRemove(Natural pos);
-
-  //secondo me meglio così
-  void RemoveAt(Natural pos);
-
-  default Data AtNRemove(Natural pos) {
-    if (!IsEmpty() && IsInBound(pos)) {
-      GetAt(pos);
-      RemoveAt(pos);
-    }
-    return null;
+  default void RemoveAt(Natural pos){
+    if(pos == null || IsEmpty()) return;
+    if(IsInBound(pos)) AtNRemove(pos);
   }
 
+  Data AtNRemove(Natural pos);
+
   default void RemoveFirst(){if(!IsEmpty()) RemoveAt(Natural.ZERO);};
-  default Data FirstNRemove(){return AtNRemove(Natural.ZERO);};
+  default Data FirstNRemove(){ return IsEmpty() ? null : AtNRemove(Natural.ZERO);}
 
   default void RemoveLast(){if(!IsEmpty()) RemoveAt(Size().Decrement());};
-  default Data LastNRemove(){return AtNRemove(Size().Decrement());};
+  default Data LastNRemove(){ return IsEmpty() ? null : AtNRemove(Size().Decrement());}
 
 }

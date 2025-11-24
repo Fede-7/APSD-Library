@@ -11,10 +11,7 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
   /* ************************************************************************ */
 
   @Override
-  default boolean Exists(Data dat) {
-    if(dat == null) return false;
-    return (this.Search(dat).equals(dat)) ? true : false ;
-  }
+  default boolean Exists(Data dat) {return (dat != null && Search(dat) != null);}
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */

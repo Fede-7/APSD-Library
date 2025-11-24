@@ -62,27 +62,12 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftFirstRight(){if(!IsEmpty()) ShiftRight(Natural.ZERO);}
 
-  default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());;}
+  default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());}
     
-  /* @Copilot TODO: Controllare subvector */
-  //usare subSequence? non lo so
-  @SuppressWarnings("unchecked")
-  default Vector<Data> SubVector(Natural start, Natural finish){
-    Vector<Data> subVector;
-    try {
-      subVector = (Vector<Data>) this.getClass().getDeclaredConstructor().newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-
-    long idx = 0;
-    long str = ExcIfOutOfBound(start);
-    long fns = ExcIfOutOfBound(finish);
-
-    for (; str <= fns; str++, idx++) {
-      subVector.SetAt(GetAt(Natural.Of(str)), Natural.Of(idx));
-    }
-    return subVector;
+  /* TODO: Controllare subvector */
+  default Vector<Data> SubVector(Natural start, Natural end) {
+    if (!IsInBound(start) || !IsInBound(end) || start.compareTo(end) > 0) return null;
+    return (Vector<Data>) SubSequence(start, end);
   }
 
   /* ************************************************************************ */

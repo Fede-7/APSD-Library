@@ -24,9 +24,9 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
 
   default Data GetNSetFirst(Data elem){return GetNSetAt(elem, Natural.ZERO);}
 
-  default void SetLast(Data elem){SetAt(elem, Size().Decrement());}
+  default void SetLast(Data elem){ if(!IsEmpty()) SetAt(elem, Size().Decrement());}
 
-  default Data GetNSetLast(Data elem){return GetNSetAt(elem, Size().Decrement()) ;}
+  default Data GetNSetLast(Data elem){ return IsEmpty() ? null : GetNSetAt(elem, Size().Decrement());}
 
   default void Swap(Natural pos1, Natural pos2) {
     Data elemTemp = GetNSetAt(GetAt(pos2), pos1); 
@@ -37,6 +37,6 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  MutableSequence<Data> SubSequence(Natural pos1, Natural pos2);
+  MutableSequence<Data> SubSequence(Natural start, Natural end);
 
 }

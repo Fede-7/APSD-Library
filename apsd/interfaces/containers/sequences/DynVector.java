@@ -1,8 +1,8 @@
 package apsd.interfaces.containers.sequences;
 
 import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.ReallocableContainer;
 import apsd.interfaces.containers.base.ResizableContainer;
-import zapsdtest.testframework.containers.base.ResizableContainerTest;
 
 public interface DynVector<Data> extends ResizableContainer, InsertableAtSequence<Data>, RemovableAtSequence<Data>, Vector<Data>{
 
@@ -12,13 +12,10 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void InsertAt(Data elem, Natural pos) {
-    if (!IsEmpty() && IsInBound(pos)) {
-      if(GetAt(pos)!= null){
-        Grow();
-        ShiftRight(pos);
-      }
-      SetAt(elem, pos);
-    }
+    if (elem == null || pos == null || !IsInBound(pos)) return;
+    Grow();
+    if (GetAt(pos) != null) {ShiftRight(pos);}
+    SetAt(elem, pos);
   }
   
   /* ************************************************************************ */
@@ -27,9 +24,9 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default Data AtNRemove(Natural pos){
-    if (IsEmpty() && !IsInBound(pos)) return null;
-    final Data dat = this.GetAt(pos);
-    ShiftLeft(pos);
+    if (pos == null || IsEmpty() || !IsInBound(pos)) return null;
+    Data dat = GetAt(pos);
+    if(!pos.equals(Size().Decrement())) ShiftLeft(pos);
     Shrink();
     return dat;
   }
@@ -40,16 +37,21 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void ShiftLeft(Natural pos, Natural num) {
-    // TODO che logica devo usare?
-  }
+      Vector.super.ShiftLeft(pos, num);
+      Shrink();
+    }
 
   @Override
   default void ShiftRight(Natural pos, Natural num) {
-    // TODO che logica devo usare? 
+    Grow(num);
+    Vector.super.ShiftRight(pos, num);
   }
 
   @Override
-  Vector<Data> SubVector(Natural start, Natural finish);
+  default DynVector<Data> SubVector(Natural start, Natural end){
+    if (!IsInBound(start) || !IsInBound(end) || start.compareTo(end) > 0) return null;
+    return (DynVector<Data>) SubSequence(start, end);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */

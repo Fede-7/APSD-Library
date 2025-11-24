@@ -21,7 +21,7 @@ public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Natural Search(Data elem){
     final Box<Natural> idx = new Box<>(Natural.ZERO);
-    final Box<Boolean> found =new Box<>();
+    final Box<Boolean> found =new Box<>(false);
     
     this.TraverseForward(dat -> {
       found.Set(dat == null ? elem == null : dat.equals(elem));
@@ -46,6 +46,6 @@ public interface Sequence<Data> extends IterableContainer<Data> {
     return idx;
   }
 
-  Sequence<Data> SubSequence(Natural FirIdx, Natural SecIdx );
+  Sequence<Data> SubSequence(Natural start, Natural end );
 
 }
