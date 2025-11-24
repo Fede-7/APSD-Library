@@ -21,17 +21,18 @@ public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Natural Search(Data elem){
     final Box<Natural> idx = new Box<>(Natural.ZERO);
+    final Box<Boolean> found =new Box<>();
+    
     this.TraverseForward(dat -> {
-      boolean found = (dat == null ? elem == null : dat.equals(elem));
-      if (!found) idx.Set(idx.Get().Increment());
-      return found;
+      found.Set(dat == null ? elem == null : dat.equals(elem));
+      if (!found.Get()) idx.Set(idx.Get().Increment());
+      return found.Get();
     });
-    return idx.Get();
+    return found.Get() ? idx.Get() : null;
   }
 
   default boolean IsInBound(Natural idx) {
-    if (idx == null)
-      throw new NullPointerException("Natural number cannot be null!");
+    if (idx == null) throw new NullPointerException("Natural number cannot be null!"); 
 
     if (idx.compareTo(Size()) > 0)
       throw new IndexOutOfBoundsException("Index out of bounds: " + idx + "; Size: " + Size() + "!");

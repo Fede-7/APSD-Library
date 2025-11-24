@@ -60,7 +60,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
     }
   }
 
-  default void ShiftFirstRight(){if(!IsEmpty()) SetFirst(null);;}
+  default void ShiftFirstRight(){if(!IsEmpty()) ShiftRight(Natural.ZERO);}
 
   default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());;}
     

@@ -27,13 +27,11 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default Data AtNRemove(Natural pos){
-    if (!IsEmpty() && IsInBound(pos)) {
-      Data dat = GetAt(pos);
-      ShiftLeft(pos);
-      Shrink();
-      return dat;
-    }
-    return null;
+    if (IsEmpty() && !IsInBound(pos)) return null;
+    final Data dat = this.GetAt(pos);
+    ShiftLeft(pos);
+    Shrink();
+    return dat;
   }
 
   /* ************************************************************************ */

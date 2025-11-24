@@ -9,6 +9,6 @@ public interface InsertableAtSequence<Data> extends Sequence<Data>{
 
   default void InsertFirst(Data elem){if(elem != null) InsertAt(elem, Natural.ZERO);}
 
-  default void InsertLast(Data elem){if(elem != null) InsertAt(elem, Size().Decrement());}
+  default void InsertLast(Data elem){if(elem != null) if(IsEmpty()){InsertAt(elem, Natural.ZERO);} else InsertAt(elem, Size().Decrement());}
 
 }
