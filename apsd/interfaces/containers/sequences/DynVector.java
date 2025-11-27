@@ -10,11 +10,18 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
 
+  //TODO: usare o no IsInBound?
   @Override
   default void InsertAt(Data elem, Natural pos) {
-    if (elem == null || pos == null || !IsInBound(pos)) return;
-    Grow();
-    if (GetAt(pos) != null) {ShiftRight(pos);}
+    if (elem == null || pos == null) return;
+
+    if (pos.compareTo(Size()) >= 0) {
+      Realloc(Natural.Of(pos.ToLong() + 1));
+    } else {
+      Grow(pos);
+    }
+
+    if (GetAt(pos) != null) { ShiftRight(pos);}
     SetAt(elem, pos);
   }
   

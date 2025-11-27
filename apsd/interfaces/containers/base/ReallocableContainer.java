@@ -11,18 +11,13 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable {
 
   Natural Capacity();
 
-  //FIXME: totalmente sbagliate, devo controllare se fare o no la grow o shrink in base alla dim
-  default void Grow() {
-    Realloc(Natural.Of((long) (Capacity().ToLong() * GROW_FACTOR)));
-  }
+  //TODO: confrontati con qualcuno
 
-  default void Grow(Natural factor) {
-    Realloc(Natural.Of((long) (Capacity().ToLong() * factor.ToLong())));
-  }
+  default void Grow() { Realloc(Natural.Of((long) (Capacity().ToLong() * GROW_FACTOR)));}
 
-  default void Shrink() {
-    Realloc(Natural.Of((long) (Capacity().ToLong() / SHRINK_FACTOR)));
-  }
+  default void Grow(Natural factor) { Realloc(Natural.Of((long) (Capacity().ToLong() * factor.ToLong())));}
+
+  default void Shrink() { Realloc(Natural.Of((long) (Capacity().ToLong() / SHRINK_FACTOR)));}
 
   /* ************************************************************************ */
   /* Override specific member functions from Container */

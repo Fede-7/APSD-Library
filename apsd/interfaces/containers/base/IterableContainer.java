@@ -10,12 +10,16 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   ForwardIterator<Data> FIterator();
   BackwardIterator<Data> BIterator();
 
-  default boolean IsEqual(IterableContainer<Data> con){
+  default boolean IsEqual(IterableContainer<Data> con) {
     if(con == null || !this.Size().equals(con.Size())) {return false;}
     final ForwardIterator<Data> it1 = this.FIterator();
     final ForwardIterator<Data> it2 = con.FIterator();
+
     while(it1.IsValid()) {
-      if(!it1.DataNNext().equals(it2.DataNNext())) {return false;}
+      Data d1 = it1.DataNNext();
+      Data d2 = it2.DataNNext();
+
+      if (d1 == null ? d2 != null : !d1.equals(d2)) { return false;}
     }
     return true;
   }
@@ -29,7 +33,7 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   default boolean TraverseForward(Predicate<Data> pred) {
     if (pred != null) {
       final ForwardIterator<Data> it = this.FIterator();
-      while (it.IsValid()) { if (pred.Apply(it.DataNNext())) return true; }
+      while (it.IsValid()) { if (pred.Apply(it.DataNNext())) return true;}
     }
     return false;
   }
@@ -38,7 +42,7 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   default boolean TraverseBackward(Predicate<Data> pred) {
     if (pred != null) {
       final BackwardIterator<Data> it = this.BIterator();
-      while (it.IsValid()) { if (pred.Apply(it.DataNPrev())) return true; }
+      while (it.IsValid()) { if (pred.Apply(it.DataNPrev())) return true;}
     }
     return false;
   }
