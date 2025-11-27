@@ -89,14 +89,51 @@ abstract public class VectorBase<Data> implements Vector<Data>{
 
   }
 
+  protected class VectorBIterator implements MutableBackwardIterator<Data>{
+    protected long idxCur = Size().ToLong() - 1;
+
+    @Override
+    public boolean IsValid() {return (0 <= idxCur && idxCur < Size().ToLong());}
+
+    @Override
+    public Data GetCurrent() { 
+      if (!IsValid()) throw new IllegalStateException(" Iterator is not valid!");
+      return arr[(int) idxCur];
+    }
+
+    @Override
+    public void SetCurrent(Data dat) {
+      if (!IsValid()) throw new IllegalStateException(" Iterator is not valid!");
+      arr[(int) idxCur] = dat;
+    }
+
+    @Override
+    public Data DataNPrev() {
+      if (!IsValid()) throw new IllegalStateException(" Iterator is not valid!");
+      Data dat = GetCurrent();
+      idxCur--;
+      return dat;
+    }
+
+    @Override
+    public void Prev() { DataNPrev();}
+
+    @Override
+    public void Prev(long steps) { for(; steps > 0; steps--){DataNPrev();}}
+
+    @Override
+    public void Prev(Natural steps) {Prev(steps.ToLong());}
+
+    @Override
+    public void Reset() { idxCur = Size().ToLong() - 1;}
+
+  }
+
   @Override
   public MutableForwardIterator<Data> FIterator() { return new VectorFIterator();}
 
   @Override
-  public MutableBackwardIterator<Data> BIterator() {
-      // TODO Auto-generated method stub
-      return null;
-  }
+  public MutableBackwardIterator<Data> BIterator() { return new VectorBIterator();}
 
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
