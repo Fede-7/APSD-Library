@@ -1,0 +1,21 @@
+# Compiled class files
+*.class
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Build directories
+out/
+build/
+bin/
+target/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
