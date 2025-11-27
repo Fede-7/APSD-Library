@@ -102,12 +102,10 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  @SuppressWarnings("unchecked")
   @Override
   public MutableSequence<Data> SubSequence(Natural start, Natural end) {
-      Data[] arrCopy;
-
-      return (MutableSequence) arrCopy;
+      // TODO: implement SubSequence
+      throw new UnsupportedOperationException("SubSequence not yet implemented");
   }
 
   /* ************************************************************************ */
