@@ -13,7 +13,7 @@ import apsd.interfaces.containers.sequences.Vector;
 /** Object: Abstract vector base implementation. */
 abstract public class VectorBase<Data> implements Vector<Data>{
 
-  protected Data[] arr;
+  protected Data[] arr; 
 
   //TODO: find Vector base info?
   public VectorBase(Natural size){
@@ -144,12 +144,12 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
   /* ************************************************************************ */
-
+  //FIXME: errore variabile
   @Override
   public MutableSequence<Data> SubSequence(Natural start, Natural end) {
     MutableForwardIterator<Data> Iter = FIterator();
     long numElm = ExcIfOutOfBound(end) - ExcIfOutOfBound(start);
-    MutableSequence<Data> arrCopy = new VectorBase(Natural.Of(numElm));
+    Vector<Data> arrCopy = (Data[]) new Object[(int) size];
     Iter.Next(start);
 
     for(long i = 0; i < numElm; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}
