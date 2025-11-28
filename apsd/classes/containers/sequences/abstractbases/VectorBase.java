@@ -16,9 +16,9 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   protected Data[] arr;
 
   //TODO: find Vector base info?
-  public VectorBase(Natural inisize){
-    if (inisize == null) throw new NullPointerException("Natural cannot be a null value");
-    ArrayAlloc(inisize);
+  public VectorBase(Natural size){
+    if (size == null) throw new NullPointerException("Natural cannot be a null value");
+    ArrayAlloc(size);
   }
 
   protected void NewVector(Data[] arr){this.arr = arr;}
@@ -139,17 +139,21 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public MutableSequence<Data> SubSequence(Natural start, Natural end) {
-      Data[] arrCopy;
-
-      return (MutableSequence) arrCopy;
-  }
+  //TODO: forse manca qualcosa...
 
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
   /* ************************************************************************ */
 
-  //TODO: ?? non lo so manco io
+  @Override
+    public MutableSequence<Data> SubSequence(Natural start, Natural end) {
+      MutableForwardIterator<Data> Iter = FIterator();
+      MutableSequence<Data> arrCopy = new VectorBase(end.ToLong() - start.ToLong());
+      long idxFin = ExcIfOutOfBound(end);
+      Iter.Next(ExcIfOutOfBound(start));
+
+      for(long i = 0; i > idxFin; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}
+
+      return arrCopy;
+    }
 }
