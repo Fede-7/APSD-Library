@@ -146,14 +146,14 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* ************************************************************************ */
 
   @Override
-    public MutableSequence<Data> SubSequence(Natural start, Natural end) {
-      MutableForwardIterator<Data> Iter = FIterator();
-      MutableSequence<Data> arrCopy = new VectorBase(end.ToLong() - start.ToLong());
-      long idxFin = ExcIfOutOfBound(end);
-      Iter.Next(ExcIfOutOfBound(start));
+  public MutableSequence<Data> SubSequence(Natural start, Natural end) {
+    MutableForwardIterator<Data> Iter = FIterator();
+    long numElm = ExcIfOutOfBound(end) - ExcIfOutOfBound(start);
+    MutableSequence<Data> arrCopy = new VectorBase(Natural.Of(numElm));
+    Iter.Next(start);
 
-      for(long i = 0; i > idxFin; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}
+    for(long i = 0; i < numElm; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}
 
-      return arrCopy;
-    }
+    return arrCopy;
+  }
 }
