@@ -21,6 +21,10 @@ abstract public class VectorBase<Data> implements Vector<Data>{
     ArrayAlloc(size);
   }
 
+  public VectorBase() {
+    //TODO Auto-generated constructor stub
+  }
+
   protected void NewVector(Data[] arr){this.arr = arr;}
 
   @SuppressWarnings("unchecked")
@@ -149,7 +153,7 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   public MutableSequence<Data> SubSequence(Natural start, Natural end) {
     MutableForwardIterator<Data> Iter = FIterator();
     long numElm = ExcIfOutOfBound(end) - ExcIfOutOfBound(start);
-    Vector<Data> arrCopy = (Data[]) new Object[(int) size];
+    VectorBase[] arrCopy = new VectorBase[(int) numElm];
     Iter.Next(start);
 
     for(long i = 0; i < numElm; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}

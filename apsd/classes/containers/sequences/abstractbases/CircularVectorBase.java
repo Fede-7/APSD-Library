@@ -2,6 +2,7 @@ package apsd.classes.containers.sequences.abstractbases;
 
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Object: Abstract (static) circular vector base implementation. */
 abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Must extend VectorBase
@@ -35,10 +36,10 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
    
   @Override
   public Data GetAt(Natural pos) {
-     if(pos == null) throw new NullPointerException("Natural cannot be a null value");
-     MutableForwardIterator<Data> Iter = FIterator(); 
-     Iter.Next(pos.Decrement().ToLong() % Size().ToLong());
-     return Iter.GetCurrent();
+    if(pos == null) throw new NullPointerException("Natural cannot be a null value");
+    MutableForwardIterator<Data> Iter = FIterator(); 
+    Iter.Next(pos.Decrement().ToLong() % Size().ToLong());
+    return Iter.GetCurrent();
   }
 
   @Override
@@ -58,7 +59,7 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
   @Override
   public void ShiftLeft(Natural pos, Natural num) {
     long idx = ExcIfOutOfBound(pos);
-    long str = pos.Tolong();
+    long str = pos.ToLong();
     for(long i = 0; i < num.ToLong(); i++){
       do {
         long newPos = (idx--) % Size().ToLong();
@@ -72,14 +73,16 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
   @Override
   public void ShiftRight(Natural pos, Natural num) { 
     long idx = ExcIfOutOfBound(pos);
-    long str = pos.Tolong();
+    long str = pos.ToLong();
+    long newPos;
     for(long i = 0; i < num.ToLong(); i++){
       do {
-        long newPos = (idx++) % Size().ToLong();
+        newPos = (idx++) % Size().ToLong();
         Data temp = GetAt(Natural.Of(newPos));
         SetAt(Natural.Of(newPos), GetAt(Natural.Of(idx)));
         idx++;
-      
+      }while(newPos == pos.ToLong());
+    }
   }
 
   /* ************************************************************************ */

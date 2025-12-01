@@ -15,9 +15,8 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
 
   @Override
   public void Realloc(Natural newsize) { 
-    if(newsize == null) throw new NullPointerException("Natural cannot be a null value");
+    long size = ExcIfOutOfBound(newsize);
     Data[] newarr;
-    long size = newsize.ToLong();
     if (size >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
     newarr = (Data[]) new Object[(int) size];
     long minsize = Math.min(arr.length, (int) size);
