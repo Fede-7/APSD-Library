@@ -13,19 +13,23 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
 
+  @SuppressWarnings("unchecked")
   @Override
-  public void Realloc(Natural newsize) { 
-    long size = ExcIfOutOfBound(newsize);
-    Data[] newarr;
-    if (size >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
-    newarr = (Data[]) new Object[(int) size];
-    long minsize = Math.min(arr.length, (int) size);
-
-    //TODO: Verificare il funzionamento di arraycopy - i don't trust you @Copilot
-    System.arraycopy(arr, 0, newarr, 0, (int) minsize);
+  public void Realloc(Natural newCapacity) { 
+    if (newCapacity == null) return;
+    
+    long newCap = newCapacity.ToLong();
+    if (newCap > Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
+    
+    Data[] newarr = (Data[]) new Object[(int) newCap];
+    
+    long currentCap = Capacity().ToLong();
+    long size = (currentCap < newCap) ? currentCap : newCap;
+    
+    for (int i = 0; i < size; i++) { newarr[i] = arr[i];}
     arr = newarr; 
   }
-
+  
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */

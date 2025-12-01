@@ -15,15 +15,13 @@ abstract public class VectorBase<Data> implements Vector<Data>{
 
   protected Data[] arr; 
 
-  //TODO: find Vector base info?
   public VectorBase(Natural size){
     if (size == null) throw new NullPointerException("Natural cannot be a null value");
     ArrayAlloc(size);
   }
 
-  public VectorBase() {
-    //TODO Auto-generated constructor stub
-  }
+  //TODO Check cunstructor
+  public VectorBase() { ArrayAlloc(Natural.ONE);}
 
   protected void NewVector(Data[] arr){this.arr = arr;}
 
@@ -55,9 +53,8 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   protected class VectorFIterator implements MutableForwardIterator<Data>{
     protected long idxCur = 0L;
 
-    //TODO: IsValid vuole Size or Capacity?
     @Override
-    public boolean IsValid() {return (0 <= idxCur && idxCur < Size().ToLong());}
+    public boolean IsValid() {return (0 <= idxCur && idxCur < Capacity().ToLong());}
 
     @Override
     public Data GetCurrent() { 
@@ -148,16 +145,28 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
   /* ************************************************************************ */
+  
   //FIXME: errore variabile
   @Override
   public MutableSequence<Data> SubSequence(Natural start, Natural end) {
-    MutableForwardIterator<Data> Iter = FIterator();
-    long numElm = ExcIfOutOfBound(end) - ExcIfOutOfBound(start);
-    VectorBase[] arrCopy = new VectorBase[(int) numElm];
-    Iter.Next(start);
+    if (start == null || end == null) return null;
+    if (!IsInBound(start) || !IsInBound(end) || start.compareTo(end) > 0) return null;
 
-    for(long i = 0; i < numElm; i++){ arrCopy.SetAt(Iter.DataNNext(), Natural.Of(i));}
+    long s = start.ToLong();
+    long e = end.ToLong();
+    long span = e - s + 1;
+    if (span < 0 || span > Integer.MAX_VALUE) return null;
 
-    return arrCopy;
+    int len = (int) span;
+
+    @SuppressWarnings("unchecked")
+    Data[] subArr = (Data[]) new Object[len];
+    
+    for (int i = 0; i < len; i++) {
+      subArr[i] = arr[(int) (s + i)];
+    }
+
+    return NewVector(subArr);
+
   }
 }

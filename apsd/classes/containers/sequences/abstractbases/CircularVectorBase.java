@@ -5,7 +5,7 @@ import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Object: Abstract (static) circular vector base implementation. */
-abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Must extend VectorBase
+abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
 
   protected long start = 0L;
 
@@ -15,17 +15,20 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
 
-   @Override
-  public void Realloc(Natural newsize) { 
-    if(newsize == null) throw new NullPointerException("Natural cannot be a null value");
-    Data[] newarr;
-    long size = newsize.ToLong();
-    if (size >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
-    newarr = (Data[]) new Object[(int) size];
-    long minsize = Math.min(arr.length, (int) size);
-
-    //TODO: pt2 i don't trust you @Copilot
-    System.arraycopy(arr, 0, newarr, 0, (int) minsize);
+  @SuppressWarnings("unchecked")
+  @Override
+  public void Realloc(Natural newCapacity) { 
+    if (newCapacity == null) return;
+    
+    long newCap = newCapacity.ToLong();
+    if (newCap > Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
+    
+    Data[] newarr = (Data[]) new Object[(int) newCap];
+    
+    long currentCap = Capacity().ToLong();
+    long size = (currentCap < newCap) ? currentCap : newCap;
+    
+    for (int i = 0; i < size; i++) { newarr[i] = arr[i];}
     arr = newarr; 
   }
 
@@ -58,39 +61,65 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
 
   @Override
   public void ShiftLeft(Natural pos, Natural num) {
-    long idx = ExcIfOutOfBound(pos);
-    long str = pos.ToLong();
-    for(long i = 0; i < num.ToLong(); i++){
-      do {
-        long newPos = (idx--) % Size().ToLong();
-        Data temp = GetAt(Natural.Of(newPos));
-        SetAt(Natural.Of(newPos), GetAt(Natural.Of(idx)));
-        idx--;
-      } while (idx != str);
-    };
+    ExcIfOutOfBound(pos);
+    long sz = Size().ToLong();
+    if (pos == null || num == null || sz <= 1) return;
+    
+    long idx = pos.ToLong();
+    long shifts = num.ToLong() % sz;
+    
+    for (long i = 0; i < shifts; i++) {
+      long currentIdx = idx;
+      Data temp = GetAt(Natural.Of(currentIdx));
+      
+      long nextIdx = (currentIdx + 1) % sz;
+      while (nextIdx != idx) {
+        SetAt(GetAt(Natural.Of(nextIdx)), Natural.Of(currentIdx));
+        currentIdx = nextIdx;
+        nextIdx = (nextIdx + 1) % sz;
+      }
+      
+      long prevIdx = (idx - 1 + sz) % sz;
+      SetAt(temp, Natural.Of(prevIdx));
+    }
   }
 
   @Override
   public void ShiftRight(Natural pos, Natural num) { 
-    long idx = ExcIfOutOfBound(pos);
-    long str = pos.ToLong();
-    long newPos;
-    for(long i = 0; i < num.ToLong(); i++){
-      do {
-        newPos = (idx++) % Size().ToLong();
-        Data temp = GetAt(Natural.Of(newPos));
-        SetAt(Natural.Of(newPos), GetAt(Natural.Of(idx)));
-        idx++;
-      }while(newPos == pos.ToLong());
+    if (pos == null || num == null) return;
+    
+    long sz = Size().ToLong();
+    if (sz <= 1) return;
+    
+    ExcIfOutOfBound(pos);
+    
+    long idx = pos.ToLong();
+    long shifts = num.ToLong() % sz;
+    
+    for (long shift = 0; shift < shifts; shift++) {
+      long currentIdx = idx;
+      Data temp = GetAt(Natural.Of(currentIdx));
+      
+      long prevIdx = (currentIdx - 1 + sz) % sz;
+      while (prevIdx != idx) {
+        SetAt(GetAt(Natural.Of(prevIdx)), Natural.Of(currentIdx));
+        currentIdx = prevIdx;
+        prevIdx = (prevIdx - 1 + sz) % sz;
+      }
+      
+      long nextIdx = (idx + 1) % sz;
+      SetAt(temp, Natural.Of(nextIdx));
     }
   }
+
 
   /* ************************************************************************ */
   /* Specific member functions of Vector                                      */
   /* ************************************************************************ */
 
+  @SuppressWarnings("unchecked")
   @Override
-  ArrayAlloc(Natural newsize) {
+  public void ArrayAlloc(Natural newsize) {
     long size = newsize.ToLong();
     if (size >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
     arr = (Data[]) new Object[(int) size];

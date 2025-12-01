@@ -9,8 +9,31 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   protected long size = 0L;
   
-  //TODO: costruttore
-  // DynLinearVectorBase
+  protected DynLinearVectorBase() {
+    ArrayAlloc(Natural.ZERO);
+    size = 0L;
+  }
+
+  protected DynLinearVectorBase(Natural initialCapacity) {
+    ArrayAlloc(initialCapacity == null ? Natural.ZERO : initialCapacity);
+    size = 0L;
+  }
+
+  protected DynLinearVectorBase(TraversableContainer<Data> con) {
+    if (con == null || con.IsEmpty()) {
+      ArrayAlloc(Natural.ZERO);
+      size = 0L;
+      return;
+    }
+    ArrayAlloc(con.Size());
+    final long sz = con.Size().ToLong();
+    final long[] idx = {0};
+    con.TraverseForward(dat -> {
+      arr[(int) idx[0]++] = dat;
+      return false;
+    });
+    size = sz;
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -24,39 +47,55 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
   /* ************************************************************************ */
 
   @Override
-  public void Clear() { Realloc(Natural.ZERO);  }
+  public void Clear() {
+    size = 0L;
+    ArrayAlloc(Natural.ZERO);
+  }
+
 
   /* ************************************************************************ */
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
 
+  @SuppressWarnings("unchecked")
   @Override
-  public void Realloc(Natural newsize) {
-    //TODO: cosa cambia dal super??
-    long size = ExcIfOutOfBound(newsize);
-    
-    // Data[] newarr;
-    // if (size >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
-    // newarr = (Data[]) new Object[(int) size];
-    // long minsize = Math.min(arr.length, (int) size);
-    // System.arraycopy(arr, 0, newarr, 0, (int) minsize);
-    // arr = newarr; 
-  }
+  public void Realloc(Natural newCapacity) {
+    if (newCapacity == null) return;
 
+    long newCap = newCapacity.ToLong();
+    if (newCap > Integer.MAX_VALUE)
+      throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!");
+
+    Data[] newarr = (Data[]) new Object[(int) newCap];
+    long oldCap = Capacity().ToLong();
+    long toCopy = (oldCap < newCap) ? oldCap : newCap;
+
+    for (int i = 0; i < toCopy; i++) newarr[i] = arr[i];
+
+    arr = newarr;
+
+    if (size > newCap) size = newCap;
+  }
   /* ************************************************************************ */
   /* Override specific member functions from ResizableContainer               */
   /* ************************************************************************ */
 
   @Override
   public void Expand(Natural factor) {
-      // TODO Auto-generated method stub
-      
+    long f = (factor == null) ? 0L : factor.ToLong();
+    f = (f <= 1L) ? 2L : f;
+    long cur = Capacity().ToLong();
+    long newCap = (cur == 0) ? f : cur * f;
+    Realloc(Natural.Of(newCap));
   }
 
   @Override
   public void Reduce(Natural factor) {
-      // TODO Auto-generated method stub
-      
+    long f = (factor == null) ? 0L : factor.ToLong();
+    if (f <= 1L) return;
+    long cur = Capacity().ToLong();
+    long newCap = cur / f;
+    Realloc(Natural.Of(newCap));
   }
 
 
@@ -64,9 +103,13 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
   /* Override specific member functions from VectorBase<Data> across LinVectBase<data>               */
   /* ************************************************************************ */
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void ArrayAlloc(Natural newsize) {
-    // TODO Auto-generated method stub
-    super.ArrayAlloc(newsize);
+    long cap = (newsize == null) ? 0L : newsize.ToLong();
+    if (cap > Integer.MAX_VALUE)
+      throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!");
+    arr = (Data[]) new Object[(int) cap];
+    if (size > cap) size = cap;
   }
 }
