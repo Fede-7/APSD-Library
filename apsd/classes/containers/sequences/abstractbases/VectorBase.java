@@ -15,15 +15,30 @@ abstract public class VectorBase<Data> implements Vector<Data>{
 
   protected Data[] arr; 
 
-  public VectorBase(Natural size){
-    if (size == null) throw new NullPointerException("Natural cannot be a null value");
-    ArrayAlloc(size);
-  }
-
   //TODO Check cunstructor
   public VectorBase() { ArrayAlloc(Natural.ONE);}
 
-  protected void NewVector(Data[] arr){this.arr = arr;}
+  public VectorBase(Data[] arr) {
+    if (arr == null) throw new NullPointerException("Array cannot be null!");
+    this.arr = arr;
+  }
+
+  public VectorBase(Natural size) {
+    if (size == null) throw new NullPointerException("Size cannot be null!");
+    ArrayAlloc(size);
+  }
+
+  public VectorBase(TraversableContainer<Data> con) {
+    if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
+    ArrayAlloc(con.Size());
+    final MutableNatural index = new MutableNatural();
+    con.TraverseForward(dat -> {
+      SetAt(dat, index.GetNIncrement());
+      return false;
+    });
+  }
+
+  protected abstract VectorBase<Data> NewVector(Data[] arr);
 
   @SuppressWarnings("unchecked")
   protected void ArrayAlloc(Natural newsize) {
@@ -166,7 +181,6 @@ abstract public class VectorBase<Data> implements Vector<Data>{
       subArr[i] = arr[(int) (s + i)];
     }
 
-    return NewVector(subArr);
-
+    return (MutableSequence<Data>) NewVector(subArr);
   }
 }
