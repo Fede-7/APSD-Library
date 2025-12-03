@@ -15,9 +15,13 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   public DynCircularVectorBase(TraversableContainer<Data> con) {super(con);}
 
+  public DynCircularVectorBase(Data[] arr) {super(arr);}
+  
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
+
+
 
   @Override
   public Natural Size() {return Capacity();}
