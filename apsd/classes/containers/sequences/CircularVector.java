@@ -8,11 +8,9 @@ import apsd.interfaces.containers.iterators.MutableBackwardIterator;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Object: Concrete (static) circular vector implementation. */
-public abstract class CircularVector<Data> extends CircularVectorBase<Data> { // Must extend CircularVectorBase
+public class CircularVector<Data> extends CircularVectorBase<Data> {
 
-  public CircularVector(){
-    super();
-  }
+  public CircularVector(){ super(); }
 
   public CircularVector(Natural inisize){ super.ArrayAlloc(inisize); }
 
@@ -20,6 +18,12 @@ public abstract class CircularVector<Data> extends CircularVectorBase<Data> { //
 
   protected CircularVector(Data[] arr){ super(arr); }
 
-  public abstract CircularVector<Data> NewVector(Data[] arr);
+  public CircularVector<Data> NewVector(Data[] arr){ return new CircularVector<>(); }
+
+  @Override
+  public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }
+
+  @Override
+  public MutableBackwardIterator<Data> BMutIterator() { return BIterator(); }
 
 }
