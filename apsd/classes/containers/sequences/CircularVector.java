@@ -1,20 +1,25 @@
 package apsd.classes.containers.sequences;
 
-// import apsd.classes.containers.sequences.abstractbases.CircularVectorBase;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.classes.containers.sequences.abstractbases.CircularVectorBase;
+import apsd.classes.containers.sequences.abstractbases.VectorBase;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.interfaces.containers.iterators.MutableBackwardIterator;
+import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Object: Concrete (static) circular vector implementation. */
-public class CircularVector<Data> { // Must extend CircularVectorBase
+public abstract class CircularVector<Data> extends CircularVectorBase<Data> { // Must extend CircularVectorBase
 
-  // public CircularVector()
+  public CircularVector(){
+    super();
+  }
 
-  // public CircularVector(Natural inisize)
+  public CircularVector(Natural inisize){ super.ArrayAlloc(inisize); }
 
-  // public CircularVector(TraversableContainer<Data> con)
+  public CircularVector(TraversableContainer<Data> con){ super(con); }
 
-  // protected CircularVector(Data[] arr)
+  protected CircularVector(Data[] arr){ super(arr); }
 
-  // NewVector
+  public abstract CircularVector<Data> NewVector(Data[] arr);
 
 }
