@@ -17,7 +17,7 @@ public class DynVector<Data> extends DynLinearVectorBase<Data> {
 
   protected DynVector(Data[] arr){ super(arr);}
 
-  public DynVector<Data> NewVector(Data[] arr){ return new DynVector<>();}
+  public DynVector<Data> NewVector(Data[] arr){ return new DynVector<>(arr);}
 
   @Override
   public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }

@@ -18,7 +18,7 @@ public class CircularVector<Data> extends CircularVectorBase<Data> {
 
   protected CircularVector(Data[] arr){ super(arr); }
 
-  public CircularVector<Data> NewVector(Data[] arr){ return new CircularVector<>(); }
+  public CircularVector<Data> NewVector(Data[] arr){ return new CircularVector<>(arr); }
 
   @Override
   public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }

@@ -17,7 +17,7 @@ public class DynCircularVector<Data> extends DynCircularVectorBase<Data> {
 
   protected DynCircularVector(Data[] arr){super(arr);}
 
-  public DynCircularVector<Data> NewVector(Data[] arr){return new DynCircularVector<>();}
+  public DynCircularVector<Data> NewVector(Data[] arr){return new DynCircularVector<>(arr);}
 
   @Override
   public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }
