@@ -10,30 +10,13 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 /** Object: Concrete (static linear) vector implementation. */
 public class Vector<Data> extends LinearVectorBase<Data>{
 
-  public Vector() {
-    super();
-    ArrayAlloc(Natural.ONE);
-  }
+  public Vector() { super(); }
 
-  public Vector(Natural inisize) {
-    super();
-    ArrayAlloc(inisize);
-  }
+  public Vector(Natural inisize) { super(); }
 
-  protected Vector(Data[] arr) {
-    super();
-    this.arr = arr;
-  }
+  protected Vector(Data[] arr) { super();}
   
-  public Vector(TraversableContainer<Data> con) {
-    super();
-    ArrayAlloc(new Natural(con.Size()));
-    MutableForwardIterator<Data> it = FIterator();
-    int i = 0;
-    while (!it.IsValid()) {
-      arr[i++] = it.DataNNext();
-    }
-  }
+  public Vector(TraversableContainer<Data> con) { super();}
 
   @Override
   protected VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
