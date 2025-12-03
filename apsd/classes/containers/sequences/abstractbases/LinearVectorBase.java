@@ -5,13 +5,21 @@ import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Object: Abstract (static) linear vector base implementation. */
-abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must extend VectorBase
+abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
 
   public LinearVectorBase() { super();}
+
+  public LinearVectorBase(Data[] arr) {super(arr);}
+
+  public LinearVectorBase(Natural initialCapacity) {super(initialCapacity);}
+
+  public LinearVectorBase(TraversableContainer<Data> con) {super(con);}
+
 
   /* ************************************************************************ */
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
+
 
   @SuppressWarnings("unchecked")
   @Override

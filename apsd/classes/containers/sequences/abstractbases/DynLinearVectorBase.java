@@ -9,31 +9,13 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   protected long size = 0L;
   
-  protected DynLinearVectorBase() {
-    ArrayAlloc(Natural.ZERO);
-    size = 0L;
-  }
+  protected DynLinearVectorBase() { super(); }
 
-  protected DynLinearVectorBase(Natural initialCapacity) {
-    ArrayAlloc(initialCapacity == null ? Natural.ZERO : initialCapacity);
-    size = 0L;
-  }
+  protected DynLinearVectorBase(Natural initialCapacity) { super(initialCapacity);}
 
-  protected DynLinearVectorBase(TraversableContainer<Data> con) {
-    if (con == null || con.IsEmpty()) {
-      ArrayAlloc(Natural.ZERO);
-      size = 0L;
-      return;
-    }
-    ArrayAlloc(con.Size());
-    final long sz = con.Size().ToLong();
-    final long[] idx = {0};
-    con.TraverseForward(dat -> {
-      arr[(int) idx[0]++] = dat;
-      return false;
-    });
-    size = sz;
-  }
+  public DynLinearVectorBase(Data[] arr) { super(arr);}
+
+  protected DynLinearVectorBase(TraversableContainer<Data> con) {super(con);}
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
