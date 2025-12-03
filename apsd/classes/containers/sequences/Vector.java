@@ -14,7 +14,7 @@ public class Vector<Data> extends LinearVectorBase<Data>{
 
   public Vector(Natural inisize) { super(); }
 
-  public Vector(Data[] arr) { super();}
+  protected Vector(Data[] arr) { super();}
   
   public Vector(TraversableContainer<Data> con) { super();}
 

@@ -16,7 +16,7 @@ public class CircularVector<Data> extends CircularVectorBase<Data> {
 
   public CircularVector(TraversableContainer<Data> con){ super(con); }
 
-  public CircularVector(Data[] arr){ super(arr); }
+  protected CircularVector(Data[] arr){ super(arr); }
 
   public CircularVector<Data> NewVector(Data[] arr){ return new CircularVector<>(); }
 

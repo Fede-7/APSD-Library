@@ -15,7 +15,7 @@ public class DynVector<Data> extends DynLinearVectorBase<Data> {
 
   public DynVector(TraversableContainer<Data> con){ super(con);}
 
-  public DynVector(Data[] arr){ super(arr);}
+  protected DynVector(Data[] arr){ super(arr);}
 
   public DynVector<Data> NewVector(Data[] arr){ return new DynVector<>();}
 
