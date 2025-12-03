@@ -12,7 +12,7 @@ public class CircularVector<Data> extends CircularVectorBase<Data> {
 
   public CircularVector(){ super(); }
 
-  public CircularVector(Natural inisize){ super.ArrayAlloc(inisize); }
+  public CircularVector(Natural inisize){ super(inisize); }
 
   public CircularVector(TraversableContainer<Data> con){ super(con); }
 

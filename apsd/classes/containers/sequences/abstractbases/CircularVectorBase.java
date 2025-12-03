@@ -15,9 +15,13 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
 
   public CircularVectorBase(Data[] arr) { super(arr); }
 
+  public CircularVectorBase(Natural inisize) { super(inisize);}
+  
   /* ************************************************************************ */
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
+
+  
 
   @SuppressWarnings("unchecked")
   @Override
