@@ -19,12 +19,13 @@ public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Data GetLast(){ return IsEmpty() ? null : GetAt(Size().Decrement()); }
 
-  default Natural Search(Data elem){
+  default Natural Search(Data elm){
+    if(elm == null ) return null;
     final Box<Natural> idx = new Box<>(Natural.ZERO);
     final Box<Boolean> found =new Box<>(false);
     
     this.TraverseForward(dat -> {
-      found.Set(dat == null ? elem == null : dat.equals(elem));
+      found.Set(dat == null ? elm == null : dat.equals(elm));
       if (!found.Get()) idx.Set(idx.Get().Increment());
       return found.Get();
     });
