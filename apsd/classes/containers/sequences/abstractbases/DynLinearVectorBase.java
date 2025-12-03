@@ -9,13 +9,13 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   protected long size = 0L;
   
-  protected DynLinearVectorBase() { super(); }
+  public DynLinearVectorBase() { super(); }
 
-  protected DynLinearVectorBase(Natural initialCapacity) { super(initialCapacity);}
+  public DynLinearVectorBase(Natural initialCapacity) { super(initialCapacity);}
 
   public DynLinearVectorBase(Data[] arr) { super(arr);}
 
-  protected DynLinearVectorBase(TraversableContainer<Data> con) {super(con);}
+  public DynLinearVectorBase(TraversableContainer<Data> con) {super(con);}
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */

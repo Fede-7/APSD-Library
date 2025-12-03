@@ -14,12 +14,12 @@ public class Vector<Data> extends LinearVectorBase<Data>{
 
   public Vector(Natural inisize) { super(); }
 
-  protected Vector(Data[] arr) { super();}
+  public Vector(Data[] arr) { super();}
   
   public Vector(TraversableContainer<Data> con) { super();}
 
   @Override
-  protected VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
+  public VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
 
   @Override
   public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }

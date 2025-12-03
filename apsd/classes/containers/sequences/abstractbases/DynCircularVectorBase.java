@@ -9,26 +9,11 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   protected long size = 0L;
 
-  protected DynCircularVectorBase() {
-    ArrayAlloc(Natural.ZERO);
-  }
+  public DynCircularVectorBase() {super();}
 
-  protected DynCircularVectorBase(Natural initialCapacity) {
-    ArrayAlloc(initialCapacity == null ? Natural.ZERO : initialCapacity);
-  }
+  public DynCircularVectorBase(Natural initialCapacity) {super(initialCapacity);}
 
-  protected DynCircularVectorBase(TraversableContainer<Data> con) {
-    if (con == null || con.IsEmpty()) {
-      ArrayAlloc(Natural.ZERO);
-      return;
-    }
-    ArrayAlloc(con.Size());
-    final long[] idx = {0};
-    con.TraverseForward(dat -> {
-      arr[(int) idx[0]++] = dat;
-      return false;
-    });
-  }
+  public DynCircularVectorBase(TraversableContainer<Data> con) {super(con);}
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
