@@ -20,6 +20,11 @@ public class Vector<Data> extends LinearVectorBase<Data>{
     ArrayAlloc(inisize);
   }
 
+  protected Vector(Data[] arr) {
+    super();
+    this.arr = arr;
+  }
+  
   public Vector(TraversableContainer<Data> con) {
     super();
     ArrayAlloc(new Natural(con.Size()));
@@ -30,15 +35,8 @@ public class Vector<Data> extends LinearVectorBase<Data>{
     }
   }
 
-  protected Vector(Data[] arr) {
-    super();
-    arr = arr;
-  }
-  
   @Override
-  protected VectorBase<Data> NewVector(Data[] arr) {
-    return new Vector<Data>(arr);
-  }
+  protected VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
 
   @Override
   public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }
