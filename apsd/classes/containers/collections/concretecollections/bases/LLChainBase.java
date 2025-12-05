@@ -351,7 +351,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   public boolean Filter(Predicate<Data> fun) {
     if (fun == null) return false;
     
-    boolean changed = false;
+    boolean status = false;
     Box<LLNode<Data>> prev = new Box<>();
     Box<LLNode<Data>> cur = headref;
     
@@ -359,28 +359,21 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
       LLNode<Data> node = cur.Get();
       
       if (!fun.Apply(node.Get())) {
-        if (prev.IsNull()) {
-          headref.Set(node.GetNext().Get());
-        } else {
-          prev.Get().SetNext(node.GetNext().Get());
-        }
 
-        // Aggiorno tail
-        if (tailref.Get() == node) {
-          tailref.Set(prev.Get());  
-        }
+        if (prev.IsNull()) { headref.Set(node.GetNext().Get());} 
+        else { prev.Get().SetNext(node.GetNext().Get());}
 
-        // Avanza senza aggiornare prev
+        if (tailref.Get() == node) { tailref.Set(prev.Get());}
+
         cur.Set(node.GetNext().Get());  
         size.Decrement();
-        changed = true;
+        status = true;
       } else {
         prev.Set(node);
         cur.Set(node.GetNext().Get());
       }
     }
-    
-    return changed;
+    return status;
   }
 
 }
