@@ -82,6 +82,18 @@ abstract public class VChainBase<Data> implements Chain<Data>, DynVector<Data> {
 
   //TODO: Should i re-write filter??
   @Override
-  public boolean Filter(Predicate<Data> fun) { return Chain.super.Filter(fun); }
+  public boolean Filter(Predicate<Data> fun) {
+    boolean changed = false;
+    Natural i = Natural.ZERO;
+    while (i.compareTo(vec.Size()) < 0) {
+      if (!fun.Apply(vec.GetAt(i))) {
+        vec.AtNRemove(i);  // Non incrementare i
+        changed = true;
+      } else {
+        i.Increment();
+      }
+    }
+    return changed;
+  }
 
 }
