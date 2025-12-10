@@ -87,7 +87,7 @@ abstract public class VChainBase<Data> implements Chain<Data>, DynVector<Data> {
     Natural i = Natural.ZERO;
     while (i.compareTo(vec.Size()) < 0) {
       if (!fun.Apply(vec.GetAt(i))) {
-        vec.AtNRemove(i);  // Non incrementare i
+        vec.AtNRemove(i);
         changed = true;
       } else {
         i.Increment();
