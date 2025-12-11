@@ -38,6 +38,6 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  MutableSequence<Data> SubSequence(Natural start, Natural end);
+  MutableSequence<Data> SubSequence(Natural from, Natural to);
 
 }
