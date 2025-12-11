@@ -20,9 +20,9 @@ public class DynCircularVector<Data> extends DynCircularVectorBase<Data> {
   public DynCircularVector<Data> NewVector(Data[] arr){return new DynCircularVector<>(arr);}
 
   @Override
-  public MutableForwardIterator<Data> FMutIterator() { return FIterator(); }
+  public MutableForwardIterator<Data> FIterator() { return FIterator(); }
 
   @Override
-  public MutableBackwardIterator<Data> BMutIterator() { return BIterator(); }
+  public MutableBackwardIterator<Data> BIterator() { return BIterator(); }
 
 }

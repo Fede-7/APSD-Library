@@ -25,10 +25,10 @@ public class VList<Data>  extends VChainBase<Data> implements List<Data>{
   /* ************************************************************************ */
 
   @Override
-  public MutableForwardIterator<Data> FIterator() { return vec.FMutIterator();}
+  public MutableForwardIterator<Data> FIterator() { return vec.FIterator();}
   
   @Override
-  public MutableBackwardIterator<Data> BIterator() { return vec.BMutIterator(); }
+  public MutableBackwardIterator<Data> BIterator() { return vec.BIterator(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
@@ -37,12 +37,10 @@ public class VList<Data>  extends VChainBase<Data> implements List<Data>{
   @Override
   public void SetAt(Data elem, Natural pos) { vec.SetAt(elem, pos);}
 
-
-  //TODO: here he want mutablesequenz - aro cazz o miett?
   @Override
-  public VChainBase<Data> SubSequence(Natural start, Natural end) {
+  public MutableSequence<Data> SubSequence(Natural start, Natural end) {
     if(!IsInBound(start) || !IsInBound(end)) return null;
-    return NewChain((DynVector<Data>) vec.SubSequence(start, end));
+    return vec.SubVector(start, end);
   }
 
   /* ************************************************************************ */

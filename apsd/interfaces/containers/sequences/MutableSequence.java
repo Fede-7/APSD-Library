@@ -10,7 +10,7 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   default void SetAt(Data elem, Natural pos){
     if(elem == null) return;
     long idx = ExcIfOutOfBound(pos); 
-    final MutableForwardIterator<Data> it = this.FMutIterator();
+    final MutableForwardIterator<Data> it = this.FIterator();
     it.Next(idx);
     it.SetCurrent(elem);    
   }

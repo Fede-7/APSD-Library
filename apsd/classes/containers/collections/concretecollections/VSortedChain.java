@@ -18,7 +18,8 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
 
   protected VSortedChain(DynVector<Data> vec){super(vec);}
 
-  public VSortedChain<Data> NewChain(VSortedChain<Data> chn){ return new VSortedChain<Data>(chn);}
+  @Override
+  protected VChainBase<Data> NewChain(DynVector<Data> vec){ return new VSortedChain<Data>(vec);}
 
   /* ************************************************************************ */
   /* Override specific member functions from InsertableContainer              */
@@ -29,8 +30,8 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
     if (data == null || this.vec == null) return false;
     Natural idx = SearchSuccessor(data);
     idx = ( idx == null) ? Size().Decrement() : idx;
-    ShiftRight(idx);
-    InsertAt(data, idx);
+    vec.ShiftRight(idx);
+    vec.InsertAt(data, idx);
     return true;  
   }
 
@@ -49,27 +50,5 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
     if(dat == null || this.vec == null) return;
     Filter(elm -> dat.equals(elm));
  }
-
-  //TODO: metodi aggiunti per l'errore della classe
-  @Override
-  public Natural Capacity() { return vec.Capacity(); }
-
-  @Override
-  public void Expand(Natural size) { vec.Expand(size); }
-
-  @Override
-  public void Reduce(Natural size) { vec.Reduce(size); }
-
-  @Override
-  public void Realloc(Natural size) { vec.Realloc(size); }
-
-  @Override
-  protected VSortedChain<Data> NewChain(DynVector<Data> v) { return new VSortedChain<>(v); }
-
-  @Override
-  public MutableForwardIterator<Data> FMutIterator() { return vec.FMutIterator(); }
-
-  @Override
-  public MutableBackwardIterator<Data> BMutIterator() { return vec.BMutIterator(); }
 
 }

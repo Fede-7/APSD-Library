@@ -12,7 +12,7 @@ import apsd.interfaces.containers.sequences.Sequence;
 import apsd.interfaces.traits.Predicate;
 
 /** Object: Abstract list base implementation on (dynamic circular) vector. */
-abstract public class VChainBase<Data> implements Chain<Data>, DynVector<Data> {
+abstract public class VChainBase<Data> implements Chain<Data> {
 
   protected final DynVector<Data> vec;
 
@@ -45,7 +45,7 @@ abstract public class VChainBase<Data> implements Chain<Data>, DynVector<Data> {
   @Override
   public boolean Remove(Data dat) {
     Natural idx = vec.Search(dat);
-    AtNRemove(idx);
+    vec.AtNRemove(idx);
     return idx != null;
   }
 
@@ -80,7 +80,6 @@ abstract public class VChainBase<Data> implements Chain<Data>, DynVector<Data> {
   /* Override specific member functions from Collection                       */
   /* ************************************************************************ */
 
-  //TODO: Should i re-write filter??
   @Override
   public boolean Filter(Predicate<Data> fun) {
     boolean changed = false;
