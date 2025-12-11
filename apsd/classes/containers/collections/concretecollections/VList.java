@@ -38,9 +38,9 @@ public class VList<Data>  extends VChainBase<Data> implements List<Data>{
   public void SetAt(Data elem, Natural pos) { vec.SetAt(elem, pos);}
 
   @Override
-  public MutableSequence<Data> SubSequence(Natural start, Natural end) {
-    if(!IsInBound(start) || !IsInBound(end)) return null;
-    return vec.SubVector(start, end);
+  public MutableSequence<Data> SubSequence(Natural from, Natural to) {
+    if(!IsInBound(from) || !IsInBound(to)) return null;
+    return vec.SubVector(from, to);
   }
 
   /* ************************************************************************ */

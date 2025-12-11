@@ -67,7 +67,7 @@ abstract public class VChainBase<Data> implements Chain<Data> {
   public Data GetAt(Natural pos) { return vec.GetAt(pos);  }
 
   @Override
-  public VChainBase<Data> SubSequence(Natural start, Natural end) { return NewChain((DynVector<Data>) vec.SubSequence(start, end));}
+  public Sequence<Data> SubSequence(Natural start, Natural end) { return NewChain((DynVector<Data>) vec.SubSequence(start, end));}
 
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
