@@ -55,9 +55,9 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   }
 
   @Override
-  default DynVector<Data> SubVector(Natural start, Natural end){
-    if (!IsInBound(start) || !IsInBound(end) || start.compareTo(end) > 0) return null;
-    return (DynVector<Data>) SubSequence(start, end);
+  default DynVector<Data> SubVector(Natural from, Natural to){
+    if (!IsInBound(from) || !IsInBound(to) || from.compareTo(to) > 0) return null;
+    return (DynVector<Data>) Vector.super.SubVector(from, to);
   }
 
   /* ************************************************************************ */
