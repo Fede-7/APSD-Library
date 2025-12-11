@@ -12,11 +12,11 @@ public class Vector<Data> extends LinearVectorBase<Data>{
 
   public Vector() { super(); }
 
-  public Vector(Natural inisize) { super(); }
+  public Vector(Natural inisize) { super(inisize); }
 
-  protected Vector(Data[] arr) { super();}
+  protected Vector(Data[] arr) { super(arr);}
   
-  public Vector(TraversableContainer<Data> con) { super();}
+  public Vector(TraversableContainer<Data> con) { super(con);}
 
   @Override
   public VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
