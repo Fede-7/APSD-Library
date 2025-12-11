@@ -8,6 +8,7 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableContainer<Data> {
 
   default void SetAt(Data elem, Natural pos){
+    if(elem == null) return;
     long idx = ExcIfOutOfBound(pos); 
     final MutableForwardIterator<Data> it = this.FMutIterator();
     it.Next(idx);
