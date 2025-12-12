@@ -22,9 +22,9 @@ public class Vector<Data> extends LinearVectorBase<Data>{
   public VectorBase<Data> NewVector(Data[] arr) { return new Vector<Data>(arr); }
 
   @Override
-  public MutableForwardIterator<Data> FIterator() { return FIterator(); }
+  public MutableForwardIterator<Data> FIterator() { return super.FIterator(); }
 
   @Override
-  public MutableBackwardIterator<Data> BIterator() { return BIterator(); }
+  public MutableBackwardIterator<Data> BIterator() { return super.BIterator(); }
 
 }

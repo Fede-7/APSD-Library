@@ -21,9 +21,9 @@ public class CircularVector<Data> extends CircularVectorBase<Data> {
   public CircularVector<Data> NewVector(Data[] arr){ return new CircularVector<>(arr); }
 
   @Override
-  public MutableForwardIterator<Data> FIterator() { return FIterator(); }
+  public MutableForwardIterator<Data> FIterator() { return super.FIterator(); }
 
   @Override
-  public MutableBackwardIterator<Data> BIterator() { return BIterator(); }
+  public MutableBackwardIterator<Data> BIterator() { return super.BIterator(); }
 
 }

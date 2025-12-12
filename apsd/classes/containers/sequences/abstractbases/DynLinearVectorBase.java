@@ -22,7 +22,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
   /* ************************************************************************ */
 
   @Override
-  public Natural Size() { return Capacity();}
+  public Natural Size() { return Natural.Of(size);}
 
   /* ************************************************************************ */
   /* Override specific member functions from ClearableContainer               */

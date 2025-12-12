@@ -5,6 +5,7 @@ import apsd.classes.containers.collections.concretecollections.bases.LLNode;
 import apsd.classes.containers.sequences.DynVector;
 import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.MutableIterableContainer;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.List;
 import apsd.interfaces.containers.iterators.ForwardIterator;
@@ -29,10 +30,10 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
   /* ************************************************************************ */
   
   @Override
-  public MutableForwardIterator<Data> FIterator() { return FIterator(); }
+  public MutableForwardIterator<Data> FIterator() { return new ListFIterator(); }
   
   @Override
-  public MutableBackwardIterator<Data> BIterator() { return BIterator();}
+  public MutableBackwardIterator<Data> BIterator() { return new ListBIterator(); }
 
 
   /* ************************************************************************ */
@@ -42,7 +43,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
   @Override
   public void SetAt(Data elem, Natural pos) {
     if (elem == null) throw new IllegalArgumentException("Element to set cannot be null.");
-    if (!IsInBound(pos)) throw new IllegalArgumentException("Position " + pos + " is out of bounds.");
+    if (!IsInBound(pos)) throw new IndexOutOfBoundsException("Position " + pos + " is out of bounds.");
    
     MutableForwardIterator<Data> it = FIterator();
     it.Next(pos);

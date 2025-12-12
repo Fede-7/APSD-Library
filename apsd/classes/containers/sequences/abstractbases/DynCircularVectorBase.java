@@ -24,7 +24,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
 
   @Override
-  public Natural Size() {return Capacity();}
+  public Natural Size() {return Natural.Of(size);}
 
   /* ************************************************************************ */
   /* Override specific member functions from ClearableContainer               */

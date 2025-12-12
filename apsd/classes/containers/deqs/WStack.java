@@ -53,7 +53,7 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
 
   @Override
   public void Pop() {
-    if (lst.IsEmpty()) throw new IllegalStateException("Stack is empty!");
+    if (lst.IsEmpty()) return;
     lst.RemoveLast();
   }
 

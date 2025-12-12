@@ -20,10 +20,10 @@ public class DynVector<Data> extends DynLinearVectorBase<Data> {
   public DynVector<Data> NewVector(Data[] arr){ return new DynVector<>(arr);}
 
   @Override
-  public MutableForwardIterator<Data> FIterator() { return FIterator(); }
+  public MutableForwardIterator<Data> FIterator() { return super.FIterator(); }
 
   @Override
-  public MutableBackwardIterator<Data> BIterator() { return BIterator(); }
+  public MutableBackwardIterator<Data> BIterator() { return super.BIterator(); }
 
 
 }

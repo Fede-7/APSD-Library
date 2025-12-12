@@ -53,7 +53,7 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
 
   @Override
   public void Dequeue() {
-    if (lst.IsEmpty()) throw new IllegalStateException("Queue is empty!");
+    if (lst.IsEmpty()) return;
     lst.RemoveFirst();
   }
 

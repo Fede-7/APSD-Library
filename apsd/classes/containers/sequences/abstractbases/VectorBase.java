@@ -15,7 +15,6 @@ abstract public class VectorBase<Data> implements Vector<Data>{
 
   protected Data[] arr; 
 
-  //TODO Check cunstructor
   public VectorBase() { ArrayAlloc(Natural.ONE);}
 
   public VectorBase(Data[] arr) {
