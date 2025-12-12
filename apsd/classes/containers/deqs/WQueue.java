@@ -1,40 +1,71 @@
 package apsd.classes.containers.deqs;
 
-// import apsd.classes.containers.collections.concretecollections.VList;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
-// import apsd.interfaces.containers.collections.List;
-// import apsd.interfaces.containers.deqs.Queue;
+import apsd.classes.containers.collections.concretecollections.VList;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.interfaces.containers.collections.List;
+import apsd.interfaces.containers.deqs.Queue;
 
 /** Object: Wrapper queue implementation. */
-public class WQueue<Data> { // Must implement Queue
+public class WQueue<Data> implements Queue<Data> { // Must implement Queue
 
-  // protected final List<Data> lst;
+  protected final List<Data> lst;
 
-  // public WQueue()
+  public WQueue() { this.lst = new VList<>(); }
 
-  // public WQueue(List<Data> lst)
+  public WQueue(List<Data> lst) {
+    if (lst == null) throw new NullPointerException("List cannot be null!");
+    this.lst = lst;
+  }
 
-  // public WQueue(TraversableContainer<Data> con)
+  public WQueue(TraversableContainer<Data> con) {
+    if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
+    this.lst = new VList<>(con);
+  }
 
-  // public WQueue(List<Data> lst, TraversableContainer<Data> con)
+  public WQueue(List<Data> lst, TraversableContainer<Data> con) {
+    if (lst == null) throw new NullPointerException("List cannot be null!");
+    if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
+    this.lst = lst;
+    con.TraverseForward(dat -> { this.lst.Insert(dat); return false; });
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  public Natural Size() { return lst.Size(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from ClearableContainer               */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  public void Clear() { lst.Clear(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from Queue                            */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  public Data Head() { return lst.IsEmpty() ? null : lst.GetFirst(); }
+
+  @Override
+  public void Dequeue() {
+    if (lst.IsEmpty()) throw new IllegalStateException("Queue is empty!");
+    lst.RemoveFirst();
+  }
+
+  @Override
+  public void Enqueue(Data element) { lst.Insert(element); }
+
+  @Override
+  public Data HeadNDequeue() {
+    if (Size().ToLong() == 0) return null;
+    Data head = Head();
+    Dequeue();
+    return head;
+  }
 
 }

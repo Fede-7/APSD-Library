@@ -5,13 +5,13 @@ import apsd.interfaces.containers.base.InsertableContainer;
 
 public interface Queue<Data> extends ClearableContainer, InsertableContainer<Data> {
 
-  Data head();
-  void dequeue();
-  void enqueue(Data element);
+  Data Head();
+  void Dequeue();
+  void Enqueue(Data element);
 
-  default Data headNDequeue(){
-    final Data element = this.head();
-    this.dequeue();
+  default Data HeadNDequeue(){
+    final Data element = this.Head();
+    this.Dequeue();
     return element;
   }
 
@@ -24,7 +24,7 @@ public interface Queue<Data> extends ClearableContainer, InsertableContainer<Dat
   @Override
   default void Clear() {
     while (this.Size().ToLong() > 0) {
-      this.dequeue();
+      this.Dequeue();
     }
   }
 
@@ -34,7 +34,7 @@ public interface Queue<Data> extends ClearableContainer, InsertableContainer<Dat
 
   @Override
   default boolean Insert(Data element) {
-    this.enqueue(element);
+    this.Enqueue(element);
     return true;
   }
 

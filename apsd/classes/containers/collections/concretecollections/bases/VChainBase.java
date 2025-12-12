@@ -6,7 +6,6 @@ import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.Chain;
 import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
-import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.containers.sequences.DynVector;
 import apsd.interfaces.containers.sequences.Sequence;
 import apsd.interfaces.traits.Predicate;
@@ -45,8 +44,9 @@ abstract public class VChainBase<Data> implements Chain<Data> {
   @Override
   public boolean Remove(Data dat) {
     Natural idx = vec.Search(dat);
+    if (idx == null) return false;
     vec.AtNRemove(idx);
-    return idx != null;
+    return true;
   }
 
   /* ************************************************************************ */
@@ -82,14 +82,16 @@ abstract public class VChainBase<Data> implements Chain<Data> {
 
   @Override
   public boolean Filter(Predicate<Data> fun) {
+    if (fun == null) return false;
+
     boolean changed = false;
-    Natural i = Natural.ZERO;
-    while (i.compareTo(vec.Size()) < 0) {
-      if (!fun.Apply(vec.GetAt(i))) {
-        vec.AtNRemove(i);
+    long i = 0L;
+    while (i < vec.Size().ToLong()) {
+      if (!fun.Apply(vec.GetAt(Natural.Of(i)))) {
+        vec.AtNRemove(Natural.Of(i));
         changed = true;
       } else {
-        i.Increment();
+        i++;
       }
     }
     return changed;

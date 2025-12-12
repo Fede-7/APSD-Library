@@ -286,10 +286,10 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   /* ************************************************************************ */
 
   @Override
-  public Data GetFirst() {return IsEmpty() ? null : (Data) headref.Get();}
+  public Data GetFirst() { return IsEmpty() ? null : headref.Get().Get(); }
 
   @Override
-  public Data GetLast() {return IsEmpty() ?  null : (Data) tailref.Get();}
+  public Data GetLast() { return IsEmpty() ? null : tailref.Get().Get(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
@@ -339,10 +339,10 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   public void RemoveLast() { Remove(GetLast()); }
 
   @Override
-  public Data FirstNRemove() {return AtNRemove(Natural.ZERO);}
+  public Data FirstNRemove() { return AtNRemove(Natural.ZERO); }
 
   @Override
-  public Data LastNRemove() { return AtNRemove(Natural.Of(Size()));}
+  public Data LastNRemove() { return IsEmpty() ? null : AtNRemove(Size().Decrement()); }
 
   /* ************************************************************************ */
   /* Override specific member functions from Collection                       */
