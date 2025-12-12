@@ -1,6 +1,6 @@
 package apsd.interfaces.containers.collections;
 
-public interface OrderedSet<Data extends Comparable<Data>> extends Set<Data> {
+public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<Data> {
 
   default Data Min() {return (this.IsEmpty()) ? null : FIterator().GetCurrent();}
 

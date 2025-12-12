@@ -3,7 +3,7 @@ package apsd.interfaces.containers.collections;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.sequences.SortedSequence;
 
-public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain<Data>, SortedSequence<Data> {
+public interface SortedChain<Data extends Comparable<? super Data>> extends OrderedChain<Data>, SortedSequence<Data> {
 
   default Natural SearchPredecessor(Data dat){
   if (dat == null || this.IsEmpty()) return null;
