@@ -126,15 +126,13 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
     @Override
     public Box<LLNode<Data>> GetCurrent() {
-      if (!IsValid())
-        throw new IllegalStateException("Iterator is not valid.");
+      if (!IsValid()) throw new IllegalStateException("Iterator is not valid.");
       return arr.GetAt(Natural.Of(cur));
     }
 
     @Override
     public Box<LLNode<Data>> DataNPrev() {
-      if (!IsValid())
-        throw new IllegalStateException("Iterator is not valid.");
+      if (!IsValid()) throw new IllegalStateException("Iterator is not valid.");
       Box<LLNode<Data>> result = arr.GetAt(Natural.Of(cur));
       cur--;
       return result;

@@ -10,7 +10,7 @@ import apsd.interfaces.traits.Predicate;
 import java.util.Objects;
 
 /** Object: Abstract wrapper set base implementation via chain. */
-abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Data> { // Must implement Set; Chn must extend Chain
+abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Data> {
 
   protected Chn chn;
 
@@ -33,10 +33,8 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     this.chn = chn;
     con.TraverseForward(dat -> { this.Insert(dat); return false; });
   }
-
-  // WSetBase
-
-  protected abstract void ChainAlloc(); // ChainAlloc
+  
+  protected abstract void ChainAlloc();
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -90,15 +88,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   /* ************************************************************************ */
   /* Override specific member functions from Set                              */
   /* ************************************************************************ */
-
   @Override
-  public boolean Exists(Data dat) {
-    ForwardIterator<Data> it = FIterator();
-    while (it.IsValid()) {
-      if (Objects.equals(it.GetCurrent(), dat)) return true;
-      it.Next();
-    }
-    return false;
-  }
+  public void Intersection(Set<Data> set) { chn.Intersection(set);}
 
 }

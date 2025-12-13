@@ -2,24 +2,24 @@ package apsd.interfaces.containers.collections;
 
 public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<Data> {
 
-  default Data Min() {return (this.IsEmpty()) ? null : FIterator().GetCurrent();}
+  default Data Min() {return (IsEmpty()) ? null : FIterator().GetCurrent();}
 
-  default void RemoveMin(){if(!this.IsEmpty()) Remove(Min());}
+  default void RemoveMin(){if(!IsEmpty()) Remove(Min());}
 
   default Data MinNRemove(){
-    if(this.IsEmpty())return null;
+    if(IsEmpty())return null;
 
-    Data min = this.Min();
+    Data min = Min();
     RemoveMin();
     return min;
   }
 
-  default Data Max(){return (this.IsEmpty()) ? null : BIterator().GetCurrent();}
+  default Data Max(){return (IsEmpty()) ? null : BIterator().GetCurrent();}
 
-  default void RemoveMax(){if(!this.IsEmpty()) Remove(Max());}
+  default void RemoveMax(){if(!IsEmpty()) Remove(Max());}
 
   default Data MaxNRemove(){
-    if(this.IsEmpty()) return null;
+    if(IsEmpty()) return null;
 
     Data max = Max();
     RemoveMax();
@@ -27,34 +27,34 @@ public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<D
   }
 
   default Data Predecessor(Data dat){
-    if(this.IsEmpty() && dat != null)return null;
+    if(IsEmpty() || dat == null) return null;
 
-    return this.FoldForward((num, acc) -> (num.compareTo(dat) < 0) ? num : acc, null);
+    return FoldForward((num, acc) -> (num != null && num.compareTo(dat) < 0) ? num : acc, null);
   }
 
-  default void RemovePredecessor(Data dat){if(!IsEmpty())this.Remove(Predecessor(dat));}
+  default void RemovePredecessor(Data dat){if(!IsEmpty())Remove(Predecessor(dat));}
 
   default Data PredecessorNRemove(Data dat){
-    if (this.IsEmpty()) return null;
+    if (IsEmpty()) return null;
 
     Data pred = Predecessor(dat);
-    this.RemovePredecessor(dat);
+    RemovePredecessor(dat);
     return pred;
   }
 
   default Data Successor(Data dat){
-    if(this.IsEmpty() && dat != null)return null;
+    if(IsEmpty() || dat == null) return null;
 
-    return this.FoldBackward((num, acc) -> (num.compareTo(dat) > 0) ? num : acc, null);
+    return FoldBackward((num, acc) -> (num != null && num.compareTo(dat) > 0) ? num : acc, null);
   }
 
-  default void RemoveSuccessor(Data dat){if(!IsEmpty())this.Remove(Successor(dat));}
+  default void RemoveSuccessor(Data dat){if(!IsEmpty())Remove(Successor(dat));}
 
   default Data SuccessorNRemove(Data dat){
-    if(this.IsEmpty())return null;
+    if(IsEmpty() || dat == null) return null;
 
     Data succ = Successor(dat);
-    this.RemoveSuccessor(dat);
+    RemoveSuccessor(dat);
     return succ;
   }
 

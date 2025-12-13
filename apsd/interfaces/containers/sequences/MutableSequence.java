@@ -8,6 +8,7 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableContainer<Data> {
 
   default void SetAt(Data elem, Natural pos){
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
     if(elem == null) return;
     long idx = ExcIfOutOfBound(pos); 
     final MutableForwardIterator<Data> it = this.FIterator();
@@ -16,6 +17,8 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   }
 
   default Data GetNSetAt(Data elem, Natural pos){
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
+    if (elem == null) return null;
     Data dat = this.GetAt(pos);
     SetAt(elem, pos);
     return dat;
@@ -25,9 +28,15 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
 
   default Data GetNSetFirst(Data elem){return GetNSetAt(elem, Natural.ZERO);}
 
-  default void SetLast(Data elem){ if(!IsEmpty()) SetAt(elem, Size().Decrement());}
+  default void SetLast(Data elem){ 
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
+    SetAt(elem, Size().Decrement()); 
+  }
 
-  default Data GetNSetLast(Data elem){ return IsEmpty() ? null : GetNSetAt(elem, Size().Decrement());}
+  default Data GetNSetLast(Data elem){ 
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
+    return IsEmpty() ? null : GetNSetAt(elem, Size().Decrement());
+  }
 
   default void Swap(Natural pos1, Natural pos2) {
     Data elemTemp = GetNSetAt(GetAt(pos2), pos1); 

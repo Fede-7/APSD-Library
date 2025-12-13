@@ -10,7 +10,6 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
 
-  //TODO: usare o no IsInBound?
   @Override
   default void InsertAt(Data elem, Natural pos) {
     if (elem == null || pos == null) return;
@@ -18,11 +17,11 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
     long curSize = Size().ToLong();
 
     if (idx > curSize) {
-      Expand(Natural.Of(idx - curSize + 1));   // create null “holes” up to pos
+      Expand(Natural.Of(idx - curSize + 1));
     } else if (idx == curSize) {
-      Expand(Natural.ONE);                     // append
+      Expand(Natural.ONE);
     } else {
-      ShiftRight(pos);                         // insertion inside -> grows by 1
+      ShiftRight(pos);
     }
     SetAt(elem, pos);
   }
@@ -40,7 +39,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
     Data dat = GetAt(pos);
     if (idx < sz - 1) {
-      ShiftLeft(pos);              // also reduces size by 1 (see below)
+      ShiftLeft(pos);
     } else {
       SetAt(null, pos);
       Reduce(Natural.ONE);

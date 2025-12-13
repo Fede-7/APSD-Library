@@ -64,58 +64,45 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
   /* ************************************************************************ */
 
   @Override
-  public void ShiftLeft(Natural pos, Natural num) {
-    ExcIfOutOfBound(pos);
-    long sz = Size().ToLong();
-    if (pos == null || num == null || sz <= 1) return;
-    
-    long idx = pos.ToLong();
-    long shifts = num.ToLong() % sz;
-    
-    for (long i = 0; i < shifts; i++) {
-      long currentIdx = idx;
-      Data temp = GetAt(Natural.Of(currentIdx));
-      
-      long nextIdx = (currentIdx + 1) % sz;
-      while (nextIdx != idx) {
-        SetAt(GetAt(Natural.Of(nextIdx)), Natural.Of(currentIdx));
-        currentIdx = nextIdx;
-        nextIdx = (nextIdx + 1) % sz;
-      }
-      
-      long prevIdx = (idx - 1 + sz) % sz;
-      SetAt(temp, Natural.Of(prevIdx));
+  public void ShiftRight(Natural pos, Natural num) {
+    if (pos == null || num == null) return;
+    long idx = ExcIfOutOfBound(pos);
+    long size = Size().ToLong();
+    long len = num.ToLong();
+    len = (len <= size - idx) ? len : size - idx;
+    if (len <= 0) return;
+
+    long wrt = size - 1;
+    for (long rdr = wrt - len; rdr >= idx; rdr--, wrt--) {
+      Natural natrdr = Natural.Of(rdr);
+      SetAt(GetAt(natrdr), Natural.Of(wrt));
+      SetAt(null, natrdr);
+    }
+    for (long i = idx; i < idx + len; i++) {
+      SetAt(null, Natural.Of(i));
     }
   }
 
   @Override
-  public void ShiftRight(Natural pos, Natural num) { 
+  public void ShiftLeft(Natural pos, Natural num) {
     if (pos == null || num == null) return;
-    
-    long sz = Size().ToLong();
-    if (sz <= 1) return;
-    
-    ExcIfOutOfBound(pos);
-    
-    long idx = pos.ToLong();
-    long shifts = num.ToLong() % sz;
-    
-    for (long shift = 0; shift < shifts; shift++) {
-      long currentIdx = idx;
-      Data temp = GetAt(Natural.Of(currentIdx));
-      
-      long prevIdx = (currentIdx - 1 + sz) % sz;
-      while (prevIdx != idx) {
-        SetAt(GetAt(Natural.Of(prevIdx)), Natural.Of(currentIdx));
-        currentIdx = prevIdx;
-        prevIdx = (prevIdx - 1 + sz) % sz;
-      }
-      
-      long nextIdx = (idx + 1) % sz;
-      SetAt(temp, Natural.Of(nextIdx));
+    long idx = ExcIfOutOfBound(pos);
+    long size = Size().ToLong();
+    long len = num.ToLong();
+    len = (len <= size - idx) ? len : size - idx;
+    if (len <= 0) return;
+
+    long iniwrt = idx;
+    long wrt = iniwrt;
+    for (long rdr = wrt + len; rdr < size; rdr++, wrt++) {
+      Natural natrdr = Natural.Of(rdr);
+      SetAt(GetAt(natrdr), Natural.Of(wrt));
+      SetAt(null, natrdr);
+    }
+    for (; wrt - iniwrt < len; wrt++) {
+      SetAt(null, Natural.Of(wrt));
     }
   }
-
 
   /* ************************************************************************ */
   /* Specific member functions of Vector                                      */

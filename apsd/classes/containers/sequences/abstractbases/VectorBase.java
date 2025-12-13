@@ -68,7 +68,7 @@ abstract public class VectorBase<Data> implements Vector<Data>{
     protected long idxCur = 0L;
 
     @Override
-    public boolean IsValid() {return (0 <= idxCur && idxCur < Capacity().ToLong());}
+    public boolean IsValid() {return (0 <= idxCur && idxCur < Size().ToLong());}
 
     @Override
     public Data GetCurrent() { 
@@ -105,7 +105,7 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   }
 
   protected class VectorBIterator implements MutableBackwardIterator<Data>{
-    protected long idxCur = Size().ToLong() - 1;
+    protected long idxCur = Capacity().ToLong() - 1;
 
     @Override
     public boolean IsValid() {return (0 <= idxCur && idxCur < Size().ToLong());}

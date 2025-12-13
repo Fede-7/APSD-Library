@@ -7,7 +7,7 @@ import apsd.interfaces.containers.collections.SortedChain;
 
 /** Object: Wrapper ordered set implementation via ordered chain. */
 public class WOrderedSet<Data extends Comparable<Data>>
-    extends WOrderedSetBase<Data, SortedChain<Data>> { // Must extend WOrderedSetBase
+    extends WOrderedSetBase<Data, SortedChain<Data>> {
 
   public WOrderedSet() { super(); }
 
@@ -19,7 +19,5 @@ public class WOrderedSet<Data extends Comparable<Data>>
 
   @Override
   protected void ChainAlloc() { chn = new VSortedChain<>(); }
-
-  // ...
 
 }

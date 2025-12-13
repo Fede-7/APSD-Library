@@ -53,7 +53,10 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
   public void SetFirst(Data dat) { SetAt(dat, Natural.ZERO);}
 
   @Override
-  public void SetLast(Data elem) { SetAt(elem, Size().Decrement()); }
+  public void SetLast(Data elem) {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
+    SetAt(elem, Size().Decrement()); 
+  }
 
   @Override
   public MutableSequence<Data> SubSequence(Natural startindex, Natural endindex) {
