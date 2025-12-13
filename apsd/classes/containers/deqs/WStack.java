@@ -62,7 +62,7 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
 
   @Override
   public Data TopNPop() {
-    if (lst.IsEmpty()) throw new IllegalStateException("Stack is empty!");
+    if (lst.IsEmpty()) return null;
     final Data top = Top();
     Pop();
     return top;
@@ -70,14 +70,14 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
 
   @Override
   public void SwapTop(Data element) {
-    if (lst.IsEmpty()) throw new IllegalStateException("Stack is empty!");
+    if (lst.IsEmpty()) return;
     Pop();
     Push(element);
   }
 
   @Override
   public Data TopNSwap(Data element) {
-    if (lst.IsEmpty()) throw new IllegalStateException("Stack is empty!");
+    if (lst.IsEmpty()) return null;
     final Data top = Top();
     SwapTop(element);
     return top;

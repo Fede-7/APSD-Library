@@ -47,18 +47,14 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
    
   @Override
   public Data GetAt(Natural pos) {
-    if(pos == null) throw new NullPointerException("Natural cannot be a null value");
-    MutableForwardIterator<Data> Iter = FIterator(); 
-    Iter.Next(pos.Decrement().ToLong() % Size().ToLong());
-    return Iter.GetCurrent();
+    long idx = ExcIfOutOfBound(pos);
+    return arr[(int) ((start + idx) % arr.length)];
   }
 
   @Override
   public void SetAt(Data elem, Natural pos) {
-    if(pos == null) throw new NullPointerException("Natural cannot be a null value");
-    MutableForwardIterator<Data> Iter = FIterator();
-    Iter.Next(pos.Decrement().ToLong() % Size().ToLong());
-    Iter.SetCurrent(elem);
+    long idx = ExcIfOutOfBound(pos);
+    arr[(int) ((start + idx) % arr.length)] = elem;
   }
 
 

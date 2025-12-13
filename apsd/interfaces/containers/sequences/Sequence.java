@@ -9,15 +9,16 @@ import apsd.interfaces.containers.iterators.ForwardIterator;
 public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Data GetAt(Natural pos) {
+    if(IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
     long idx = ExcIfOutOfBound(pos);
     ForwardIterator<Data> ForIt = FIterator();
     ForIt.Next(idx);
     return ForIt.GetCurrent();
   }
 
-  default Data GetFirst(){ return GetAt(Natural.ZERO); }
+  default Data GetFirst(){ return GetAt(Natural.ZERO);}
 
-  default Data GetLast(){ return GetAt(Size().Decrement()); }
+  default Data GetLast(){ return GetAt(Size().Decrement());}
 
   default Natural Search(Data elm){
     if(elm == null ) return null;

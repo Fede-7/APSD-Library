@@ -60,8 +60,14 @@ cd APSD-Library
 # 3. Install the dependencies using Maven
 mvn install
 
+# 4. run test + debug log
+make clean && make && make runtest | tee runtest.log
 
-#1° Test:
+---
+
+### Test Progress:
+
+## 1° Test:
 Test run finished after 448 ms
 [        56 containers found      ]
 [         0 containers skipped    ]
@@ -75,3 +81,50 @@ Test run finished after 448 ms
 [         0 tests aborted         ]
 [        27 tests successful      ]
 [        55 tests failed          ]
+
+## 2° Test:
+Test run finished after 367 ms
+[        56 containers found      ]
+[         0 containers skipped    ]
+[        56 containers started    ]
+[         0 containers aborted    ]
+[        56 containers successful ]
+[         0 containers failed     ]
+[        82 tests found           ]
+[         0 tests skipped         ]
+[        82 tests started         ]
+[         0 tests aborted         ]
+[        46 tests successful      ]
+[        36 tests failed          ]
+
+##3° Test:
+Test run finished after 348 ms
+[        56 containers found      ]
+[         0 containers skipped    ]
+[        56 containers started    ]
+[         0 containers aborted    ]
+[        56 containers successful ]
+[         0 containers failed     ]
+[        82 tests found           ]
+[         0 tests skipped         ]
+[        82 tests started         ]
+[         0 tests aborted         ]
+[        53 tests successful      ]
+[        29 tests failed          ]
+
+## 4° Test:
+Test run finished after 362 ms
+[        56 containers found      ]
+[         0 containers skipped    ]
+[        56 containers started    ]
+[         0 containers aborted    ]
+[        56 containers successful ]
+[         0 containers failed     ]
+[        82 tests found           ]
+[         0 tests skipped         ]
+[        82 tests started         ]
+[         0 tests aborted         ]
+[        68 tests successful      ]
+[        14 tests failed          ]
+
+

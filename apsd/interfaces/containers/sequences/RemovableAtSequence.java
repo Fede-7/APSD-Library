@@ -6,7 +6,7 @@ import apsd.classes.utilities.Natural;
 public interface RemovableAtSequence<Data> extends Sequence<Data> {
 
   default void RemoveAt(Natural pos){
-    if(pos == null || IsEmpty()) return;
+    if(IsEmpty()) return;
     if(IsInBound(pos)) AtNRemove(pos);
   }
 

@@ -39,46 +39,44 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void Realloc(Natural newCapacity) {
-    if (newCapacity == null) return;
-
-    long newCap = newCapacity.ToLong();
-    if (newCap > Integer.MAX_VALUE)
-      throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!");
-
-    Data[] newarr = (Data[]) new Object[(int) newCap];
-    long oldCap = Capacity().ToLong();
-    long toCopy = (oldCap < newCap) ? oldCap : newCap;
-
-    for (int i = 0; i < toCopy; i++) newarr[i] = arr[i];
-
-    arr = newarr;
-
-    if (size > newCap) size = newCap;
+  public void Realloc(Natural newCapacity){
+    if(newCapacity == null) throw new NullPointerException("Size cannot be null!");
+    super.Realloc(newCapacity);
+    if(size > newCapacity.ToLong()){ size = newCapacity.ToLong();}
   }
+
+  @Override
+  public Natural Capacity() { return Natural.Of(arr.length); }
+
   /* ************************************************************************ */
   /* Override specific member functions from ResizableContainer               */
   /* ************************************************************************ */
 
   @Override
   public void Expand(Natural factor) {
-    long f = (factor == null) ? 0L : factor.ToLong();
-    f = (f <= 1L) ? 2L : f;
-    long cur = Capacity().ToLong();
-    long newCap = (cur == 0) ? f : cur * f;
-    Realloc(Natural.Of(newCap));
+    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    long n = factor.ToLong();
+    if (n <= 0) return;
+    long newSize = size + n;
+    if (newSize > Integer.MAX_VALUE) throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!");
+    if (Capacity().ToLong() < newSize) Realloc(Natural.Of(newSize));
+    for (long i = size; i < newSize; i++) arr[(int) i] = null;
+    size = newSize;
   }
 
   @Override
-  public void Reduce(Natural factor) {
-    long f = (factor == null) ? 0L : factor.ToLong();
-    if (f <= 1L) return;
-    long cur = Capacity().ToLong();
-    long newCap = cur / f;
-    Realloc(Natural.Of(newCap));
+  public void Reduce(Natural factor){
+    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    long n = factor.ToLong();
+    if (n <= 0) return;
+    if (n > size) throw new IllegalArgumentException("Cannot reduce by more than current size!");
+    long newSize = size - n;
+    for (long i = newSize; i < size; i++) arr[(int) i] = null;
+    size = newSize;
+    Shrink();
   }
+
 
 
   /* ************************************************************************ */

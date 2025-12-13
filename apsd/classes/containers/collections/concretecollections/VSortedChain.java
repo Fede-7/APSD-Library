@@ -29,8 +29,7 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
   public boolean Insert(Data data) {
     if (data == null || this.vec == null) return false;
     Natural idx = SearchSuccessor(data);
-    idx = ( idx == null) ? Size().Decrement() : idx;
-    vec.ShiftRight(idx);
+    if (idx == null) idx = Size();
     vec.InsertAt(data, idx);
     return true;  
   }

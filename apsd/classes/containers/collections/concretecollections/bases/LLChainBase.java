@@ -193,9 +193,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
     @Override
     public void SetCurrent(Data data) {
-      if (data == null)
-        return;
-      itr.GetCurrent().Get().Set(data);
+       itr.GetCurrent().Get().Set(data);
     }
     
   }
@@ -232,8 +230,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
     @Override
     public void SetCurrent(Data data) {
-      if (data == null) return;
-      itr.GetCurrent().Get().Set(data);
+       itr.GetCurrent().Get().Set(data);
     }
   }
 
@@ -286,10 +283,16 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   /* ************************************************************************ */
 
   @Override
-  public Data GetFirst() { return IsEmpty() ? null : headref.Get().Get(); }
+  public Data GetFirst() {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
+    return headref.Get().Get();
+  }
 
   @Override
-  public Data GetLast() { return IsEmpty() ? null : tailref.Get().Get(); }
+  public Data GetLast() {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
+    return tailref.Get().Get();
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
@@ -327,16 +330,31 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
   @Override
   public Data AtNRemove(Natural pos) {
-      Data dat = GetAt(pos);
-      Remove(dat);
-      return dat;
+    if (pos == null || IsEmpty()) return null;
+    long idx = pos.ToLong();
+    if (idx < 0 || idx >= size.ToLong()) return null;
+
+    LLNode<Data> removed;
+    if (idx == 0) {
+      removed = headref.Get();
+      headref.Set(removed.GetNext().Get());
+      if (tailref.Get() == removed) tailref.Set(null);
+    } else {
+      LLNode<Data> prev = headref.Get();
+      for (long i = 0; i < idx - 1; i++) prev = prev.GetNext().Get();
+      removed = prev.GetNext().Get();
+      prev.SetNext(removed.GetNext().Get());
+      if (tailref.Get() == removed) tailref.Set(prev);
+    }
+    size.Decrement();
+    return removed.Get();
   }
 
   @Override
-  public void RemoveFirst() { Remove(GetFirst()); }
+  public void RemoveFirst() { if (!IsEmpty()) AtNRemove(Natural.ZERO); }
 
   @Override
-  public void RemoveLast() { Remove(GetLast()); }
+  public void RemoveLast() { if (!IsEmpty()) AtNRemove(Size().Decrement()); }
 
   @Override
   public Data FirstNRemove() { return AtNRemove(Natural.ZERO); }

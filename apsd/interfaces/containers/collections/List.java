@@ -16,7 +16,6 @@ public interface List<Data> extends MutableSequence<Data>, InsertableAtSequence<
 
   @Override
   default boolean Insert(Data dat) {
-    if(this.Exists(dat))return false;
     this.InsertLast(dat);
     return true;
   }

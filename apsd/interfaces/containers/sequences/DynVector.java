@@ -14,14 +14,16 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   @Override
   default void InsertAt(Data elem, Natural pos) {
     if (elem == null || pos == null) return;
+    long idx = pos.ToLong();
+    long curSize = Size().ToLong();
 
-    if (pos.compareTo(Size()) >= 0) {
-      Realloc(Natural.Of(pos.ToLong() + 1));
+    if (idx > curSize) {
+      Expand(Natural.Of(idx - curSize + 1));   // create null “holes” up to pos
+    } else if (idx == curSize) {
+      Expand(Natural.ONE);                     // append
     } else {
-      Grow(pos);
+      ShiftRight(pos);                         // insertion inside -> grows by 1
     }
-
-    if (GetAt(pos) != null) { ShiftRight(pos);}
     SetAt(elem, pos);
   }
   
@@ -31,10 +33,18 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default Data AtNRemove(Natural pos){
-    if (pos == null || IsEmpty() || !IsInBound(pos)) return null;
+    if (pos == null || IsEmpty()) return null;
+    long idx = pos.ToLong();
+    long sz = Size().ToLong();
+    if (idx < 0 || idx >= sz) return null;
+
     Data dat = GetAt(pos);
-    if(!pos.equals(Size().Decrement())) ShiftLeft(pos);
-    Shrink();
+    if (idx < sz - 1) {
+      ShiftLeft(pos);              // also reduces size by 1 (see below)
+    } else {
+      SetAt(null, pos);
+      Reduce(Natural.ONE);
+    }
     return dat;
   }
 
@@ -44,13 +54,13 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void ShiftLeft(Natural pos, Natural num) {
-      Vector.super.ShiftLeft(pos, num);
-      Shrink();
-    }
+    Vector.super.ShiftLeft(pos, num);
+    Reduce(num);
+  }
 
   @Override
   default void ShiftRight(Natural pos, Natural num) {
-    Grow(num);
+    Expand(num);
     Vector.super.ShiftRight(pos, num);
   }
 

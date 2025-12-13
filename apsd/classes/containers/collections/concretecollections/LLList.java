@@ -42,7 +42,6 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
 
   @Override
   public void SetAt(Data elem, Natural pos) {
-    if (elem == null) throw new IllegalArgumentException("Element to set cannot be null.");
     if (!IsInBound(pos)) throw new IndexOutOfBoundsException("Position " + pos + " is out of bounds.");
    
     MutableForwardIterator<Data> it = FIterator();
@@ -79,7 +78,8 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
 
   @Override
   public void InsertAt(Data dat, Natural pos) {
-    long  idx = ExcIfOutOfBound(pos);
+    if (pos.compareTo(Size()) > 0) return;
+    long  idx = pos.ToLong();
 
     if (idx == 0) {
       InsertFirst(dat);
