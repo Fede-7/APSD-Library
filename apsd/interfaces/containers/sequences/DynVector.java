@@ -12,7 +12,8 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void InsertAt(Data elem, Natural pos) {
-    if (elem == null || pos == null) return;
+    if (pos == null) throw new NullPointerException("Position cannot be null");
+    if (pos.compareTo(Size()) > 0) throw new IndexOutOfBoundsException("out of bound");
     long idx = pos.ToLong();
     long curSize = Size().ToLong();
 

@@ -75,7 +75,13 @@ abstract public class VChainBase<Data> implements Chain<Data> {
   /* ************************************************************************ */
 
   @Override
-  public Data AtNRemove(Natural pos) { return vec.AtNRemove(pos);}
+  public Data AtNRemove(Natural pos) {
+    if (pos == null) throw new NullPointerException("Position cannot be null");
+    if (vec.IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
+    long idx = pos.ToLong();
+    if (idx < 0 || idx >= vec.Size().ToLong()) throw new IndexOutOfBoundsException("out of bound");
+    return vec.AtNRemove(pos);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Collection                       */

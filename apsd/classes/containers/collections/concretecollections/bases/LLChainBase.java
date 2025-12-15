@@ -328,9 +328,10 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
   @Override
   public Data AtNRemove(Natural pos) {
-    if (pos == null || IsEmpty()) return null;
+    if (pos == null) throw new NullPointerException("Position cannot be null");
+    if (IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
     long idx = pos.ToLong();
-    if (idx < 0 || idx >= size.ToLong()) return null;
+    if (idx < 0 || idx >= size.ToLong()) throw new IndexOutOfBoundsException("out of bound");
 
     LLNode<Data> removed;
     if (idx == 0) {

@@ -81,7 +81,8 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
 
   @Override
   public void InsertAt(Data dat, Natural pos) {
-    if (pos.compareTo(Size()) > 0) return;
+    if (pos == null) throw new NullPointerException("Position cannot be null");
+    if (pos.compareTo(Size()) > 0) throw new IndexOutOfBoundsException("out of bound");
     long  idx = pos.ToLong();
 
     if (idx == 0) {

@@ -18,8 +18,7 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
 
   @Override
   default Natural Search(Data elem) {
-    if (elem == null)
-      return null;
+    if (elem == null) return null;
 
     long start = 0;
     long finish = Size().ToLong() - 1;
