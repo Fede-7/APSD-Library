@@ -6,6 +6,7 @@ import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.Chain;
 import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
+import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.containers.sequences.DynVector;
 import apsd.interfaces.containers.sequences.Sequence;
 import apsd.interfaces.traits.Predicate;
@@ -82,19 +83,31 @@ abstract public class VChainBase<Data> implements Chain<Data> {
 
   @Override
   public boolean Filter(Predicate<Data> fun) {
-    if (fun == null) return false;
-
-    boolean changed = false;
-    long i = 0L;
-    while (i < vec.Size().ToLong()) {
-      if (!fun.Apply(vec.GetAt(Natural.Of(i)))) {
-        vec.AtNRemove(Natural.Of(i));
-        changed = true;
-      } else {
-        i++;
+    long del = 0;
+    if (fun != null) {
+      MutableForwardIterator<Data> wrt = vec.FIterator();
+      for (; wrt.IsValid(); wrt.Next()) {
+        Data currentData = wrt.GetCurrent();
+        if (!fun.Apply(currentData)) {
+          del++;
+          wrt.SetCurrent(null);
+        }
+      }
+      if (del > 0) {
+        wrt.Reset();
+        MutableForwardIterator<Data> rdr = vec.FIterator();
+        for (; rdr.IsValid(); rdr.Next()) {
+          Data dat = rdr.GetCurrent();
+          if (dat != null) {
+            rdr.SetCurrent(null);
+            wrt.SetCurrent(dat);
+            wrt.Next();
+          }
+        }
+        vec.Reduce(Natural.Of(del));
       }
     }
-    return changed;
+    return (del > 0);
   }
 
 }

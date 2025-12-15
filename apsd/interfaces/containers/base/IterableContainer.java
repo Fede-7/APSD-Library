@@ -32,7 +32,7 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   @Override
   default boolean TraverseForward(Predicate<Data> pred) {
     if (pred != null) {
-      final ForwardIterator<Data> it = this.FIterator();
+      final ForwardIterator<Data> it = FIterator();
       while (it.IsValid()) { if (pred.Apply(it.DataNNext())) return true;}
     }
     return false;
@@ -41,7 +41,7 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   @Override
   default boolean TraverseBackward(Predicate<Data> pred) {
     if (pred != null) {
-      final BackwardIterator<Data> it = this.BIterator();
+      final BackwardIterator<Data> it = BIterator();
       while (it.IsValid()) { if (pred.Apply(it.DataNPrev())) return true;}
     }
     return false;

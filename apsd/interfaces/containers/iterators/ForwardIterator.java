@@ -6,12 +6,13 @@ import apsd.interfaces.traits.Predicate;
 /** Interface: Iteratore in avanti. */
 public interface ForwardIterator<Data> extends Iterator<Data> {
 
-  default void Next(){DataNNext();}
+  default void Next(){if(IsValid()) DataNNext();}
 
   default void Next(Natural steps){ Next(steps.ToLong()); }
 
   default void Next(long steps){
-    for (; steps > 0 && IsValid(); --steps , Next()) {}
+    if( steps < 0 ) throw new IllegalArgumentException("steps cannot be minus than 0");
+    for (; steps > 0; --steps, Next());
   }
 
   Data DataNNext();

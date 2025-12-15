@@ -7,7 +7,7 @@ import apsd.interfaces.containers.collections.Set;
 import apsd.interfaces.containers.collections.SortedChain;
 
 /** Object: Abstract wrapper set base implementation via chain. */
-abstract public class WOrderedSetBase<Data extends Comparable<Data>, Chn extends SortedChain<Data>> extends WSetBase<Data, Chn> implements OrderedSet<Data> {
+abstract public class WOrderedSetBase<Data extends Comparable<? super Data>, Chn extends SortedChain<Data>> extends WSetBase<Data, Chn> implements OrderedSet<Data> {
 
   protected WOrderedSetBase() { super(); }
 

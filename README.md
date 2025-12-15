@@ -127,4 +127,19 @@ Test run finished after 362 ms
 [        68 tests successful      ]
 [        14 tests failed          ]
 
+## 5° Test:
+Test run finished after 299 ms
+[        56 containers found      ]
+[         0 containers skipped    ]
+[        56 containers started    ]
+[         0 containers aborted    ]
+[        56 containers successful ]
+[         0 containers failed     ]
+[        82 tests found           ]
+[         0 tests skipped         ]
+[        82 tests started         ]
+[         0 tests aborted         ]
+[        82 tests successful      ]
+[         0 tests failed          ]
+
 

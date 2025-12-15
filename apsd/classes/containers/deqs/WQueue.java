@@ -58,7 +58,10 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
   }
 
   @Override
-  public void Enqueue(Data element) { lst.Insert(element); }
+  public void Enqueue(Data dat) { 
+    if(dat == null ) throw new IllegalArgumentException("Data cannot be null");
+    lst.InsertLast(dat); 
+  }
 
   @Override
   public Data HeadNDequeue() {

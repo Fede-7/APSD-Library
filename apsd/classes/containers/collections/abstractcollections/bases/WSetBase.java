@@ -7,7 +7,6 @@ import apsd.interfaces.containers.collections.Set;
 import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.traits.Predicate;
-import java.util.Objects;
 
 /** Object: Abstract wrapper set base implementation via chain. */
 abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Data> {
@@ -16,25 +15,25 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
   protected WSetBase() { ChainAlloc(); }
 
-  protected WSetBase(Chn chn) {
-    if (chn == null) throw new NullPointerException("Chain cannot be null!");
-    this.chn = chn;
-  }
+  protected WSetBase(Chn chn) { this.chn = chn; }
 
   protected WSetBase(TraversableContainer<Data> con) {
-    if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
     ChainAlloc();
-    con.TraverseForward(dat -> { this.Insert(dat); return false; });
+    con.TraverseForward(dat -> {
+      if (dat != null) this.chn.InsertIfAbsent(dat); 
+      return false; 
+    });
   }
 
   protected WSetBase(Chn chn, TraversableContainer<Data> con) {
-    if (chn == null) throw new NullPointerException("Chain cannot be null!");
-    if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
     this.chn = chn;
-    con.TraverseForward(dat -> { this.Insert(dat); return false; });
+    con.TraverseForward(dat -> {
+      if (dat != null) this.chn.InsertIfAbsent(dat); 
+      return false; 
+    });
   }
   
-  protected abstract void ChainAlloc();
+  abstract protected void ChainAlloc();
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -56,8 +55,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
   @Override
   public boolean Insert(Data dat) {
-    if (dat == null) return false;
-    if (Exists(dat)) return false;
+    if (dat == null || Exists(dat)) return false;
     return chn.Insert(dat);
   }
 
@@ -88,7 +86,9 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   /* ************************************************************************ */
   /* Override specific member functions from Set                              */
   /* ************************************************************************ */
+  
   @Override
-  public void Intersection(Set<Data> set) { chn.Intersection(set);}
-
+  public void Intersection(Set<Data> set) {
+    chn.Intersection(set);
+  }
 }

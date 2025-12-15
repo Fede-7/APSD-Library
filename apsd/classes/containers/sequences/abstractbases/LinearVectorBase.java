@@ -44,6 +44,7 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
  
   @Override
   public Data GetAt(Natural pos) {
+    if(!IsInBound(pos)) throw new IndexOutOfBoundsException("out of bound");
      if(pos == null) throw new NullPointerException("Natural cannot be a null value");
      MutableForwardIterator<Data> Iter = FIterator();
      Iter.Next(ExcIfOutOfBound(pos));
@@ -52,6 +53,7 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
 
   @Override
   public void SetAt(Data elem, Natural pos) {
+    if(!IsInBound(pos)) throw new IndexOutOfBoundsException("out of bound");
     if(pos == null) throw new NullPointerException("Natural cannot be a null value");
     MutableForwardIterator<Data> Iter = FIterator();
     Iter.Next(ExcIfOutOfBound(pos));

@@ -9,16 +9,14 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
 
   default void SetAt(Data elem, Natural pos){
     if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
-    if(elem == null) return;
-    long idx = ExcIfOutOfBound(pos); 
+    long idx = ExcIfOutOfBound(pos);
     final MutableForwardIterator<Data> it = this.FIterator();
     it.Next(idx);
-    it.SetCurrent(elem);    
+    it.SetCurrent(elem);
   }
 
   default Data GetNSetAt(Data elem, Natural pos){
     if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
-    if (elem == null) return null;
     Data dat = this.GetAt(pos);
     SetAt(elem, pos);
     return dat;
@@ -35,12 +33,14 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
 
   default Data GetNSetLast(Data elem){ 
     if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
-    return IsEmpty() ? null : GetNSetAt(elem, Size().Decrement());
+    return GetNSetAt(elem, Size().Decrement());
   }
 
   default void Swap(Natural pos1, Natural pos2) {
-    Data elemTemp = GetNSetAt(GetAt(pos2), pos1); 
-    SetAt(elemTemp, pos2);
+    if(!IsInBound(pos1) || !IsInBound(pos2)) throw new IndexOutOfBoundsException("out of bound");
+    Data temp = GetAt(pos1);
+    SetAt(GetAt(pos2), pos1);
+    SetAt(temp, pos2);
   }
 
   /* ************************************************************************ */

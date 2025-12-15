@@ -9,7 +9,7 @@ import apsd.interfaces.containers.iterators.ForwardIterator;
 public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Data GetAt(Natural pos) {
-    if(IsEmpty()) return null;
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
     long idx = ExcIfOutOfBound(pos);
     ForwardIterator<Data> ForIt = FIterator();
     ForIt.Next(idx);

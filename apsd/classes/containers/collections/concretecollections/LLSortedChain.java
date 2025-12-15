@@ -78,7 +78,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
     box.Set(newNode);
     if (tailref.Get() == pred) tailref.Set(newNode);
     size.Increment();
-    return true;
+    return true;  
   }
 
   /* ************************************************************************ */

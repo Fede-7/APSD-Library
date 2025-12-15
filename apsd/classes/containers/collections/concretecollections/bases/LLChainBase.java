@@ -28,18 +28,18 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
     tailref.Set(null);
   }
 
+  // TODO: Ensure that the provided container is a collection and does not contain null data.
   public LLChainBase(TraversableContainer<Data> con) {
-    size.Assign(con.Size());
     final Box<Boolean> first = new Box<>(true);
     con.TraverseForward(dat -> {
+      if (dat == null) return false;
       LLNode<Data> node = new LLNode<>(dat);
       if (first.Get()) {
         headref.Set(node);
         first.Set(false);
-      } else {
-        tailref.Get().SetNext(node);
-      }
+      } else { tailref.Get().SetNext(node); }
       tailref.Set(node);
+      size.Increment();
       return false;
     });
   }
@@ -367,27 +367,26 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   @Override
   public boolean Filter(Predicate<Data> fun) {
     if (fun == null) return false;
-    
+
     boolean status = false;
     Box<LLNode<Data>> prev = new Box<>();
     Box<LLNode<Data>> cur = headref;
-    
+
     while (!cur.IsNull()) {
       LLNode<Data> node = cur.Get();
-      
+
       if (!fun.Apply(node.Get())) {
+        if (prev.IsNull()) headref.Set(node.GetNext().Get());
+        else prev.Get().SetNext(node.GetNext().Get());
 
-        if (prev.IsNull()) { headref.Set(node.GetNext().Get());} 
-        else { prev.Get().SetNext(node.GetNext().Get());}
-
-        if (tailref.Get() == node) { tailref.Set(prev.Get());}
-
-        cur.Set(node.GetNext().Get());  
+        if (tailref.Get() == node) tailref.Set(prev.Get());
+        
+        cur.Set(node.GetNext().Get());
         size.Decrement();
         status = true;
       } else {
         prev.Set(node);
-        cur.Set(node.GetNext().Get());
+        cur = node.GetNext();
       }
     }
     return status;

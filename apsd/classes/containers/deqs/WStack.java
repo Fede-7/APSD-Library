@@ -7,7 +7,7 @@ import apsd.interfaces.containers.collections.List;
 import apsd.interfaces.containers.deqs.Stack;
 
 /** Object: Wrapper stack implementation. */
-public class WStack<Data> implements Stack<Data> { // Must implement Stack
+public class WStack<Data> implements Stack<Data> {
 
   protected final List<Data> lst;
 
@@ -49,16 +49,16 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
   /* ************************************************************************ */
 
   @Override
-  public Data Top() { return lst.IsEmpty() ? null : lst.GetLast(); }
+  public Data Top() { return lst.IsEmpty() ? null : lst.GetFirst(); }
 
   @Override
   public void Pop() {
     if (lst.IsEmpty()) return;
-    lst.RemoveLast();
+    lst.RemoveFirst();
   }
 
   @Override
-  public void Push(Data element) { lst.Insert(element); }
+  public void Push(Data dat) { lst.InsertFirst(dat); }
 
   @Override
   public Data TopNPop() {
@@ -69,17 +69,17 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
   }
 
   @Override
-  public void SwapTop(Data element) {
+  public void SwapTop(Data dat) {
     if (lst.IsEmpty()) return;
     Pop();
-    Push(element);
+    Push(dat);
   }
 
   @Override
-  public Data TopNSwap(Data element) {
+  public Data TopNSwap(Data dat) {
     if (lst.IsEmpty()) return null;
     final Data top = Top();
-    SwapTop(element);
+    SwapTop(dat);
     return top;
   }
 }

@@ -3,7 +3,6 @@ package apsd.classes.containers.sequences.abstractbases;
 import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
-import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.iterators.MutableBackwardIterator;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
@@ -105,7 +104,9 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   }
 
   protected class VectorBIterator implements MutableBackwardIterator<Data>{
-    protected long idxCur = Capacity().ToLong() - 1;
+    protected long idxCur;
+
+    public VectorBIterator() { idxCur = Size().ToLong() - 1;}
 
     @Override
     public boolean IsValid() {return (0 <= idxCur && idxCur < Size().ToLong());}
