@@ -44,26 +44,24 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
  
   @Override
   public Data GetAt(Natural pos) {
-    if(!IsInBound(pos)) throw new IndexOutOfBoundsException("out of bound");
-     if(pos == null) throw new NullPointerException("Natural cannot be a null value");
-     MutableForwardIterator<Data> Iter = FIterator();
-     Iter.Next(ExcIfOutOfBound(pos));
-     return Iter.GetCurrent();
+    if (pos == null) throw new NullPointerException("Natural cannot be a null value");
+    long idx = ExcIfOutOfBound(pos);
+    MutableForwardIterator<Data> it = FIterator();
+    it.Next(idx);
+    return it.GetCurrent();
   }
 
   @Override
   public void SetAt(Data elem, Natural pos) {
-    if(!IsInBound(pos)) throw new IndexOutOfBoundsException("out of bound");
-    if(pos == null) throw new NullPointerException("Natural cannot be a null value");
-    MutableForwardIterator<Data> Iter = FIterator();
-    Iter.Next(ExcIfOutOfBound(pos));
-    Iter.SetCurrent(elem);
+    if (pos == null) throw new NullPointerException("Natural cannot be a null value");
+    long idx = ExcIfOutOfBound(pos);
+    MutableForwardIterator<Data> it = FIterator();
+    it.Next(idx);
+    it.SetCurrent(elem);
   }
 
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
   /* ************************************************************************ */
-
-  //TODO: Check this method wtf is going on here
 
 }

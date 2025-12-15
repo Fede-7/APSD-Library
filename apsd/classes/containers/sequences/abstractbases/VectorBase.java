@@ -155,13 +155,10 @@ abstract public class VectorBase<Data> implements Vector<Data>{
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  //TODO: forse manca qualcosa...
-
   /* ************************************************************************ */
   /* Override specific member functions from MutableSequence                  */
   /* ************************************************************************ */
   
-  //FIXME: errore variabile
   @Override
   public MutableSequence<Data> SubSequence(Natural start, Natural end) {
     if (start == null || end == null) return null;
@@ -170,17 +167,15 @@ abstract public class VectorBase<Data> implements Vector<Data>{
     long s = start.ToLong();
     long e = end.ToLong();
     long span = e - s + 1;
-    if (span < 0 || span > Integer.MAX_VALUE) return null;
+    if (span > Integer.MAX_VALUE) return null;
 
     int len = (int) span;
 
     @SuppressWarnings("unchecked")
     Data[] subArr = (Data[]) new Object[len];
-    
-    for (int i = 0; i < len; i++) {
-      subArr[i] = arr[(int) (s + i)];
-    }
 
-    return (MutableSequence<Data>) NewVector(subArr);
+    for (int i = 0; i < len; i++) subArr[i] = arr[(int) (s + i)];
+
+    return NewVector(subArr); // niente cast: VectorBase è anche MutableSequence
   }
 }

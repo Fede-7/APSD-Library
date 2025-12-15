@@ -64,7 +64,6 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftLastRight(){if(!IsEmpty())ShiftRight(Size().Decrement());}
     
-  /* TODO: Controllare subvector */
   default Vector<Data> SubVector(Natural start, Natural end) {
     if (!IsInBound(start) || !IsInBound(end) || start.compareTo(end) > 0) return null;
     return (Vector<Data>) SubSequence(start, end);

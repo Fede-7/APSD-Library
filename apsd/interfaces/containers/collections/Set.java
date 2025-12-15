@@ -29,7 +29,6 @@ public interface Set<Data> extends Collection<Data> {
   /* Override specific member functions from IterableContainer                */
   /* ************************************************************************ */
 
-  //TODO: controllare IsEquals
   @Override
   default boolean IsEqual(IterableContainer<Data> con) {
     if (con == null || !this.Size().equals(con.Size())) return false;

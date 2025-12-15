@@ -13,8 +13,6 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.containers.sequences.Sequence;
 import apsd.interfaces.traits.Predicate;
 
-//FIXME: LLNode è esteso opp import? pdf si, prof here no
-
 /** Object: Abstract chain base implementation on linked-list. */
 abstract public class LLChainBase<Data> implements Chain<Data> {
 
@@ -28,7 +26,6 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
     tailref.Set(null);
   }
 
-  // TODO: Ensure that the provided container is a collection and does not contain null data.
   public LLChainBase(TraversableContainer<Data> con) {
     final Box<Boolean> first = new Box<>(true);
     con.TraverseForward(dat -> {
@@ -298,27 +295,31 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
   @Override
   public Sequence<Data> SubSequence(Natural from, Natural to) {
+    if (from == null || to == null) return null;
+
     long f = from.ToLong(), t = to.ToLong();
-    
-    if( f > t || t >= size.ToLong()) return null;
+    if (f > t || t >= size.ToLong()) return null;
+
     final Box<LLNode<Data>> head = new Box<>();
     final Box<LLNode<Data>> tail = new Box<>();
     final Box<Long> idx = new Box<>(0L);
 
     TraverseForward(dat -> {
-      if (idx.Get() > t) return true;
-      LLNode<Data> linkNode = new LLNode<>(dat);
-      if(idx.Get() > f){
-        tail.Get().SetNext(linkNode);
-      }else if (idx.Get() == f){
-        head.Set(linkNode);
+      long i = idx.Get();
+      if (i > t) return true;
+
+      if (i >= f) {
+        LLNode<Data> linkNode = new LLNode<>(dat);
+        if (head.Get() == null) head.Set(linkNode);
+        else tail.Get().SetNext(linkNode);
+        tail.Set(linkNode);
       }
-      tail.Set(linkNode);
-      idx.Set(idx.Get() + 1);
+
+      idx.Set(i + 1);
       return false;
     });
 
-    return NewChain(t-f+1, head.Get(), tail.Get());
+    return NewChain(t - f + 1, head.Get(), tail.Get());
   }
 
 

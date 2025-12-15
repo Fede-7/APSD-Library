@@ -9,7 +9,6 @@ import apsd.interfaces.containers.iterators.ForwardIterator;
 public interface Sequence<Data> extends IterableContainer<Data> {
 
   default Data GetAt(Natural pos) {
-    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
     long idx = ExcIfOutOfBound(pos);
     ForwardIterator<Data> ForIt = FIterator();
     ForIt.Next(idx);
@@ -37,10 +36,7 @@ public interface Sequence<Data> extends IterableContainer<Data> {
   }
 
   default boolean IsInBound(Natural idx) {
-    if (idx == null) throw new NullPointerException("Natural number cannot be null!"); 
-
-    if (idx.compareTo(Size()) > 0)
-      throw new IndexOutOfBoundsException("Index out of bounds: " + idx + "; Size: " + Size() + "!");
+    if (idx == null) throw new NullPointerException("Natural number cannot be null!");
     return (idx.ToLong() < Size().ToLong());
   }
 

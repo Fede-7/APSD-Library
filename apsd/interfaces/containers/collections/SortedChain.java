@@ -50,24 +50,8 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   @Override
   default Natural Search(Data dat) {
     if (dat == null || this.IsEmpty()) return null;
-
-    long str = 0;
-    long fns = Size().ToLong() - 1;
-
-    while (str <= fns) {
-        long medIdx = str + (fns - str) / 2;
-        Data medElem = GetAt(Natural.Of(medIdx));
-
-        //NOTE: Integer.Signum => serve per gestire i risultati di compareTo {solo -1, 0, 1}
-        switch (Integer.signum(dat.compareTo(medElem))) {
-            case 0  -> { return Natural.Of(medIdx); }
-            case -1 -> fns = medIdx - 1;
-            case 1  -> str = medIdx + 1;
-          }
-        }
-
-        return null;
-      }
+    return SortedSequence.super.Search(dat);
+  }
 
   /* ************************************************************************ */
   /* Override ?? specific member functions from Set                              */

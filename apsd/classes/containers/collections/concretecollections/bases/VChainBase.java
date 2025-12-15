@@ -46,6 +46,7 @@ abstract public class VChainBase<Data> implements Chain<Data> {
   public boolean Remove(Data dat) {
     Natural idx = vec.Search(dat);
     if (idx == null) return false;
+    if (!vec.IsInBound(idx)) return false;
     vec.AtNRemove(idx);
     return true;
   }
@@ -76,7 +77,6 @@ abstract public class VChainBase<Data> implements Chain<Data> {
 
   @Override
   public Data AtNRemove(Natural pos) {
-    if (pos == null) throw new NullPointerException("Position cannot be null");
     if (vec.IsEmpty()) throw new IndexOutOfBoundsException("out of bound");
     long idx = pos.ToLong();
     if (idx < 0 || idx >= vec.Size().ToLong()) throw new IndexOutOfBoundsException("out of bound");

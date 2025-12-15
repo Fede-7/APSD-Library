@@ -14,19 +14,16 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   default void InsertAt(Data elem, Natural pos) {
     if (pos == null) throw new NullPointerException("Position cannot be null");
     if (pos.compareTo(Size()) > 0) throw new IndexOutOfBoundsException("out of bound");
+
     long idx = pos.ToLong();
     long curSize = Size().ToLong();
 
-    if (idx > curSize) {
-      Expand(Natural.Of(idx - curSize + 1));
-    } else if (idx == curSize) {
-      Expand(Natural.ONE);
-    } else {
-      ShiftRight(pos);
-    }
+    if (idx == curSize) Expand(Natural.ONE);
+    else ShiftRight(pos);
+
     SetAt(elem, pos);
   }
-  
+
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
   /* ************************************************************************ */
@@ -34,28 +31,27 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
   @Override
   default Data AtNRemove(Natural pos){
     if (pos == null || IsEmpty()) return null;
-    long idx = pos.ToLong();
-    long sz = Size().ToLong();
-    if (idx < 0 || idx >= sz) return null;
+    if (!IsInBound(pos)) return null;
 
     Data dat = GetAt(pos);
-    if (idx < sz - 1) {
-      ShiftLeft(pos);
-    } else {
-      SetAt(null, pos);
-      Reduce(Natural.ONE);
-    }
+    ShiftLeft(pos); // gestisce anche la rimozione dell'ultimo elemento
     return dat;
   }
 
   /* ************************************************************************ */
-  /* Specific member functions of Vector                                       */
+  /* Specific member functions of Vector                                      */
   /* ************************************************************************ */
 
   @Override
   default void ShiftLeft(Natural pos, Natural num) {
-    Vector.super.ShiftLeft(pos, num);
-    Reduce(num);
+    long idx = ExcIfOutOfBound(pos);
+    long size = Size().ToLong();
+    long len = Math.min(num.ToLong(), size - idx);
+    if (len <= 0) return;
+
+    Natural natLen = Natural.Of(len);
+    Vector.super.ShiftLeft(pos, natLen);
+    Reduce(natLen);
   }
 
   @Override
