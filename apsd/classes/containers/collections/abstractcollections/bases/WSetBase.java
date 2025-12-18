@@ -20,7 +20,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   protected WSetBase(TraversableContainer<Data> con) {
     ChainAlloc();
     con.TraverseForward(dat -> {
-      if (dat != null) this.chn.InsertIfAbsent(dat); 
+      if (dat != null) chn.InsertIfAbsent(dat); 
       return false; 
     });
   }
@@ -28,7 +28,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   protected WSetBase(Chn chn, TraversableContainer<Data> con) {
     this.chn = chn;
     con.TraverseForward(dat -> {
-      if (dat != null) this.chn.InsertIfAbsent(dat); 
+      if (dat != null) chn.InsertIfAbsent(dat); 
       return false; 
     });
   }

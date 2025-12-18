@@ -3,7 +3,6 @@ package apsd.classes.containers.collections.abstractcollections.bases;
 import apsd.interfaces.containers.base.IterableContainer;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.OrderedSet;
-import apsd.interfaces.containers.collections.Set;
 import apsd.interfaces.containers.collections.SortedChain;
 
 /** Object: Abstract wrapper set base implementation via chain. */
@@ -24,7 +23,7 @@ abstract public class WOrderedSetBase<Data extends Comparable<? super Data>, Chn
   @Override
   public boolean IsEqual(IterableContainer<Data> con) {
     if (con == null || !this.Size().equals(con.Size())) return false;
-    return !con.TraverseForward(elm -> !this.Exists(elm));
+    return !con.TraverseForward(elm -> !Exists(elm));
   }
 
   /* ************************************************************************ */
@@ -33,22 +32,22 @@ abstract public class WOrderedSetBase<Data extends Comparable<? super Data>, Chn
 
   @Override
   public Data Min() {
-    return this.IsEmpty() ? null : chn.Min();
+    return IsEmpty() ? null : chn.Min();
   }
 
   @Override
   public Data Max() {
-    return this.IsEmpty() ? null : chn.Max();
+    return IsEmpty() ? null : chn.Max();
   }
 
   @Override
   public void RemoveMax() {
-    if (!this.IsEmpty()) chn.RemoveMax();
+    if (!IsEmpty()) chn.RemoveMax();
   }
 
   @Override
   public void RemoveMin() {
-    if (!this.IsEmpty()) chn.RemoveMin();
+    if (!IsEmpty()) chn.RemoveMin();
   }
 
   @Override

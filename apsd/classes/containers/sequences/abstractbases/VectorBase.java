@@ -3,7 +3,6 @@ package apsd.classes.containers.sequences.abstractbases;
 import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
-import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.iterators.MutableBackwardIterator;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.containers.sequences.MutableSequence;
@@ -176,6 +175,6 @@ abstract public class VectorBase<Data> implements Vector<Data>{
 
     for (int i = 0; i < len; i++) subArr[i] = arr[(int) (s + i)];
 
-    return NewVector(subArr); // niente cast: VectorBase è anche MutableSequence
+    return NewVector(subArr);
   }
 }

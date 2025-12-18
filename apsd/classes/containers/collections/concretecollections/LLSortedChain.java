@@ -18,6 +18,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
   public LLSortedChain(TraversableContainer<Data> con){super(con);}
 
   protected LLSortedChain(long size, LLNode<Data> head, LLNode<Data> tail){super(size, head, tail);}
+  
   @Override
   protected LLChainBase<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail) { return new LLSortedChain<>(size, head, tail);}
 

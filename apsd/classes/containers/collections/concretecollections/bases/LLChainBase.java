@@ -54,9 +54,9 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   protected class ListFRefIterator implements ForwardIterator<Box<LLNode<Data>>> {
     protected Box<LLNode<Data>> cur;
 
-    public ListFRefIterator() { this.cur = headref;}
+    public ListFRefIterator() { cur = headref;}
 
-    public ListFRefIterator(ListFRefIterator itr) { this.cur = itr.cur;}
+    public ListFRefIterator(ListFRefIterator itr) { cur = itr.cur;}
 
     @Override
     public Box<LLNode<Data>> DataNNext() {
