@@ -168,3 +168,19 @@ Test run finished after 529 ms
 [         0 tests aborted         ]
 [       236 tests successful      ]
 [         0 tests failed          ]
+
+
+## 3° Test:
+Test run finished after 797 ms
+[        88 containers found      ]
+[         0 containers skipped    ]
+[        88 containers started    ]
+[         0 containers aborted    ]
+[        88 containers successful ]
+[         0 containers failed     ]
+[       344 tests found           ]
+[         0 tests skipped         ]
+[       344 tests started         ]
+[         0 tests aborted         ]
+[       344 tests successful      ]
+[         0 tests failed          ]
