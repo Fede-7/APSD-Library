@@ -243,6 +243,90 @@ abstract public class XDynVectorITest extends XDynVectorTest<Long> {
       TestSize(3, false);
       assertThrows(IllegalArgumentException.class, () -> ThisContainer().Reduce(Natural.Of(4)));
     }
+
+    @Test
+    @DisplayName("Multiple consecutive expansions and reductions")
+    public void MultipleExpandReduce() {
+      AddTest(13);
+      NewEmptyContainer();
+      TestExpandWithNumber(Natural.Of(5));
+      TestSetAt(1L, Natural.ZERO, false);
+      TestSetAt(2L, Natural.Of(4), false);
+      TestExpandWithNumber(Natural.Of(3));
+      TestSize(8, false);
+      TestSetAt(3L, Natural.Of(7), false);
+      TestRealloc(Natural.Of(5));
+      TestSize(5, false);
+      TestGetAt(Natural.ZERO, 1L, false);
+      TestGetAt(Natural.Of(4), 2L, false);
+      TestExpandWithNumber(Natural.Of(2));
+      TestSize(7, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("InsertAt/RemoveAt at boundaries with auto expand/reduce")
+    public void InsertRemoveAtBoundaries() {
+      AddTest(11);
+      NewEmptyContainer();
+      TestExpandWithNumber(Natural.Of(3));
+      TestSetAt(1L, Natural.ZERO, false);
+      TestSetAt(2L, Natural.Of(1), false);
+      TestSetAt(3L, Natural.Of(2), false);
+      TestInsertAtWithAutoExpansion(Natural.ZERO, 0L);
+      TestSize(4, false);
+      TestGetAt(Natural.ZERO, 0L, false);
+      TestGetAt(Natural.Of(1), 1L, false);
+      TestAtNRemoveWithAutoReduction(Natural.ZERO, 0L);
+      TestSize(3, false);
+      TestGetAt(Natural.ZERO, 1L, false);
+    }
+  }
+
+  @Nested
+  @DisplayName("DynVector Null Parameter Tests")
+  public class DynVectorNullParameterTests {
+
+    @Test
+    @DisplayName("GetAt with null throws")
+    public void GetAtNullThrows() {
+      AddTest(1);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().GetAt(null));
+    }
+
+    @Test
+    @DisplayName("SetAt with null position throws")
+    public void SetAtNullThrows() {
+      AddTest(1);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().SetAt(1L, null));
+    }
+
+    @Test
+    @DisplayName("Swap with null positions throws")
+    public void SwapNullThrows() {
+      AddTest(2);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().Swap(null, Natural.ZERO));
+      assertThrows(NullPointerException.class, () -> ThisContainer().Swap(Natural.ZERO, null));
+    }
+
+    @Test
+    @DisplayName("InsertAt with null throws")
+    public void InsertAtNullThrows() {
+      AddTest(1);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().InsertAt(1L, null));
+    }
+
+    @Test
+    @DisplayName("RemoveAt with null throws")
+    public void RemoveAtNullThrows() {
+      AddTest(1);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().RemoveAt(null));
+    }
   }
 
 }

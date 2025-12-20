@@ -303,4 +303,49 @@ abstract public class XVectorITest extends XVectorTest<Long> {
     }
   }
 
+  @Nested
+  @DisplayName("Vector Null Parameter Tests")
+  public class VectorNullParameterTests {
+
+    @Test
+    @DisplayName("GetAt with null position throws")
+    public void GetAtNullThrows() {
+      AddTest(2);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().GetAt(null));
+      NewEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().GetAt(null));
+    }
+
+    @Test
+    @DisplayName("SetAt with null position throws")
+    public void SetAtNullThrows() {
+      AddTest(2);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().SetAt(1L, null));
+      NewEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().SetAt(1L, null));
+    }
+
+    @Test
+    @DisplayName("Swap with null positions throws")
+    public void SwapNullThrows() {
+      AddTest(3);
+      NewNonEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().Swap(null, Natural.ZERO));
+      assertThrows(NullPointerException.class, () -> ThisContainer().Swap(Natural.ZERO, null));
+      assertThrows(NullPointerException.class, () -> ThisContainer().Swap(null, null));
+    }
+
+    @Test
+    @DisplayName("Realloc with null throws (no-op, but verify)")
+    public void ReallocNullNoOp() {
+      AddTest(2);
+      NewNonEmptyContainer();
+      long beforeSize = ThisContainer().Size().ToLong();
+      assertDoesNotThrow(() -> ThisContainer().Realloc(null));
+      assertEquals(beforeSize, ThisContainer().Size().ToLong());
+    }
+  }
+
 }

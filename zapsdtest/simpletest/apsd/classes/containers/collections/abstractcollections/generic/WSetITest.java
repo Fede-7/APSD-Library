@@ -691,6 +691,72 @@ abstract public class WSetITest extends WSetTest<Long> {
       assertTrue(ThisContainer().Exists(5L));
       assertEquals(afterAllNewSize + 1, ThisContainer().Size().ToLong(), "Size should increase by 1");
     }
+
+    @Test
+    @DisplayName("RemoveAll/RemoveSome contract with null and non-existent elements")
+    public void RemoveAllRemoveSomeContract() {
+      AddTest(12);
+
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      long beforeSize = ThisContainer().Size().ToLong();
+
+      assertTrue(ThisContainer().RemoveAll(null), "RemoveAll(null) should return true (no-op)");
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "RemoveAll(null) should not change size");
+
+      assertFalse(ThisContainer().RemoveSome(null), "RemoveSome(null) should return false (no-op)");
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "RemoveSome(null) should not change size");
+
+      // Remove some existing elements
+      Set<Long> toRemove = GetNewEmptyContainer();
+      toRemove.Insert(2L);
+      toRemove.Insert(3L);
+
+      assertTrue(ThisContainer().RemoveAll(toRemove), "RemoveAll should be true when all removals succeed");
+      assertFalse(ThisContainer().Exists(2L));
+      assertFalse(ThisContainer().Exists(3L));
+      assertEquals(2, ThisContainer().Size().ToLong(), "Size should decrease by number of removed elements");
+
+      // Try to remove non-existent elements
+      Set<Long> nonExistent = GetNewEmptyContainer();
+      nonExistent.Insert(99L);
+      nonExistent.Insert(100L);
+
+      assertFalse(ThisContainer().RemoveAll(nonExistent), "RemoveAll should be false if any removal fails");
+      assertFalse(ThisContainer().RemoveSome(nonExistent), "RemoveSome should be false if nothing is removed");
+    }
+
+    @Test
+    @DisplayName("Filter with edge predicates")
+    public void FilterEdgePredicates() {
+      AddTest(8);
+
+      NewEmptyContainer();
+      for (long i = 0; i < 10; i++) {
+        TestInsert(i, true);
+      }
+
+      // Filter that keeps only boundary values
+      TestFilter(dat -> dat == 0L || dat == 9L);
+      TestSize(2, false);
+      TestExists(0L, true);
+      TestExists(9L, true);
+      TestExists(5L, false);
+
+      // Rebuild and test with complex predicate
+      NewEmptyContainer();
+      for (long i = 1; i <= 20; i++) {
+        TestInsert(i, true);
+      }
+      TestFilter(dat -> dat % 2 == 0 && dat % 3 == 0); // divisible by both 2 and 3 (i.e., by 6)
+      TestSize(3, false); // 6, 12, 18
+      TestExists(6L, true);
+      TestExists(12L, true);
+      TestExists(18L, true);
+    }
   }
 
 }
