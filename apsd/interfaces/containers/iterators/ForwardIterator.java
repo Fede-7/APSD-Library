@@ -12,7 +12,7 @@ public interface ForwardIterator<Data> extends Iterator<Data> {
 
   default void Next(long steps){
     if( steps < 0 ) throw new IllegalArgumentException("steps cannot be minus than 0");
-    for (; steps > 0; --steps, Next());
+    for (; steps > 0; --steps) Next();
   }
 
   Data DataNNext();

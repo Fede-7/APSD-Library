@@ -8,7 +8,7 @@ public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data>{
   default boolean InsertIfAbsent(Data dat){ return (!Exists(dat)) ? Insert(dat) : false;}
 
   default void RemoveOccurrences(Data dat){
-    if(IsEmpty() || dat == null) return;
+    if(dat == null) return;
     Filter(elm -> !elm.equals(dat));
   }
   

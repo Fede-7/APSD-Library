@@ -109,6 +109,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
     if (cap > Integer.MAX_VALUE)
       throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!");
     arr = (Data[]) new Object[(int) cap];
-    start = 0L; 
+    start = 0L;
+    if (size > cap) size = cap;
   }
 }

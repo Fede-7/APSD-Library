@@ -12,7 +12,7 @@ public interface BackwardIterator<Data> extends Iterator<Data> {
 
   default void Prev(long steps){
     if(steps < 0) throw new IllegalArgumentException("Size cannot be negative");
-    for (; steps > 0 && IsValid(); --steps , Prev());
+    for (; steps > 0 && IsValid(); --steps) Prev();
   }
 
   Data DataNPrev();

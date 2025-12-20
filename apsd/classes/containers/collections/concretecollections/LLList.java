@@ -60,14 +60,16 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data>{
 
   @Override
   public MutableSequence<Data> SubSequence(Natural startindex, Natural endindex) {
-    if (startindex.ToLong() < 0 || endindex.ToLong() > size.ToLong() || startindex.ToLong() > endindex.ToLong()) { throw new IndexOutOfBoundsException("Invalid start or end index"); }
+    long start = ExcIfOutOfBound(startindex);
+    long end = ExcIfOutOfBound(endindex);
+    if (start > end)throw new IndexOutOfBoundsException("Invalid start or end index"); 
 
     LLList<Data> subList = new LLList<Data>();
     LLNode<Data> cur = headref.Get();
     long index = 0;
 
-    while (cur != null && index < endindex.ToLong()) {
-      if (index >= startindex.ToLong()) { subList.InsertLast(cur.Get());}
+    while (cur != null && index < end) {
+      if (index >= start) { subList.InsertLast(cur.Get());}
       cur = cur.GetNext().Get();
       index++;
     }

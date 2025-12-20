@@ -65,9 +65,9 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
 
   @Override
   public Data HeadNDequeue() {
-    if (Size().ToLong() == 0) return null;
-    Data head = Head();
-    Dequeue();
+    if (lst.IsEmpty()) return null;
+    Data head = lst.GetFirst();
+    lst.RemoveFirst();
     return head;
   }
 

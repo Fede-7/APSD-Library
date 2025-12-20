@@ -66,23 +66,26 @@ public class WStack<Data> implements Stack<Data> {
   @Override
   public Data TopNPop() {
     if (lst.IsEmpty()) return null;
-    final Data top = Top();
-    Pop();
+    Data top = lst.GetFirst();
+    lst.RemoveFirst();
     return top;
   }
 
   @Override
   public void SwapTop(Data dat) {
     if (lst.IsEmpty()) return;
-    Pop();
-    Push(dat);
+    if (dat == null) throw new IllegalArgumentException("Data cannot be null");
+    lst.RemoveFirst();
+    lst.InsertFirst(dat);
   }
 
   @Override
   public Data TopNSwap(Data dat) {
     if (lst.IsEmpty()) return null;
-    final Data top = Top();
-    SwapTop(dat);
+    if (dat == null) throw new IllegalArgumentException("Data cannot be null");
+    Data top = lst.GetFirst();
+    lst.RemoveFirst();
+    lst.InsertFirst(dat);
     return top;
   }
 }
