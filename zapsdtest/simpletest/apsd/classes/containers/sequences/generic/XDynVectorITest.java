@@ -3,6 +3,7 @@ package zapsdtest.simpletest.apsd.classes.containers.sequences.generic;
 import apsd.classes.utilities.Natural;
 
 import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 abstract public class XDynVectorITest extends XDynVectorTest<Long> {
 
@@ -203,6 +204,45 @@ abstract public class XDynVectorITest extends XDynVectorTest<Long> {
       TestGetAt(Natural.Of(3), 5L, false);
     }
 
+    @Test
+    @DisplayName("Expand/Reduce with null throw")
+    public void ExpandReduceNullThrow() {
+      AddTest(2);
+      NewEmptyContainer();
+      assertThrows(NullPointerException.class, () -> ThisContainer().Expand(null));
+      assertThrows(NullPointerException.class, () -> ThisContainer().Reduce(null));
+    }
+
+    @Test
+    @DisplayName("Expand(0) and Reduce(0) are no-ops")
+    public void ExpandReduceZeroNoOp() {
+      AddTest(6);
+      NewEmptyContainer();
+      TestSize(0, false);
+
+      assertDoesNotThrow(() -> ThisContainer().Expand(Natural.ZERO));
+      TestSize(0, false);
+
+      assertDoesNotThrow(() -> ThisContainer().Reduce(Natural.ZERO));
+      TestSize(0, false);
+
+      // sanity: after some growth, still no-op
+      ThisContainer().Expand(Natural.Of(3));
+      TestSize(3, false);
+      assertDoesNotThrow(() -> ThisContainer().Expand(Natural.ZERO));
+      assertDoesNotThrow(() -> ThisContainer().Reduce(Natural.ZERO));
+      TestSize(3, false);
+    }
+
+    @Test
+    @DisplayName("Reduce more than current size throws")
+    public void ReduceTooMuchThrows() {
+      AddTest(3);
+      NewEmptyContainer();
+      ThisContainer().Expand(Natural.Of(3));
+      TestSize(3, false);
+      assertThrows(IllegalArgumentException.class, () -> ThisContainer().Reduce(Natural.Of(4)));
+    }
   }
 
 }

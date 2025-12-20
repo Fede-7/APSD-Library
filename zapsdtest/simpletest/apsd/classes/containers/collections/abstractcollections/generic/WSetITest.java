@@ -3,6 +3,7 @@ package zapsdtest.simpletest.apsd.classes.containers.collections.abstractcollect
 import apsd.interfaces.containers.collections.Set;
 
 import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 abstract public class WSetITest extends WSetTest<Long> {
 
@@ -531,6 +532,165 @@ abstract public class WSetITest extends WSetTest<Long> {
       TestPrintContent("");
     }
 
+  }
+
+  @Nested
+  @DisplayName("WSet Exception Handling")
+  public class WSetExceptionHandling {
+
+    @Test
+    @DisplayName("Insert/Remove/Exists with null element")
+    public void NullElementOps() {
+      AddTest(3);
+      NewNonEmptyContainer();
+      assertFalse(ThisContainer().Insert(null));
+      assertFalse(ThisContainer().Remove(null));
+      assertFalse(ThisContainer().Exists(null));
+    }
+
+    @Test
+    @DisplayName("Filter(null) is safe (no crash)")
+    public void FilterNullPredicateSafe() {
+      AddTest(1);
+      NewNonEmptyContainer();
+      assertDoesNotThrow(() -> ThisContainer().Filter(null));
+    }
+  }
+
+  @Nested
+  @DisplayName("WSet Contract Tests")
+  public class WSetContractTests {
+
+    @Test
+    @DisplayName("Union/Difference/Intersection with null set follow Set.java contract")
+    public void NullSetContract() {
+      AddTest(12);
+
+      // Union(null) and Difference(null) are no-ops; Intersection(null) clears.
+      NewNonEmptyContainer();
+      long beforeSize = ThisContainer().Size().ToLong();
+
+      assertDoesNotThrow(() -> ThisContainer().Union(null));
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "Union(null) should not change size");
+
+      assertDoesNotThrow(() -> ThisContainer().Difference(null));
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "Difference(null) should not change size");
+
+      assertDoesNotThrow(() -> ThisContainer().Intersection(null));
+      assertEquals(0L, ThisContainer().Size().ToLong(), "Intersection(null) should clear the set");
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Set operations must not mutate the argument set")
+    public void ArgumentNotMutated() {
+      AddTest(18);
+
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+
+      Set<Long> other = GetNewEmptyContainer();
+      other.Insert(2L);
+      other.Insert(99L);
+
+      long otherBeforeSize = other.Size().ToLong();
+      boolean otherHad2 = other.Exists(2L);
+      boolean otherHad99 = other.Exists(99L);
+
+      ThisContainer().Union(other);
+      assertEquals(otherBeforeSize, other.Size().ToLong(), "Union should not mutate argument size");
+      assertEquals(otherHad2, other.Exists(2L), "Union should not mutate argument membership");
+      assertEquals(otherHad99, other.Exists(99L), "Union should not mutate argument membership");
+
+      ThisContainer().Difference(other);
+      assertEquals(otherBeforeSize, other.Size().ToLong(), "Difference should not mutate argument size");
+      assertEquals(otherHad2, other.Exists(2L), "Difference should not mutate argument membership");
+      assertEquals(otherHad99, other.Exists(99L), "Difference should not mutate argument membership");
+
+      // Rebuild A to ensure Intersection has work to do
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+
+      ThisContainer().Intersection(other);
+      assertEquals(otherBeforeSize, other.Size().ToLong(), "Intersection should not mutate argument size");
+      assertEquals(otherHad2, other.Exists(2L), "Intersection should not mutate argument membership");
+      assertEquals(otherHad99, other.Exists(99L), "Intersection should not mutate argument membership");
+    }
+
+    @Test
+    @DisplayName("IsEqual is reflexive and symmetric on identical content")
+    public void IsEqualReflexiveAndSymmetric() {
+      AddTest(10);
+
+      NewEmptyContainer();
+      TestInsert(10L, true);
+      TestInsert(20L, true);
+      TestInsert(30L, true);
+
+      assertTrue(ThisContainer().IsEqual(ThisContainer()), "IsEqual should be reflexive");
+
+      Set<Long> copy = GetNewEmptyContainer();
+      copy.Insert(10L);
+      copy.Insert(20L);
+      copy.Insert(30L);
+
+      assertTrue(ThisContainer().IsEqual(copy), "IsEqual should be true for identical content");
+      assertTrue(copy.IsEqual(ThisContainer()), "IsEqual should be symmetric for identical content");
+
+      copy.Insert(40L);
+      assertFalse(ThisContainer().IsEqual(copy), "IsEqual should be false if sizes differ");
+      assertFalse(copy.IsEqual(ThisContainer()), "IsEqual should be false if sizes differ (symmetric)");
+    }
+
+    @Test
+    @DisplayName("InsertAll/InsertSome semantics with null and duplicates")
+    public void InsertAllInsertSomeContract() {
+      AddTest(14);
+
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      long beforeSize = ThisContainer().Size().ToLong();
+
+      assertTrue(ThisContainer().InsertAll(null), "InsertAll(null) should return true (no-op)");
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "InsertAll(null) should not change size");
+
+      assertFalse(ThisContainer().InsertSome(null), "InsertSome(null) should return false (no-op)");
+      assertEquals(beforeSize, ThisContainer().Size().ToLong(), "InsertSome(null) should not change size");
+
+      // Deterministic success path: all new elements
+      Set<Long> srcAllNew = GetNewEmptyContainer();
+      srcAllNew.Insert(3L);
+      srcAllNew.Insert(4L);
+
+      assertTrue(ThisContainer().InsertAll(srcAllNew), "InsertAll should be true when all insertions succeed");
+      assertTrue(ThisContainer().Exists(3L));
+      assertTrue(ThisContainer().Exists(4L));
+      assertEquals(beforeSize + 2, ThisContainer().Size().ToLong(), "Size should increase by number of new elements");
+
+      // Deterministic failure path: all duplicates
+      long afterAllNewSize = ThisContainer().Size().ToLong();
+      Set<Long> srcAllDuplicates = GetNewEmptyContainer();
+      srcAllDuplicates.Insert(1L);
+      srcAllDuplicates.Insert(2L);
+
+      assertFalse(ThisContainer().InsertAll(srcAllDuplicates), "InsertAll should be false if any insertion fails (duplicates)");
+      assertEquals(afterAllNewSize, ThisContainer().Size().ToLong(), "InsertAll(duplicates) should not change size");
+
+      assertFalse(ThisContainer().InsertSome(srcAllDuplicates), "InsertSome should be false if nothing new is inserted");
+
+      // Deterministic InsertSome success: source has exactly one new element
+      Set<Long> srcOneNew = GetNewEmptyContainer();
+      srcOneNew.Insert(5L);
+
+      assertTrue(ThisContainer().InsertSome(srcOneNew), "InsertSome should be true if at least one element is inserted");
+      assertTrue(ThisContainer().Exists(5L));
+      assertEquals(afterAllNewSize + 1, ThisContainer().Size().ToLong(), "Size should increase by 1");
+    }
   }
 
 }
