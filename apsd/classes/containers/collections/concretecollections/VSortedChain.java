@@ -47,7 +47,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   @Override
   public void RemoveOccurrences(Data dat) {
     if(dat == null || this.vec == null) return;
-    Filter(elm -> dat.equals(elm));
+    Filter(elm -> !dat.equals(elm));
  }
 
 }

@@ -31,13 +31,18 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
     long newCap = newCapacity.ToLong();
     if (newCap > Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
     
-    Data[] newarr = (Data[]) new Object[(int) newCap];
+    Data[] newarr = (Data[]) new Object[(int) newCap]; 
+    long currentSize = Size().ToLong();
+    long copySize = (currentSize > newCap) ? newCap : currentSize;
     
-    long currentCap = Capacity().ToLong();
-    long size = (currentCap < newCap) ? currentCap : newCap;
-    
-    for (int i = 0; i < size; i++) { newarr[i] = arr[i];}
-    arr = newarr; 
+    if (arr.length > 0) {
+      for (long i = 0; i < copySize; i++) {
+        newarr[(int) i] = arr[(int) ((start + i) % arr.length)];
+      }
+    }
+
+    arr = newarr;
+    start = 0L;
   }
 
   /* ************************************************************************ */

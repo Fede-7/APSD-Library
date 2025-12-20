@@ -46,18 +46,14 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
   public Data GetAt(Natural pos) {
     if (pos == null) throw new NullPointerException("Natural cannot be a null value");
     long idx = ExcIfOutOfBound(pos);
-    MutableForwardIterator<Data> it = FIterator();
-    it.Next(idx);
-    return it.GetCurrent();
+    return arr[(int) idx];  
   }
 
   @Override
   public void SetAt(Data elem, Natural pos) {
     if (pos == null) throw new NullPointerException("Natural cannot be a null value");
     long idx = ExcIfOutOfBound(pos);
-    MutableForwardIterator<Data> it = FIterator();
-    it.Next(idx);
-    it.SetCurrent(elem);
+    arr[(int) idx] = elem;
   }
 
   /* ************************************************************************ */

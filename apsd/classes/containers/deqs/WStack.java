@@ -58,7 +58,10 @@ public class WStack<Data> implements Stack<Data> {
   }
 
   @Override
-  public void Push(Data dat) { lst.InsertFirst(dat); }
+  public void Push(Data dat) {
+    if (dat == null) throw new IllegalArgumentException("Data cannot be null");
+    lst.InsertFirst(dat);
+  }
 
   @Override
   public Data TopNPop() {

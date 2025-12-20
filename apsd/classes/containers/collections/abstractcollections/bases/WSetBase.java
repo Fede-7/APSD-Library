@@ -55,8 +55,8 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
   @Override
   public boolean Insert(Data dat) {
-    if (dat == null || Exists(dat)) return false;
-    return chn.Insert(dat);
+    if (dat == null) return false;
+    return chn.InsertIfAbsent(dat);
   }
 
   /* ************************************************************************ */
