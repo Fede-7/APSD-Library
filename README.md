@@ -246,3 +246,20 @@ Test run finished after 581 ms
 [         0 tests aborted         ]
 [       752 tests successful      ]
 [         0 tests failed          ]
+
+## New Test:
+
+# 1° Test:
+Test run finished after 1337 ms
+[       130 containers found      ]
+[         0 containers skipped    ]
+[       130 containers started    ]
+[         0 containers aborted    ]
+[       130 containers successful ]
+[         0 containers failed     ]
+[      1082 tests found           ]
+[         0 tests skipped         ]
+[      1082 tests started         ]
+[         0 tests aborted         ]
+[      1082 tests successful      ]
+[         0 tests failed          ]
