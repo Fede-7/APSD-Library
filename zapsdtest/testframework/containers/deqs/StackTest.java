@@ -1,5 +1,6 @@
 package zapsdtest.testframework.containers.deqs;
 
+import apsd.classes.containers.deqs.WStack;
 import apsd.interfaces.containers.deqs.Stack;
 
 import zapsdtest.testframework.containers.base.ClearableContainerTest;
@@ -103,16 +104,20 @@ public interface StackTest<Data, Con extends Stack<Data>> extends ClearableConta
   default void TestExists(Data element, boolean expectedResult) {
     BeginTest("Exists");
     boolean exists = false;
+    WStack<Data> tempStack = new WStack<>();
     while (!ThisContainer().IsEmpty()) {
       Data top = ThisContainer().TopNPop();
       if (top == null) {
         break;
       } else {
+        tempStack.Push(top);
         if (top.equals(element)) {
           exists = true;
-          break;
         }
       }
+    }
+    while (!tempStack.IsEmpty()) {
+      ThisContainer().Push(tempStack.TopNPop());
     }
     assertEquals(expectedResult, exists,
     "Exists should return " + expectedResult + " for " + element);

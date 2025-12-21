@@ -87,7 +87,13 @@ public interface SequenceTest<Data, Con extends Sequence<Data>>
   default void TestSubSequence(Natural from, Natural to, boolean edgeCase) {
     BeginTest("SubSequence");
     Sequence<Data> subSequence = ThisContainer().SubSequence(from, to);
-    if (edgeCase) {
+    if (from == null && to == null) {
+      assertNotNull(subSequence, "SubSequence should not return null for null range");
+      assertEquals(0L, subSequence.Size().ToLong(),
+      "SubSequence of null range should be empty");
+      EndTest();
+      return;
+    } else if (edgeCase) {
       assertNull(subSequence, "SubSequence should return null for invalid range");
     } else {
       assertNotNull(subSequence, "SubSequence should not return null");

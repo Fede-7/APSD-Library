@@ -25,6 +25,24 @@ public interface DynVectorTest<Data, Con extends DynVector<Data>> extends Vector
     EndTest();
   }
 
+  default void TestInsertFirstWithAutoExpansion(Data element) {
+    BeginTest("InsertFirstWithAutoExpansion");
+    long initialSize = ThisContainer().Size().ToLong();
+    ThisContainer().InsertFirst(element);
+    assertEquals(initialSize + 1, ThisContainer().Size().ToLong(),
+    "InsertFirst should automatically expand size");
+    EndTest();
+  }
+
+  default void TestInsertLastWithAutoExpansion(Data element) {
+    BeginTest("InsertLastWithAutoExpansion");
+    long initialSize = ThisContainer().Size().ToLong();
+    ThisContainer().InsertLast(element);
+    assertEquals(initialSize + 1, ThisContainer().Size().ToLong(),
+    "InsertLast should automatically expand size");
+    EndTest();
+  }
+
   default void TestAtNRemoveWithAutoReduction(Natural position, Data expectedElement) {
     BeginTest("AtNRemoveWithAutoReduction");
     if (position == null) {
@@ -40,6 +58,88 @@ public interface DynVectorTest<Data, Con extends DynVector<Data>> extends Vector
     "AtNRemove should return the removed element");
     assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
     "AtNRemove should automatically reduce size");
+    EndTest();
+  }
+
+  default void TestRemoveFirstWithAutoReduction() {
+    TestRemoveFirstWithAutoReduction(false);
+  }
+
+  default void TestRemoveFirstWithAutoReduction(boolean edgeCase) {
+    BeginTest("RemoveFirstWithAutoReduction");
+    if (edgeCase && ThisContainer().Size().ToLong() == 0L) {
+      assertThrows(IndexOutOfBoundsException.class,
+      () -> ThisContainer().RemoveFirst(),
+      "RemoveFirst should throw exception when removing from empty container");
+      EndTest();
+      return;
+    }
+    long initialSize = ThisContainer().Size().ToLong();
+    Data removed = ThisContainer().GetFirst();
+    ThisContainer().RemoveFirst();
+    assertNotNull(removed,
+    "RemoveFirst should return the removed element");
+    assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
+    "RemoveFirst should automatically reduce size");
+    EndTest();
+  }
+
+  default void TestRemoveLastWithAutoReduction() {
+    TestRemoveLastWithAutoReduction(false);
+  }
+
+  default void TestRemoveLastWithAutoReduction(boolean edgeCase) {
+    BeginTest("RemoveLastWithAutoReduction");
+    if (edgeCase && ThisContainer().Size().ToLong() == 0L) {
+      assertThrows(IndexOutOfBoundsException.class,
+      () -> ThisContainer().RemoveLast(),
+      "RemoveLast should throw exception when removing from empty container");
+      EndTest();
+      return;
+    }
+    long initialSize = ThisContainer().Size().ToLong();
+    Data removed = ThisContainer().GetLast();
+    ThisContainer().RemoveLast();
+    assertNotNull(removed,
+    "RemoveLast should return the removed element");
+    assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
+    "RemoveLast should automatically reduce size");
+    EndTest();
+  }
+
+  default void TestFirstNRemoveWithAutoReduction(Data expectedFirst) {
+    BeginTest("FirstNRemoveWithAutoReduction");
+    if (ThisContainer().Size().ToLong() == 0L) {
+      assertThrows(IndexOutOfBoundsException.class,
+      () -> ThisContainer().FirstNRemove(),
+      "FirstNRemove should throw exception when removing from empty container");
+      EndTest();
+      return;
+    }
+    long initialSize = ThisContainer().Size().ToLong();
+    Data removed = ThisContainer().FirstNRemove();
+    assertEquals(expectedFirst, removed,
+    "FirstNRemove should return the removed first element");
+    assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
+    "FirstNRemove should automatically reduce size");
+    EndTest();
+  }
+
+  default void TestLastNRemoveWithAutoReduction(Data expectedLast) {
+    BeginTest("LastNRemoveWithAutoReduction");
+    if (ThisContainer().Size().ToLong() == 0L) {
+      assertThrows(IndexOutOfBoundsException.class,
+      () -> ThisContainer().LastNRemove(),
+      "LastNRemove should throw exception when removing from empty container");
+      EndTest();
+      return;
+    }
+    long initialSize = ThisContainer().Size().ToLong();
+    Data removed = ThisContainer().LastNRemove();
+    assertEquals(expectedLast, removed,
+    "LastNRemove should return the removed last element");
+    assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
+    "LastNRemove should automatically reduce size");
     EndTest();
   }
 

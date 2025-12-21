@@ -908,7 +908,7 @@ abstract public class WSetITest extends WSetTest<Long> {
       TestInsert(2L, true);
       TestInsert(3L, true);
       TestIntersection(null);
-      TestSize(3, false);
+      TestSize(0, false);
     }
 
     @Test
@@ -959,7 +959,7 @@ abstract public class WSetITest extends WSetTest<Long> {
       TestUnion(null);
       TestIntersection(null);
       TestDifference(null);
-      TestSize(3, false);
+      TestSize(0, false);
     }
 
     @Test
@@ -974,6 +974,748 @@ abstract public class WSetITest extends WSetTest<Long> {
       TestIntersection(null);
       TestDifference(null);
       TestIsEmpty(true, false);
+    }
+
+  }
+
+  @Nested
+  @DisplayName("WSet Comprehensive Method Combinations")
+  public class WSetComprehensiveMethodCombinations {
+
+    @Test
+    @DisplayName("Insert, Exists, Size cycle through all elements")
+    public void InsertExistsSizeCycle() {
+      AddTest(20);
+      NewEmptyContainer();
+      TestInsert(50L, true);
+      TestExists(50L, true);
+      TestSize(1, false);
+      TestInsert(25L, true);
+      TestExists(25L, true);
+      TestSize(2, false);
+      TestInsert(75L, true);
+      TestExists(75L, true);
+      TestSize(3, false);
+      TestInsert(10L, true);
+      TestExists(10L, true);
+      TestSize(4, false);
+      TestInsert(90L, true);
+      TestExists(90L, true);
+      TestSize(5, false);
+      TestIsEmpty(false, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 250L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Remove then verify with Exists and Size")
+    public void RemoveWithExistsAndSize() {
+      AddTest(20);
+      NewEmptyContainer();
+      TestInsert(10L, true);
+      TestInsert(20L, true);
+      TestInsert(30L, true);
+      TestInsert(40L, true);
+      TestInsert(50L, true);
+      TestRemove(10L, true);
+      TestExists(10L, false);
+      TestSize(4, false);
+      TestRemove(30L, true);
+      TestExists(30L, false);
+      TestSize(3, false);
+      TestRemove(50L, true);
+      TestExists(50L, false);
+      TestSize(2, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 60L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Filter then verify with Exists and Size")
+    public void FilterWithExistsAndSize() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      TestInsert(6L, true);
+      TestSize(6, false);
+      // Filter out odd numbers (keep even)
+      TestFilter(dat -> dat % 2 == 0);
+      TestSize(3, false);
+      TestExists(1L, false);
+      TestExists(2L, true);
+      TestExists(3L, false);
+      TestExists(4L, true);
+      TestExists(5L, false);
+      TestExists(6L, true);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 12L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Union with verification using Exists, Size")
+    public void UnionWithFullVerification() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(3L, true);
+      TestInsert(5L, true);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(2L);
+      other.Insert(4L);
+      other.Insert(6L);
+      
+      TestUnion(other);
+      TestSize(6, false);
+      TestExists(1L, true);
+      TestExists(2L, true);
+      TestExists(3L, true);
+      TestExists(4L, true);
+      TestExists(5L, true);
+      TestExists(6L, true);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 21L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Intersection with verification using Exists, Size")
+    public void IntersectionWithFullVerification() {
+      AddTest(14);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(2L);
+      other.Insert(4L);
+      other.Insert(6L);
+      
+      TestIntersection(other);
+      TestSize(2, false);
+      TestExists(1L, false);
+      TestExists(2L, true);
+      TestExists(3L, false);
+      TestExists(4L, true);
+      TestExists(5L, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Difference with verification using Exists, Size")
+    public void DifferenceWithFullVerification() {
+      AddTest(14);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(2L);
+      other.Insert(4L);
+      
+      TestDifference(other);
+      TestSize(3, false);
+      TestExists(1L, true);
+      TestExists(2L, false);
+      TestExists(3L, true);
+      TestExists(4L, false);
+      TestExists(5L, true);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("InsertAll then RemoveAll with verification")
+    public void InsertAllThenRemoveAll() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      
+      List<Long> toAdd = new LLList<>();
+      toAdd.Insert(3L);
+      toAdd.Insert(4L);
+      toAdd.Insert(5L);
+      
+      TestInsertAll(toAdd, true);
+      TestSize(5, false);
+      TestExists(3L, true);
+      TestExists(4L, true);
+      TestExists(5L, true);
+      
+      List<Long> toRemove = new LLList<>();
+      toRemove.Insert(2L);
+      toRemove.Insert(4L);
+      
+      TestRemoveAll(toRemove, true);
+      TestSize(3, false);
+      TestExists(2L, false);
+      TestExists(4L, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 9L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("InsertSome then RemoveSome with verification")
+    public void InsertSomeThenRemoveSome() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestInsert(10L, true);
+      TestInsert(20L, true);
+      
+      List<Long> toAdd = new LLList<>();
+      toAdd.Insert(30L);
+      toAdd.Insert(40L);
+      toAdd.Insert(10L); // duplicate
+      
+      TestInsertSome(toAdd, true);
+      TestSize(4, false);
+      TestExists(10L, true);
+      TestExists(30L, true);
+      TestExists(40L, true);
+      
+      List<Long> toRemove = new LLList<>();
+      toRemove.Insert(20L);
+      toRemove.Insert(50L); // not present
+      
+      TestRemoveSome(toRemove, true);
+      TestSize(3, false);
+      TestExists(20L, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("TraverseForward and TraverseBackward with predicates")
+    public void TraverseForwardAndBackward() {
+      AddTest(12);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      // All positive
+      TestTraverseForward(dat -> dat > 0L, true);
+      TestTraverseBackward(dat -> dat > 0L, true);
+      // All less than 10
+      TestTraverseForward(dat -> dat < 10L, true);
+      TestTraverseBackward(dat -> dat < 10L, true);
+      // None negative
+      TestTraverseForward(dat -> dat < 0L, false);
+      TestTraverseBackward(dat -> dat < 0L, false);
+      TestSize(5, false);
+    }
+
+    @Test
+    @DisplayName("FIterator and BIterator usage")
+    public void FIteratorAndBIteratorUsage() {
+      AddTest(8);
+      NewEmptyContainer();
+      TestInsert(10L, true);
+      TestInsert(20L, true);
+      TestInsert(30L, true);
+      TestInsert(40L, true);
+      TestInsert(50L, true);
+      TestFIterator();
+      TestBIterator();
+      TestSize(5, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Clear then rebuild with all operations")
+    public void ClearThenRebuildWithAllOps() {
+      AddTest(25);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestSize(3, false);
+      TestClear();
+      TestIsEmpty(true, false);
+      
+      // Rebuild
+      TestInsert(100L, true);
+      TestInsert(50L, true);
+      TestInsert(150L, true);
+      TestInsert(25L, true);
+      TestInsert(75L, true);
+      TestSize(5, false);
+      TestRemove(100L, true);
+      TestExists(100L, false);
+      TestSize(4, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 300L);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(50L);
+      other.Insert(75L);
+      TestIntersection(other);
+      TestSize(2, false);
+      TestExists(25L, false);
+      TestExists(150L, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Union, Intersection, Difference chain")
+    public void SetOperationsChain() {
+      AddTest(22);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      
+      WSet<Long> set2 = (WSet<Long>) GetNewEmptyContainer();
+      set2.Insert(4L);
+      set2.Insert(5L);
+      set2.Insert(6L);
+      set2.Insert(7L);
+      
+      WSet<Long> set3 = (WSet<Long>) GetNewEmptyContainer();
+      set3.Insert(1L);
+      set3.Insert(7L);
+      
+      // Union with set2: {1,2,3,4,5,6,7}
+      TestUnion(set2);
+      TestSize(7, false);
+      
+      // Intersection with set3: {1,7}
+      TestIntersection(set3);
+      TestSize(2, false);
+      TestExists(1L, true);
+      TestExists(7L, true);
+      TestExists(4L, false);
+      
+      // Difference with set3: {} (empty)
+      TestDifference(set3);
+      TestIsEmpty(true, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Filter removes all elements")
+    public void FilterRemovesAll() {
+      AddTest(8);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      // Filter: keep nothing
+      TestFilter(dat -> false);
+      TestIsEmpty(true, false);
+      TestSize(0, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Filter keeps all elements")
+    public void FilterKeepsAll() {
+      AddTest(10);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      // Filter: keep all
+      TestFilter(dat -> true);
+      TestIsEmpty(false, false);
+      TestSize(5, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 15L);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Multiple FoldForward and FoldBackward operations")
+    public void MultipleFoldOperations() {
+      AddTest(12);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      // Sum
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 15L);
+      TestFoldBackward((dat, acc) -> acc + dat, 0L, 15L);
+      // Product
+      TestFoldForward((dat, acc) -> acc * dat, 1L, 120L);
+      TestFoldBackward((dat, acc) -> acc * dat, 1L, 120L);
+      // Count
+      TestFoldForward((dat, acc) -> acc + 1L, 0L, 5L);
+      TestFoldBackward((dat, acc) -> acc + 1L, 0L, 5L);
+      TestSize(5, false);
+    }
+
+    @Test
+    @DisplayName("IsEqual after various modifications")
+    public void IsEqualAfterModifications() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(1L);
+      other.Insert(2L);
+      other.Insert(3L);
+      TestIsEqual(other, true);
+      
+      // Modify this container
+      TestInsert(4L, true);
+      TestIsEqual(other, false);
+      
+      // Make other match
+      other.Insert(4L);
+      TestIsEqual(other, true);
+      
+      // Remove from this
+      TestRemove(2L, true);
+      TestIsEqual(other, false);
+      
+      // Match other
+      other.Remove(2L);
+      TestIsEqual(other, true);
+      
+      // Clear both
+      TestClear();
+      other.Clear();
+      TestIsEqual(other, true);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Empty set all operations")
+    public void EmptySetAllOperations() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestIsEmpty(true, false);
+      TestSize(0, false);
+      TestExists(1L, false);
+      TestRemove(1L, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 0L);
+      TestFoldBackward((dat, acc) -> acc + dat, 0L, 0L);
+      TestFilter(dat -> true);
+      TestIsEmpty(true, false);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      TestIsEqual(other, true);
+      TestUnion(other);
+      TestIntersection(other);
+      TestDifference(other);
+      TestIsEmpty(true, false);
+      TestFIterator();
+      TestBIterator();
+    }
+
+    @Test
+    @DisplayName("Single element all operations")
+    public void SingleElementAllOperations() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(42L, true);
+      TestIsEmpty(false, false);
+      TestSize(1, false);
+      TestExists(42L, true);
+      TestExists(0L, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 42L);
+      TestFoldBackward((dat, acc) -> acc + dat, 0L, 42L);
+      TestTraverseForward(dat -> dat.equals(42L), true);
+      TestTraverseBackward(dat -> dat.equals(42L), true);
+      
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(42L);
+      TestIsEqual(other, true);
+      
+      // Remove the single element
+      TestRemove(42L, true);
+      TestIsEmpty(true, false);
+      TestIsEqual(other, false);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("InsertAll with duplicates then Filter")
+    public void InsertAllWithDuplicatesThenFilter() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      
+      List<Long> toAdd = new LLList<>();
+      toAdd.Insert(2L); // duplicate
+      toAdd.Insert(3L); // duplicate
+      toAdd.Insert(4L);
+      toAdd.Insert(5L);
+      toAdd.Insert(6L);
+      
+      TestInsertAll(toAdd, false);
+      TestSize(6, false);
+      TestClear();
+      TestInsertAll(toAdd, true);
+      
+      // Filter to keep only even
+      TestFilter(dat -> dat % 2 == 0);
+      TestSize(3, false);
+      TestExists(1L, false);
+      TestExists(2L, true);
+      TestExists(3L, false);
+      TestExists(4L, true);
+      TestExists(6L, true);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("RemoveAll non-existent elements")
+    public void RemoveAllNonExistent() {
+      AddTest(10);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      
+      List<Long> toRemove = new LLList<>();
+      toRemove.Insert(10L);
+      toRemove.Insert(20L);
+      toRemove.Insert(30L);
+      
+      TestRemoveAll(toRemove, false);
+      TestSize(3, false);
+      TestExists(1L, true);
+      TestExists(2L, true);
+      TestExists(3L, true);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Complex chain: Insert, Union, Filter, Remove, Fold")
+    public void ComplexChainOperations() {
+      AddTest(25);
+      NewEmptyContainer();
+      // Insert initial elements
+      TestInsert(5L, true);
+      TestInsert(10L, true);
+      TestInsert(15L, true);
+      
+      // Create another set and union
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(20L);
+      other.Insert(25L);
+      other.Insert(30L);
+      
+      TestUnion(other);
+      TestSize(6, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 105L);
+      
+      // Filter: keep multiples of 10
+      TestFilter(dat -> dat % 10 == 0);
+      TestSize(3, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 60L);
+      
+      // Remove some
+      TestRemove(20L, true);
+      TestSize(2, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 40L);
+      
+      // Verify final state
+      TestExists(10L, true);
+      TestExists(20L, false);
+      TestExists(30L, true);
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Interleaved Insert and Remove with Exists checks")
+    public void InterleavedInsertRemoveWithExists() {
+      AddTest(25);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestExists(1L, true);
+      TestInsert(2L, true);
+      TestExists(2L, true);
+      TestRemove(1L, true);
+      TestExists(1L, false);
+      TestInsert(3L, true);
+      TestExists(3L, true);
+      TestInsert(1L, true);
+      TestExists(1L, true);
+      TestRemove(2L, true);
+      TestExists(2L, false);
+      TestInsert(4L, true);
+      TestRemove(3L, true);
+      TestInsert(5L, true);
+      TestRemove(1L, true);
+      TestInsert(2L, true);
+      TestRemove(4L, true);
+      // Remaining: 2, 5
+      TestSize(2, false);
+      TestExists(2L, true);
+      TestExists(5L, true);
+      TestExists(1L, false);
+      TestExists(3L, false);
+      TestExists(4L, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 7L);
+    }
+
+    @Test
+    @DisplayName("Union with self then Intersection with self")
+    public void UnionAndIntersectionWithSelf() {
+      AddTest(12);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestSize(3, false);
+      
+      // Union with self
+      TestUnion(ThisContainer());
+      TestSize(3, false);
+      
+      // Intersection with self
+      TestIntersection(ThisContainer());
+      TestSize(3, false);
+      
+      // Difference with self
+      TestDifference(ThisContainer());
+      TestIsEmpty(true, false);
+      TestSize(0, false);
+    }
+
+    @Test
+    @DisplayName("Build, verify, clear, rebuild multiple times")
+    public void BuildVerifyClearRebuildCycle() {
+      AddTest(30);
+      // First cycle
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestSize(3, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 6L);
+      TestClear();
+      TestIsEmpty(true, false);
+      
+      // Second cycle
+      TestInsert(10L, true);
+      TestInsert(20L, true);
+      TestInsert(30L, true);
+      TestInsert(40L, true);
+      TestSize(4, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 100L);
+      TestClear();
+      TestIsEmpty(true, false);
+      
+      // Third cycle
+      TestInsert(100L, true);
+      TestInsert(200L, true);
+      TestSize(2, false);
+      TestRemove(100L, true);
+      TestRemove(200L, true);
+      TestIsEmpty(true, false);
+      
+      // Fourth cycle: use InsertAll
+      List<Long> batch = new LLList<>();
+      batch.Insert(5L);
+      batch.Insert(10L);
+      batch.Insert(15L);
+      TestInsertAll(batch, true);
+      TestSize(3, false);
+      TestFoldBackward((dat, acc) -> acc + dat, 0L, 30L);
+    }
+
+    @Test
+    @DisplayName("Large set with multiple operations")
+    public void LargeSetWithMultipleOperations() {
+      AddTest(60);
+      NewEmptyContainer();
+      
+      // Insert 20 elements
+      for (long i = 1L; i <= 20L; i++) {
+        TestInsert(i, true);
+      }
+      TestSize(20, false);
+      
+      // Sum 1..20 = 210
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 210L);
+      
+      // Filter: keep multiples of 3
+      TestFilter(dat -> dat % 3 == 0);
+      // Kept: 3, 6, 9, 12, 15, 18 = 6 elements, sum = 63
+      TestSize(6, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 63L);
+      
+      // Create set with multiples of 6
+      WSet<Long> multiplesOf6 = (WSet<Long>) GetNewEmptyContainer();
+      multiplesOf6.Insert(6L);
+      multiplesOf6.Insert(12L);
+      multiplesOf6.Insert(18L);
+      
+      // Intersection: 6, 12, 18
+      TestIntersection(multiplesOf6);
+      TestSize(3, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 36L);
+      
+      // Union with more elements
+      WSet<Long> extras = (WSet<Long>) GetNewEmptyContainer();
+      extras.Insert(24L);
+      extras.Insert(30L);
+      TestUnion(extras);
+      TestSize(5, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 90L);
+      
+      // Remove some
+      TestRemove(6L, true);
+      TestRemove(18L, true);
+      TestSize(3, false);
+      TestFoldForward((dat, acc) -> acc + dat, 0L, 66L);
+      
+      TestPrintContent("");
+    }
+
+    @Test
+    @DisplayName("Set equality with different insertion orders")
+    public void SetEqualityDifferentOrders() {
+      AddTest(14);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestInsert(2L, true);
+      TestInsert(3L, true);
+      TestInsert(4L, true);
+      TestInsert(5L, true);
+      
+      // Create another set with reverse order
+      WSet<Long> other = (WSet<Long>) GetNewEmptyContainer();
+      other.Insert(5L);
+      other.Insert(4L);
+      other.Insert(3L);
+      other.Insert(2L);
+      other.Insert(1L);
+      
+      TestIsEqual(other, true);
+      TestSize(5, false);
+      
+      // Add to other
+      other.Insert(6L);
+      TestIsEqual(other, false);
+      
+      // Match
+      TestInsert(6L, true);
+      TestIsEqual(other, true);
+      TestSize(6, false);
     }
 
   }

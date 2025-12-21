@@ -800,4 +800,645 @@ abstract public class WStackITest extends WStackTest<Long> {
 
   }
 
+  @Nested
+  @DisplayName("Stack Comprehensive Method Combinations")
+  public class StackComprehensiveMethodCombinations {
+
+    @Test
+    @DisplayName("Push, Top, Size cycle through all elements")
+    public void PushTopSizeCycle() {
+      AddTest(20);
+      NewEmptyContainer();
+      TestPush(10L);
+      TestSize(1, false);
+      TestTop(10L);
+      TestPush(20L);
+      TestSize(2, false);
+      TestTop(20L);
+      TestPush(30L);
+      TestSize(3, false);
+      TestTop(30L);
+      TestPush(40L);
+      TestSize(4, false);
+      TestTop(40L);
+      TestPush(50L);
+      TestSize(5, false);
+      TestTop(50L);
+      TestIsEmpty(false, false);
+      TestExists(10L, true);
+      TestExists(50L, true);
+      TestExists(100L, false);
+    }
+
+    @Test
+    @DisplayName("TopNPop chain verification")
+    public void TopNPopChainVerification() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      TestPush(4L);
+      TestPush(5L);
+      TestSize(5, false);
+      TestTopNPop(5L, false);
+      TestSize(4, false);
+      TestTopNPop(4L, false);
+      TestSize(3, false);
+      TestTopNPop(3L, false);
+      TestSize(2, false);
+      TestTopNPop(2L, false);
+      TestSize(1, false);
+      TestTopNPop(1L, false);
+      TestSize(0, false);
+      TestIsEmpty(true, false);
+      TestTopNPop(null, true);
+    }
+
+    @Test
+    @DisplayName("Pop then verify with Top and Size")
+    public void PopWithTopAndSize() {
+      AddTest(20);
+      NewEmptyContainer();
+      TestPush(100L);
+      TestPush(200L);
+      TestPush(300L);
+      TestPush(400L);
+      TestPush(500L);
+      TestTop(500L);
+      TestPop(false);
+      TestTop(400L);
+      TestSize(4, false);
+      TestPop(false);
+      TestTop(300L);
+      TestSize(3, false);
+      TestPop(false);
+      TestTop(200L);
+      TestSize(2, false);
+      TestPop(false);
+      TestTop(100L);
+      TestSize(1, false);
+      TestPop(false);
+      TestTop(null);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Insert and Push combined with Size checks")
+    public void InsertAndPushCombined() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestInsert(1L, true);
+      TestSize(1, false);
+      TestPush(2L);
+      TestSize(2, false);
+      TestInsert(3L, true);
+      TestSize(3, false);
+      TestPush(4L);
+      TestSize(4, false);
+      TestInsert(5L, true);
+      TestSize(5, false);
+      // Verify LIFO order
+      TestTopNPop(5L, false);
+      TestTopNPop(4L, false);
+      TestTopNPop(3L, false);
+      TestTopNPop(2L, false);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("InsertAll then TopNPop verification")
+    public void InsertAllThenTopNPop() {
+      AddTest(14);
+      NewEmptyContainer();
+      LLList<Long> toAdd = new LLList<>();
+      toAdd.InsertLast(10L);
+      toAdd.InsertLast(20L);
+      toAdd.InsertLast(30L);
+      toAdd.InsertLast(40L);
+      toAdd.InsertLast(50L);
+      TestInsertAll(toAdd, true);
+      TestSize(5, false);
+      TestTop(50L);
+      TestTopNPop(50L, false);
+      TestTopNPop(40L, false);
+      TestTopNPop(30L, false);
+      TestTopNPop(20L, false);
+      TestTopNPop(10L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("InsertSome then Pop verification")
+    public void InsertSomeThenPop() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestPush(2L);
+      LLList<Long> toAdd = new LLList<>();
+      toAdd.InsertLast(3L);
+      toAdd.InsertLast(4L);
+      toAdd.InsertLast(5L);
+      TestInsertSome(toAdd, true);
+      TestSize(5, false);
+      TestTop(5L);
+      TestPop(false);
+      TestTop(4L);
+      TestPop(false);
+      TestTop(3L);
+      TestPop(false);
+      TestTop(2L);
+      TestPop(false);
+      TestTop(1L);
+      TestSize(1, false);
+    }
+
+    @Test
+    @DisplayName("Clear then rebuild with Push")
+    public void ClearThenRebuildWithPush() {
+      AddTest(22);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      TestSize(3, false);
+      TestTop(3L);
+      TestClear();
+      TestIsEmpty(true, false);
+      TestSize(0, false);
+      TestTop(null);
+      TestPush(100L);
+      TestPush(200L);
+      TestPush(300L);
+      TestPush(400L);
+      TestSize(4, false);
+      TestTop(400L);
+      TestTopNPop(400L, false);
+      TestTop(300L);
+      TestTopNPop(300L, false);
+      TestTopNPop(200L, false);
+      TestTopNPop(100L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Alternating Push and TopNPop")
+    public void AlternatingPushAndTopNPop() {
+      AddTest(24);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestTop(1L);
+      TestPush(2L);
+      TestTopNPop(2L, false);
+      TestTop(1L);
+      TestPush(3L);
+      TestTopNPop(3L, false);
+      TestTop(1L);
+      TestPush(4L);
+      TestPush(5L);
+      TestTopNPop(5L, false);
+      TestSize(2, false);
+      TestTop(4L);
+      TestPush(6L);
+      TestSize(3, false);
+      TestTopNPop(6L, false);
+      TestTopNPop(4L, false);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+      TestTop(null);
+      TestSize(0, false);
+    }
+
+    @Test
+    @DisplayName("Multiple Clear and rebuild cycles")
+    public void MultipleClearAndRebuildCycles() {
+      AddTest(30);
+      NewEmptyContainer();
+      // First cycle
+      TestPush(1L);
+      TestPush(2L);
+      TestSize(2, false);
+      TestClear();
+      TestIsEmpty(true, false);
+      // Second cycle
+      TestPush(10L);
+      TestPush(20L);
+      TestPush(30L);
+      TestSize(3, false);
+      TestTop(30L);
+      TestClear();
+      TestIsEmpty(true, false);
+      // Third cycle
+      TestPush(100L);
+      TestSize(1, false);
+      TestTop(100L);
+      TestPush(200L);
+      TestTopNPop(200L, false);
+      TestTopNPop(100L, false);
+      TestIsEmpty(true, false);
+      // Fourth cycle with InsertAll
+      LLList<Long> batch = new LLList<>();
+      batch.InsertLast(1000L);
+      batch.InsertLast(2000L);
+      batch.InsertLast(3000L);
+      TestInsertAll(batch, true);
+      TestSize(3, false);
+      TestTop(3000L);
+      TestTopNPop(3000L, false);
+      TestSize(2, false);
+    }
+
+    @Test
+    @DisplayName("Empty stack all operations")
+    public void EmptyStackAllOperations() {
+      AddTest(12);
+      NewEmptyContainer();
+      TestIsEmpty(true, false);
+      TestSize(0, false);
+      TestTop(null);
+      TestTopNPop(null, true);
+      TestPop(true);
+      TestExists(1L, false);
+      TestExists(null, false);
+      // InsertAll with empty list
+      LLList<Long> emptyList = new LLList<>();
+      TestInsertAll(emptyList, true);
+      TestInsert(1L, true);
+      TestIsEmpty(false, false);
+      TestClear();
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Single element all operations")
+    public void SingleElementAllOperations() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestPush(42L);
+      TestIsEmpty(false, false);
+      TestSize(1, false);
+      TestTop(42L);
+      TestExists(42L, true);
+      TestExists(0L, false);
+      TestTop(42L);
+      TestPop(false);
+      TestIsEmpty(true, false);
+      TestTop(null);
+      // Rebuild single element
+      TestInsert(99L, true);
+      TestSize(1, false);
+      TestTop(99L);
+      TestTopNPop(99L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Large stack with mixed operations")
+    public void LargeStackMixedOperations() {
+      AddTest(35);
+      NewEmptyContainer();
+      // Push 20 elements
+      for (long i = 1L; i <= 20L; i++) {
+        TestPush(i);
+      }
+      TestSize(20, false);
+      TestTop(20L);
+      // Pop first 10
+      for (int i = 0; i < 10; i++) {
+        TestPop(false);
+      }
+      TestSize(10, false);
+      TestTop(10L);
+      // Add 5 more
+      TestPush(21L);
+      TestPush(22L);
+      TestPush(23L);
+      TestPush(24L);
+      TestPush(25L);
+      TestSize(15, false);
+      // Verify order
+      TestTopNPop(25L, false);
+      TestTopNPop(24L, false);
+      TestSize(13, false);
+      TestTop(23L);
+      // Clear all
+      TestClear();
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("LIFO order maintained through all operations")
+    public void LIFOOrderMaintained() {
+      AddTest(22);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      // Partial pop
+      TestTopNPop(3L, false);
+      // Add more
+      TestPush(4L);
+      TestPush(5L);
+      // Continue pop
+      TestTopNPop(5L, false);
+      TestTopNPop(4L, false);
+      // Add more
+      TestPush(6L);
+      // Continue pop
+      TestTopNPop(6L, false);
+      TestTopNPop(2L, false);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+      // Final verification
+      TestPush(100L);
+      TestPush(200L);
+      TestTop(200L);
+      TestTopNPop(200L, false);
+      TestTop(100L);
+      TestSize(1, false);
+    }
+
+    @Test
+    @DisplayName("Duplicate values in stack operations")
+    public void DuplicateValuesOperations() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestPush(5L);
+      TestPush(5L);
+      TestPush(5L);
+      TestPush(10L);
+      TestPush(10L);
+      TestSize(5, false);
+      TestTop(10L);
+      TestTopNPop(10L, false);
+      TestTop(10L);
+      TestTopNPop(10L, false);
+      TestTop(5L);
+      TestTopNPop(5L, false);
+      TestTop(5L);
+      TestTopNPop(5L, false);
+      TestTop(5L);
+      TestTopNPop(5L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Extreme values through stack operations")
+    public void ExtremeValuesOperations() {
+      AddTest(16);
+      NewEmptyContainer();
+      TestPush(Long.MIN_VALUE);
+      TestPush(0L);
+      TestPush(Long.MAX_VALUE);
+      TestSize(3, false);
+      TestTop(Long.MAX_VALUE);
+      TestExists(Long.MIN_VALUE, true);
+      TestExists(Long.MAX_VALUE, true);
+      TestTopNPop(Long.MAX_VALUE, false);
+      TestTop(0L);
+      TestTopNPop(0L, false);
+      TestTop(Long.MIN_VALUE);
+      TestTopNPop(Long.MIN_VALUE, false);
+      TestIsEmpty(true, false);
+      TestTop(null);
+    }
+
+    @Test
+    @DisplayName("InsertAll after partial pop")
+    public void InsertAllAfterPartialPop() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      TestTopNPop(3L, false);
+      TestSize(2, false);
+      LLList<Long> toAdd = new LLList<>();
+      toAdd.InsertLast(4L);
+      toAdd.InsertLast(5L);
+      toAdd.InsertLast(6L);
+      TestInsertAll(toAdd, true);
+      TestSize(5, false);
+      TestTop(6L);
+      TestTopNPop(6L, false);
+      TestTopNPop(5L, false);
+      TestTopNPop(4L, false);
+      TestTopNPop(2L, false);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Size verification after every operation")
+    public void SizeVerificationAfterEveryOperation() {
+      AddTest(26);
+      NewEmptyContainer();
+      TestSize(0, false);
+      TestPush(1L);
+      TestSize(1, false);
+      TestPush(2L);
+      TestSize(2, false);
+      TestPush(3L);
+      TestSize(3, false);
+      TestPop(false);
+      TestSize(2, false);
+      TestPop(false);
+      TestSize(1, false);
+      TestPush(4L);
+      TestSize(2, false);
+      TestPush(5L);
+      TestSize(3, false);
+      TestClear();
+      TestSize(0, false);
+      TestInsert(10L, true);
+      TestSize(1, false);
+      TestInsert(20L, true);
+      TestSize(2, false);
+      TestTopNPop(20L, false);
+      TestSize(1, false);
+      TestTopNPop(10L, false);
+      TestSize(0, false);
+    }
+
+    @Test
+    @DisplayName("IsEmpty verification through operations")
+    public void IsEmptyVerificationThroughOperations() {
+      AddTest(18);
+      NewEmptyContainer();
+      TestIsEmpty(true, false);
+      TestPush(1L);
+      TestIsEmpty(false, false);
+      TestPop(false);
+      TestIsEmpty(true, false);
+      TestPush(2L);
+      TestPush(3L);
+      TestIsEmpty(false, false);
+      TestClear();
+      TestIsEmpty(true, false);
+      TestInsert(4L, true);
+      TestIsEmpty(false, false);
+      TestTopNPop(4L, false);
+      TestIsEmpty(true, false);
+      LLList<Long> list = new LLList<>();
+      list.InsertLast(5L);
+      TestInsertAll(list, true);
+      TestIsEmpty(false, false);
+    }
+
+    @Test
+    @DisplayName("Top remains consistent during operations")
+    public void TopConsistencyDuringOperations() {
+      AddTest(20);
+      NewEmptyContainer();
+      TestTop(null);
+      TestPush(10L);
+      TestTop(10L);
+      TestPush(20L);
+      TestTop(20L);
+      TestPush(30L);
+      TestTop(30L);
+      TestPop(false);
+      TestTop(20L);
+      TestPush(40L);
+      TestTop(40L);
+      TestPop(false);
+      TestTop(20L);
+      TestPop(false);
+      TestTop(10L);
+      TestPop(false);
+      TestTop(null);
+      TestPush(50L);
+      TestTop(50L);
+    }
+
+    @Test
+    @DisplayName("Complex interleaved operations")
+    public void ComplexInterleavedOperations() {
+      AddTest(30);
+      NewEmptyContainer();
+      // Build up
+      TestPush(1L);
+      TestPush(2L);
+      TestInsert(3L, true);
+      TestSize(3, false);
+      // Partial drain
+      TestTopNPop(3L, false);
+      // Add more
+      LLList<Long> batch = new LLList<>();
+      batch.InsertLast(4L);
+      batch.InsertLast(5L);
+      TestInsertAll(batch, true);
+      TestSize(4, false);
+      // Verify order
+      TestTop(5L);
+      TestTopNPop(5L, false);
+      TestTop(4L);
+      // Clear and rebuild
+      TestClear();
+      TestIsEmpty(true, false);
+      TestPush(100L);
+      TestInsert(200L, true);
+      LLList<Long> batch2 = new LLList<>();
+      batch2.InsertLast(300L);
+      TestInsertSome(batch2, true);
+      TestSize(3, false);
+      TestTop(300L);
+      TestTopNPop(300L, false);
+      TestTopNPop(200L, false);
+      TestTopNPop(100L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Rapid push pop with size checks")
+    public void RapidPushPopWithSizeChecks() {
+      AddTest(24);
+      NewEmptyContainer();
+      TestPush(1L);
+      TestSize(1, false);
+      TestPop(false);
+      TestSize(0, false);
+      TestPush(2L);
+      TestSize(1, false);
+      TestPush(3L);
+      TestSize(2, false);
+      TestPop(false);
+      TestSize(1, false);
+      TestPop(false);
+      TestSize(0, false);
+      TestIsEmpty(true, false);
+      TestPush(4L);
+      TestPush(5L);
+      TestPush(6L);
+      TestSize(3, false);
+      TestPop(false);
+      TestPop(false);
+      TestPop(false);
+      TestSize(0, false);
+      TestIsEmpty(true, false);
+      TestTop(null);
+    }
+
+    @Test
+    @DisplayName("Stack as LIFO buffer simulation")
+    public void StackAsLIFOBufferSimulation() {
+      AddTest(22);
+      NewEmptyContainer();
+      // Simulate undo stack
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      TestTop(3L);
+      // Undo last action
+      TestTopNPop(3L, false);
+      TestTop(2L);
+      // New action
+      TestPush(4L);
+      TestTop(4L);
+      // Undo
+      TestTopNPop(4L, false);
+      TestTop(2L);
+      // More undos
+      TestTopNPop(2L, false);
+      TestTop(1L);
+      // New actions
+      TestPush(5L);
+      TestPush(6L);
+      TestSize(3, false);
+      TestTop(6L);
+      TestTopNPop(6L, false);
+      TestTopNPop(5L, false);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+    }
+
+    @Test
+    @DisplayName("Reverse sequence verification")
+    public void ReverseSequenceVerification() {
+      AddTest(18);
+      NewEmptyContainer();
+      // Push in order: 1, 2, 3, 4, 5
+      TestPush(1L);
+      TestPush(2L);
+      TestPush(3L);
+      TestPush(4L);
+      TestPush(5L);
+      TestSize(5, false);
+      // Pop should give reverse order: 5, 4, 3, 2, 1
+      TestTop(5L);
+      TestTopNPop(5L, false);
+      TestTop(4L);
+      TestTopNPop(4L, false);
+      TestTop(3L);
+      TestTopNPop(3L, false);
+      TestTop(2L);
+      TestTopNPop(2L, false);
+      TestTop(1L);
+      TestTopNPop(1L, false);
+      TestIsEmpty(true, false);
+    }
+
+  }
+
 }

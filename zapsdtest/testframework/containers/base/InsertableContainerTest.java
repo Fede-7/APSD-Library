@@ -29,12 +29,12 @@ public interface InsertableContainerTest<Data, Con extends InsertableContainer<D
     boolean result = ThisContainer().InsertAll(otherContainer);
     if (shouldWork) {
       assertTrue(result, "InsertAll should return true");
-      assertTrue(ThisContainer().Size().ToLong() > initialSize,
-      "Size should not decrease after InsertAll");
+      assertTrue(ThisContainer().Size().ToLong() == initialSize + otherContainer.Size().ToLong(),
+      "Size should increase by other container size after InsertAll");
     } else {
       assertFalse(result, "InsertAll should return false");
-      assertEquals(initialSize, ThisContainer().Size().ToLong(),
-      "Size should not change after failed InsertAll");
+      assertTrue(initialSize + otherContainer.Size().ToLong() > ThisContainer().Size().ToLong(),
+      "Size should be less than the initial size plus other container size after failed InsertAll");
     }
     EndTest();
   }

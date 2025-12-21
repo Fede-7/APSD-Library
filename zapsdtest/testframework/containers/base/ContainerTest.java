@@ -15,7 +15,6 @@ public interface ContainerTest<Con extends Container> {
   default void TestSize(long expectedSize, boolean edgeCase) {
     BeginTest("Size");
     Natural size = ThisContainer().Size();
-    System.out.println("Size() returned: " + size + ", expected: " + expectedSize);
     assertNotNull(size, "Size() should not return null");
     if (edgeCase) {
       assertNotEquals(expectedSize, size.ToLong(), "Size should not be " + expectedSize);

@@ -16,6 +16,15 @@ public interface ReallocableContainerTest<Con extends ReallocableContainer> exte
     EndTest();
   }
 
+  default void TestCapacity(long expectedCapacity) {
+    BeginTest("Capacity");
+    Natural capacity = ThisContainer().Capacity();
+    assertNotNull(capacity, "Capacity() should not return null");
+    assertEquals(expectedCapacity, capacity.ToLong(),
+    "Capacity should be " + expectedCapacity + " but is " + capacity);
+    EndTest();
+  }
+
   default void TestRealloc(Natural newSize) {
     BeginTest("Realloc");
     long oldSize = ThisContainer().Size().ToLong();
@@ -39,7 +48,7 @@ public interface ReallocableContainerTest<Con extends ReallocableContainer> exte
     long initialSize = ThisContainer().Size().ToLong();
     ThisContainer().Grow(number);
     assertTrue(ThisContainer().Capacity().ToLong() >= (initialSize + number.ToLong()) * ReallocableContainer.GROW_FACTOR,
-    "Capacity should be at least initial size plus " + number + " after Grow");
+    "Capacity should be at least initial size plus " + number + " after Grow but current capacity is " + ThisContainer().Capacity() + " and initial size was " + initialSize);
     EndTest();
   }
 

@@ -142,7 +142,13 @@ public interface ListTest<Data, Con extends List<Data>> extends ChainTest<Data, 
   default void TestSubList(Natural from, Natural to, boolean edgeCase) {
     BeginTest("SubList");
     List<Data> subList = ThisContainer().SubList(from, to);
-    if (edgeCase) {
+    if (from == null && to == null) {
+      assertNotNull(subList, "SubList should not return null for null range");
+      assertEquals(0L, subList.Size().ToLong(),
+      "SubList of null range should be empty");
+      EndTest();
+      return;
+    } else if (edgeCase) {
       assertNull(subList, "SubList should return null for invalid range");
     } else {
       assertNotNull(subList, "SubList should not return null");

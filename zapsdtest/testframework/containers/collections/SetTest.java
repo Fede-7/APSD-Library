@@ -10,6 +10,7 @@ public interface SetTest<Data, Con extends Set<Data>> extends CollectionTest<Dat
     BeginTest("Union");
     long initialSize = ThisContainer().Size().ToLong();
     ThisContainer().Union(otherSet);
+    System.out.println("Initial size: " + initialSize + " New size: " + ThisContainer().Size().ToLong());
     assertTrue(ThisContainer().Size().ToLong() >= initialSize,
     "Size should not decrease after Union");
     if (otherSet != null) {

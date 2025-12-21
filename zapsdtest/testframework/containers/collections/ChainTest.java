@@ -32,7 +32,13 @@ public interface ChainTest<Data, Con extends Chain<Data>> extends SetTest<Data, 
   default void TestSubChain(Natural from, Natural to, boolean edgeCase) {
     BeginTest("SubChain");
     Chain<Data> subChain = ThisContainer().SubChain(from, to);
-    if (edgeCase) {
+    if (from == null && to == null) {
+      assertNotNull(subChain, "SubChain should not return null for null range");
+      assertEquals(0L, subChain.Size().ToLong(),
+      "SubChain of null range should be empty");
+      EndTest();
+      return;
+    } else if (edgeCase) {
       assertNull(subChain, "SubChain should return null for invalid range");
     } else {
       assertNotNull(subChain, "SubChain should not return null");

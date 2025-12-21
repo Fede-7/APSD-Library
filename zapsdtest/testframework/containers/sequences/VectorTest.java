@@ -107,4 +107,29 @@ public interface VectorTest<Data, Con extends Vector<Data>> extends MutableSeque
     EndTest();
   }
 
+  default void TestSubVector(Natural from, Natural to, boolean edgeCase) {
+    BeginTest("SubVector");
+    Vector<Data> subVec = ThisContainer().SubVector(from, to);
+    if (from == null && to == null) {
+      assertEquals(0, subVec.Size().ToLong(),
+      "SubVector of null to null should be size 0");
+      EndTest();
+      return;
+    } else if (edgeCase) {
+      assertEquals(null, subVec, "SubVector with invalid bounds should be null");
+      EndTest();
+      return;
+    }
+    long expectedSize = to.ToLong() - from.ToLong() + 1;
+    assertEquals(expectedSize, subVec.Size().ToLong(),
+    "SubVector size should be correct");
+    for(long idx = 0; idx < expectedSize; idx++) {
+      Data expectedValue = ThisContainer().GetAt(Natural.Of(from.ToLong() + idx));
+      Data actualValue = subVec.GetAt(Natural.Of(idx));
+      assertEquals(expectedValue, actualValue,
+      "SubVector element at index " + idx + " should be correct");
+    }
+    EndTest();
+  }
+
 }

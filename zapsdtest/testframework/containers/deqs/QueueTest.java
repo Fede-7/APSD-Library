@@ -1,5 +1,6 @@
 package zapsdtest.testframework.containers.deqs;
 
+import apsd.classes.containers.deqs.WQueue;
 import apsd.interfaces.containers.deqs.Queue;
 
 import zapsdtest.testframework.containers.base.ClearableContainerTest;
@@ -100,16 +101,20 @@ public interface QueueTest<Data, Con extends Queue<Data>> extends ClearableConta
   default void TestExists(Data element, boolean expectedResult) {
     BeginTest("Exists");
     boolean exists = false;
+    WQueue<Data> tempQueue = new WQueue<>();
     while (!ThisContainer().IsEmpty()) {
       Data head = ThisContainer().HeadNDequeue();
       if (head == null) {
         break;
       } else {
+        tempQueue.Enqueue(head);
         if (head.equals(element)) {
           exists = true;
-          break;
         }
       }
+    }
+    while (!tempQueue.IsEmpty()) {
+      ThisContainer().Enqueue( tempQueue.HeadNDequeue() );
     }
     assertEquals(expectedResult, exists,
     "Exists should return " + expectedResult + " for " + element);
