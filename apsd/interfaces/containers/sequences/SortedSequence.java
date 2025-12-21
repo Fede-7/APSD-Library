@@ -22,18 +22,23 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
 
     long str = 0;
     long fns = Size().ToLong() - 1;
+    Long result = null;
 
     while (str <= fns) {
       long medIdx = str + (fns - str) / 2;
       Data medElem = GetAt(Natural.Of(medIdx));
 
-      switch (Integer.signum(dat.compareTo(medElem))) {
-        case 0  -> { return Natural.Of(medIdx); }
+      int cmp = dat.compareTo(medElem);
+      switch (cmp) {
+        case 0 -> {
+          result = medIdx;
+          fns = medIdx - 1;
+        }
         case -1 -> fns = medIdx - 1;
-        case 1  -> str = medIdx + 1;
+        case 1 -> str = medIdx + 1;
       }
     }
-    return null;
+    return result == null ? null : Natural.Of(result);
   }
 
 }

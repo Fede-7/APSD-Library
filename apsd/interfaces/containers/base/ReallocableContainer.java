@@ -13,7 +13,7 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable {
 
   default void Grow() { Realloc(Natural.Of((long) (Capacity().ToLong() * GROW_FACTOR)));}
 
-  default void Grow(Natural factor) { Realloc(Natural.Of((long) (Capacity().ToLong() * factor.ToLong())));}
+  default void Grow(Natural factor) { Realloc(Natural.Of((long) ((Size().ToLong() + factor.ToLong()) * GROW_FACTOR)));}
 
   default void Shrink() { Realloc(Natural.Of((long) (Capacity().ToLong() / SHRINK_FACTOR)));}
 

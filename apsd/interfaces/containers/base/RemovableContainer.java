@@ -9,13 +9,13 @@ public interface RemovableContainer<Data> extends Container {
 
   default boolean RemoveAll(TraversableContainer<Data> con){
     final Box<Boolean> remAll = new Box<>(true);
-    if (con != null) con.TraverseForward(dat -> {remAll.Set(remAll.Get() && Remove(dat)); return false;});
+    if (con != null) con.TraverseForward(dat -> {remAll.Set(Remove(dat) && remAll.Get()); return false;});
     return remAll.Get();
   }
 
   default boolean RemoveSome(TraversableContainer<Data> con){
     final Box<Boolean> remSome = new Box<>(false);
-    if(con != null) con.TraverseForward(dat -> {remSome.Set(remSome.Get() || Remove(dat)); return false;});
+    if(con != null) con.TraverseForward(dat -> {remSome.Set(Remove(dat) || remSome.Get()); return false;});
 
     return remSome.Get();
   }

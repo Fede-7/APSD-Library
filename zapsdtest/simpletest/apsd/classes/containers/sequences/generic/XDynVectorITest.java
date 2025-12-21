@@ -950,7 +950,7 @@ abstract public class XDynVectorITest extends XDynVectorTest<Long> {
       TestSize(3, false);
       TestGrowWithNumber(Natural.Of(2));
       TestSize(3, false);
-      TestCapacity(16);
+      TestCapacity(10);
       TestExpandWithNumber(Natural.Of(2));
       TestSize(5, false);
       TestSetAt(4L, Natural.Of(3), false);
@@ -1604,7 +1604,7 @@ abstract public class XDynVectorITest extends XDynVectorTest<Long> {
       TestSetAt(4L, Natural.Of(3), false);
       TestSetAt(5L, Natural.Of(4), false);
       TestGrowWithNumber(Natural.Of(3));
-      TestCapacity(26);
+      TestCapacity(16);
       TestReduceWithNumber(Natural.Of(3));
       TestSize(2, false);
       TestRealloc(Natural.Of(3));
