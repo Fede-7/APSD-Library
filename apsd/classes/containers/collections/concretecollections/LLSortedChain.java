@@ -12,12 +12,15 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   public LLSortedChain(){super();}
 
-  public LLSortedChain(LLSortedChain<Data> chn){super(chn);}
+  public LLSortedChain(LLSortedChain<Data> chn){
+    super();
+    InsertAll(chn);
+  }
 
   public LLSortedChain(TraversableContainer<Data> con){
     super();
     con.TraverseForward(dat -> {
-      Insert(dat);
+      InsertIfAbsent(dat);
       return false;
     });
   }
