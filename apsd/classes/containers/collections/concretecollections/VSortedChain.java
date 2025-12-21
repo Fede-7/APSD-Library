@@ -15,11 +15,12 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   public VSortedChain(VSortedChain<Data> chn){super(chn.vec);}
 
   public VSortedChain(TraversableContainer<Data> con){
-    super();
-    con.TraverseForward(dat -> {
-      Insert(dat);
-      return false;
-    });
+      super();
+      vec.Grow(Natural.Of(con.Size().ToLong()));
+      con.TraverseForward(dat -> {
+          Insert(dat);
+          return false;
+      });
   }
 
   protected VSortedChain(DynVector<Data> vec){super(vec);}
