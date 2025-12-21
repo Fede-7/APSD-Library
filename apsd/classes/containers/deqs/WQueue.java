@@ -7,7 +7,7 @@ import apsd.interfaces.containers.collections.List;
 import apsd.interfaces.containers.deqs.Queue;
 
 /** Object: Wrapper queue implementation. */
-public class WQueue<Data> implements Queue<Data> { // Must implement Queue
+public class WQueue<Data> implements Queue<Data> {
 
   protected final List<Data> lst;
 
@@ -27,7 +27,7 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
     if (lst == null) throw new NullPointerException("List cannot be null!");
     if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
     this.lst = lst;
-    con.TraverseForward(dat -> { this.lst.Insert(dat); return false; });
+    con.TraverseForward(dat -> { this.lst.InsertLast(dat); return false; });
   }
 
   /* ************************************************************************ */
@@ -59,7 +59,7 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
 
   @Override
   public void Enqueue(Data dat) { 
-    if(dat == null ) throw new IllegalArgumentException("Data cannot be null");
+    if(dat == null) return;
     lst.InsertLast(dat); 
   }
 

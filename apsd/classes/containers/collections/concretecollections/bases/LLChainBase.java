@@ -49,8 +49,6 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
 
   abstract protected LLChainBase<Data> NewChain(long size, LLNode<Data> headref, LLNode<Data> tailref);
 
-  //lavora con Box<LLNode>,
-
   protected class ListFRefIterator implements ForwardIterator<Box<LLNode<Data>>> {
     protected Box<LLNode<Data>> cur;
 
@@ -150,8 +148,6 @@ abstract public class LLChainBase<Data> implements Chain<Data> {
   /* ************************************************************************ */
   /* Specific member functions from LLChainBase                               */
   /* ************************************************************************ */
-
-  //estrae il dato e lo restituisce
 
   protected class ListFIterator implements MutableForwardIterator<Data> {
     protected final ForwardIterator<Box<LLNode<Data>>> itr;

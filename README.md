@@ -184,3 +184,65 @@ Test run finished after 797 ms
 [         0 tests aborted         ]
 [       344 tests successful      ]
 [         0 tests failed          ]
+
+# Test Nuovi
+
+## 1° Test:
+Test run finished after 1232 ms
+[       120 containers found      ]
+[         0 containers skipped    ]
+[       120 containers started    ]
+[         0 containers aborted    ]
+[       120 containers successful ]
+[         0 containers failed     ]
+[       752 tests found           ]
+[         0 tests skipped         ]
+[       752 tests started         ]
+[         0 tests aborted         ]
+[       661 tests successful      ]
+[        91 tests failed          ]
+
+## 2° Test:
+Test run finished after 643 ms
+[       120 containers found      ]
+[         0 containers skipped    ]
+[       120 containers started    ]
+[         0 containers aborted    ]
+[       120 containers successful ]
+[         0 containers failed     ]
+[       752 tests found           ]
+[         0 tests skipped         ]
+[       752 tests started         ]
+[         0 tests aborted         ]
+[       687 tests successful      ]
+[        65 tests failed          ]
+
+## 3° Test:
+Test run finished after 862 ms
+[       120 containers found      ]
+[         0 containers skipped    ]
+[       120 containers started    ]
+[         0 containers aborted    ]
+[       120 containers successful ]
+[         0 containers failed     ]
+[       752 tests found           ]
+[         0 tests skipped         ]
+[       752 tests started         ]
+[         0 tests aborted         ]
+[       721 tests successful      ]
+[        31 tests failed          ]
+
+## 4° Test:
+Test run finished after 581 ms
+[       120 containers found      ]
+[         0 containers skipped    ]
+[       120 containers started    ]
+[         0 containers aborted    ]
+[       120 containers successful ]
+[         0 containers failed     ]
+[       752 tests found           ]
+[         0 tests skipped         ]
+[       752 tests started         ]
+[         0 tests aborted         ]
+[       752 tests successful      ]
+[         0 tests failed          ]

@@ -30,7 +30,8 @@ abstract public class VectorBase<Data> implements Vector<Data>{
     ArrayAlloc(con.Size());
     final MutableNatural index = new MutableNatural();
     con.TraverseForward(dat -> {
-      SetAt(dat, index.GetNIncrement());
+      arr[(int)index.ToLong()] = dat;
+      index.Increment();
       return false;
     });
   }

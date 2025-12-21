@@ -12,7 +12,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default void InsertAt(Data elem, Natural pos) {
-    if (pos == null) throw new NullPointerException("Position cannot be null");
+    if (elem == null) return;
     if (pos.compareTo(Size()) > 0) throw new IndexOutOfBoundsException("out of bound");
 
     long idx = pos.ToLong();
@@ -30,11 +30,9 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
   @Override
   default Data AtNRemove(Natural pos){
-    if (pos == null || IsEmpty()) return null;
-    if (!IsInBound(pos)) return null;
-
+    if (IsEmpty() || !IsInBound(pos)) return null;
     Data dat = GetAt(pos);
-    ShiftLeft(pos); // gestisce anche la rimozione dell'ultimo elemento
+    ShiftLeft(pos);
     return dat;
   }
 

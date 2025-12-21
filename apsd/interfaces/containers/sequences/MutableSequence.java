@@ -8,7 +8,6 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableContainer<Data> {
 
   default void SetAt(Data elem, Natural pos){
-    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
     long idx = ExcIfOutOfBound(pos);
     final MutableForwardIterator<Data> it = this.FIterator();
     it.Next(idx);
@@ -16,7 +15,6 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   }
 
   default Data GetNSetAt(Data elem, Natural pos){
-    if (IsEmpty()) throw new IndexOutOfBoundsException("Index out of bounds");
     Data dat = this.GetAt(pos);
     SetAt(elem, pos);
     return dat;

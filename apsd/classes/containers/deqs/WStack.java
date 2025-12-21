@@ -27,7 +27,7 @@ public class WStack<Data> implements Stack<Data> {
     if (lst == null) throw new NullPointerException("List cannot be null!");
     if (con == null) throw new NullPointerException("TraversableContainer cannot be null!");
     this.lst = lst;
-    con.TraverseForward(dat -> { this.lst.Insert(dat); return false; });
+    con.TraverseForward(dat -> { this.lst.InsertLast(dat); return false; });
   }
 
   /* ************************************************************************ */
@@ -59,7 +59,7 @@ public class WStack<Data> implements Stack<Data> {
 
   @Override
   public void Push(Data dat) {
-    if (dat == null) throw new IllegalArgumentException("Data cannot be null");
+    if (dat == null) return;
     lst.InsertFirst(dat);
   }
 

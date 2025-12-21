@@ -6,7 +6,6 @@ import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.SortedChain;
-import apsd.interfaces.containers.iterators.ForwardIterator;
 
 /** Object: Concrete sorted chain implementation on linked-list. */
 public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChainBase<Data> implements SortedChain<Data> {
@@ -15,7 +14,13 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   public LLSortedChain(LLSortedChain<Data> chn){super(chn);}
 
-  public LLSortedChain(TraversableContainer<Data> con){super(con);}
+  public LLSortedChain(TraversableContainer<Data> con){
+    super();
+    con.TraverseForward(dat -> {
+      Insert(dat);
+      return false;
+    });
+  }
 
   protected LLSortedChain(long size, LLNode<Data> head, LLNode<Data> tail){super(size, head, tail);}
   

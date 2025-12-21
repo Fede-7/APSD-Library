@@ -13,9 +13,15 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   public DynCircularVectorBase(Natural initialCapacity) {super(initialCapacity);}
 
-  public DynCircularVectorBase(TraversableContainer<Data> con) {super(con);}
+  public DynCircularVectorBase(TraversableContainer<Data> con) {
+    super(con);
+    this.size = arr.length;
+  }
 
-  public DynCircularVectorBase(Data[] arr) {super(arr);}
+  public DynCircularVectorBase(Data[] arr) {
+    super(arr);
+    this.size = arr.length;
+  }
   
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -43,7 +49,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   @Override
   public void Realloc(Natural newCapacity){
-    if(newCapacity == null) throw new NullPointerException("Size cannot be null!");
+    if(newCapacity == null) return;
     super.Realloc(newCapacity);
     if(size > newCapacity.ToLong()){
       size = newCapacity.ToLong();
@@ -61,7 +67,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   @Override
   public void Expand(Natural factor) {
-    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    if (factor == null) return;
     long n = factor.ToLong();
     if (n <= 0) return;
     long newSize = size + n;
@@ -74,7 +80,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   @Override
   public void Reduce(Natural factor) {
-    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    if (factor == null) return;
     long n = factor.ToLong();
     if (n <= 0) return;
     if (n > size) throw new IllegalArgumentException("Cannot reduce by more than current size!");

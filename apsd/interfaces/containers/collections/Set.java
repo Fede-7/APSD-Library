@@ -17,7 +17,8 @@ public interface Set<Data> extends Collection<Data> {
     this.Filter(dat ->!set.Exists(dat));
   }
   default void Intersection(Set<Data> set) {
-    if (set == null || set.IsEmpty()) {
+    if (set == null) return;
+    if (set.IsEmpty()) {
       this.Clear(); 
       return;
     }

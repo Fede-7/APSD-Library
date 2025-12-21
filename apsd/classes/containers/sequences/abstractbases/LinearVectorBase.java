@@ -44,14 +44,12 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> {
  
   @Override
   public Data GetAt(Natural pos) {
-    if (pos == null) throw new NullPointerException("Natural cannot be a null value");
     long idx = ExcIfOutOfBound(pos);
     return arr[(int) idx];  
   }
 
   @Override
   public void SetAt(Data elem, Natural pos) {
-    if (pos == null) throw new NullPointerException("Natural cannot be a null value");
     long idx = ExcIfOutOfBound(pos);
     arr[(int) idx] = elem;
   }

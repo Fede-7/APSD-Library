@@ -70,8 +70,8 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
 
   @Override
   public void ShiftRight(Natural pos, Natural num) {
-    if (pos == null || num == null) return;
     long idx = ExcIfOutOfBound(pos);
+    if (num == null) throw new NullPointerException("Number cannot be null");
     long size = Size().ToLong();
     long len = num.ToLong();
     len = (len <= size - idx) ? len : size - idx;
@@ -90,8 +90,8 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> {
 
   @Override
   public void ShiftLeft(Natural pos, Natural num) {
-    if (pos == null || num == null) return;
     long idx = ExcIfOutOfBound(pos);
+    if (num == null) throw new NullPointerException("Number cannot be null");
     long size = Size().ToLong();
     long len = num.ToLong();
     len = (len <= size - idx) ? len : size - idx;

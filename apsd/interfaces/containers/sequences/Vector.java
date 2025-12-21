@@ -11,6 +11,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftLeft(Natural pos, Natural num) {
     long idx = ExcIfOutOfBound(pos);
+    if (num == null) throw new NullPointerException("Number cannot be null");
     long size = Size().ToLong();
     long len = num.ToLong();
     len = (len <= size - idx) ? len : size - idx;
@@ -41,6 +42,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
   default void ShiftRight(Natural pos, Natural num) {
     long idx = ExcIfOutOfBound(pos);
+    if (num == null) throw new NullPointerException("Number cannot be null");
     long size = Size().ToLong();
     long len = num.ToLong();
     len = (len <= size - idx) ? len : size - idx;

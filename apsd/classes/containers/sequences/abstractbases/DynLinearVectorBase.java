@@ -13,9 +13,15 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   public DynLinearVectorBase(Natural initialCapacity) { super(initialCapacity);}
 
-  public DynLinearVectorBase(Data[] arr) { super(arr);}
+  public DynLinearVectorBase(Data[] arr) { 
+    super(arr);
+    this.size = arr.length;
+  }
 
-  public DynLinearVectorBase(TraversableContainer<Data> con) {super(con);}
+  public DynLinearVectorBase(TraversableContainer<Data> con) {
+    super(con);
+    this.size = arr.length;
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
@@ -41,7 +47,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   @Override
   public void Realloc(Natural newCapacity){
-    if(newCapacity == null) throw new NullPointerException("Size cannot be null!");
+    if(newCapacity == null) return;
     super.Realloc(newCapacity);
     if(size > newCapacity.ToLong()){ size = newCapacity.ToLong();}
   }
@@ -55,7 +61,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   @Override
   public void Expand(Natural factor) {
-    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    if (factor == null) return;
     long n = factor.ToLong();
     if (n <= 0) return;
     long newSize = size + n;
@@ -67,7 +73,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   @Override
   public void Reduce(Natural factor){
-    if (factor == null) throw new NullPointerException("factor cannot be null!");
+    if (factor == null) return;
     long n = factor.ToLong();
     if (n <= 0) return;
     if (n > size) throw new IllegalArgumentException("Cannot reduce by more than current size!");
