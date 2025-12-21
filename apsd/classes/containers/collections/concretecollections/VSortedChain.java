@@ -44,10 +44,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   /* ************************************************************************ */
   /* Override specific member functions from Chain                            */
   /* ************************************************************************ */
-/*
-*1. if dat = null:   Search::dat return null, than insert check and return false
-*2. if dat == Data:  Search::dat return null if its isnt presente, the idx if it's present.
-*/
+
   @Override
   public boolean InsertIfAbsent(Data dat) { return (Search(dat) == null) ? Insert(dat) : false;}
 
